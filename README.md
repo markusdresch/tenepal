@@ -17,6 +17,10 @@ Tenepal identifies *what language* is being spoken in audio, with the current pu
 
 See [PAPER.md](PAPER.md) for the full technical write-up, [docs/AMITH_CORPORA.md](docs/AMITH_CORPORA.md) for corpus access instructions, and [EVOLUTION.md](EVOLUTION.md) for the research journal.
 
+![Tenepal Annotator on La Otra Conquista](docs/images/annotator/tenepal-annotator.png)
+
+Segment-level review of Nahuatl/Spanish predictions on *La Otra Conquista*. The annotator tool is in `tools/annotator/`.
+
 Metric provenance:
 
 - `85.7%`, `65.7%`, and the `551`-segment Hernán subset are the current audited benchmark numbers documented in [EVOLUTION.md](EVOLUTION.md) and exported via `benchmarks/annotations/` plus `benchmarks/reports/eq_comparison_gt.json`.
@@ -139,12 +143,6 @@ Public-facing support docs:
 - [docs/AMITH_CORPORA.md](docs/AMITH_CORPORA.md) — where to get the Amith corpora and how local download works
 - [docs/ANNOTATOR_SCREENSHOTS.md](docs/ANNOTATOR_SCREENSHOTS.md) — guidance for safe public annotator screenshots
 - [docs/OPEN_PROBLEMS.md](docs/OPEN_PROBLEMS.md) — current highest-priority unresolved technical problems
-
-## Annotator
-
-![Tenepal Annotator on La Otra Conquista](docs/images/annotator/tenepal-annotator.png)
-
-`Tenepal Annotator` for segment-level review of Nahuatl/Spanish predictions on *La Otra Conquista*.
 
 ## Research
 
