@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+.git
+.planning
+venv
+*.egg-info
+output
+*.wav
+*.mp3
+*.flac
+*.srt

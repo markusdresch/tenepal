@@ -1,0 +1,10 @@
+{
+  "code": "fra",
+  "name": "French",
+  "rhythm_class": "syllable-timed",
+  "f0_range": {"min": 60, "max": 230, "target": 140},
+  "f0_std": {"min": 20, "max": 65, "target": 40},
+  "npvi_v": {"min": 38, "max": 54, "target": 44},
+  "speech_rate": {"min": 6.0, "max": 8.5, "target": 7.2},
+  "weight": 1.0
+}

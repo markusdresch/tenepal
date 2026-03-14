@@ -1,0 +1,28 @@
+{
+  "code": "spa",
+  "name": "Spanish",
+  "family": "Indo-European",
+  "marker_phonemes": [
+    "b",
+    "d",
+    "ɡ",
+    "ɲ",
+    "ɾ"
+  ],
+  "absent_phonemes": [
+    "tɬ",
+    "kʷ",
+    "ɬ"
+  ],
+  "marker_sequences": [],
+  "priority": 1,
+  "marker_weights": {
+    "b": 0.20,
+    "d": 0.05,
+    "ɡ": 0.20,
+    "ɲ": 0.80,
+    "ɾ": 0.40
+  },
+  "sequence_weights": {},
+  "threshold": 2.25
+}

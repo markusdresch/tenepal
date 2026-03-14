@@ -1,0 +1,31 @@
+{
+    "_comment": "Tenepal EQ Config — all tunable parameters",
+    "_usage": "modal run tenepal_modal.py::main --eq eq_default.json",
+
+    "prosody_enabled": false,
+    "prosody_weight": 0.5,
+    "prosody_threshold": 0.65,
+    "prosody_min_dur": 0.3,
+
+    "speaker_prior_min_segments": 3,
+    "speaker_prior_min_ratio": 0.6,
+    "speaker_prior_strong": false,
+
+    "ejective_min_count": 2,
+    "ejective_maya_boost": 0.3,
+    "ejective_strict": false,
+
+    "tl_confidence_threshold": 0.0,
+
+    "spa_reclaim_min_hits": 2,
+    "spa_reclaim_min_ratio": 0.30,
+
+    "noise_gate_enabled": false,
+    "noise_gate_max_s": 0.4,
+
+    "ipa_nah_override": false,
+    "ft_spa_guard": false,
+
+    "lang_conf_threshold": 0.6,
+    "low_conf_threshold": 0.35
+}

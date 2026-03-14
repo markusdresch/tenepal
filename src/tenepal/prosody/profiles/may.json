@@ -1,0 +1,10 @@
+{
+  "code": "may",
+  "name": "Yucatec Maya",
+  "rhythm_class": "syllable-timed",
+  "f0_range": {"min": 50, "max": 220, "target": 130},
+  "f0_std": {"min": 20, "max": 65, "target": 40},
+  "npvi_v": {"min": 30, "max": 55, "target": 42},
+  "speech_rate": {"min": 5.0, "max": 7.5, "target": 6.0},
+  "weight": 0.5
+}

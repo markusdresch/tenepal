@@ -1,0 +1,140 @@
+{
+  "version": "1.0",
+  "description": "Tenepal regression test clips for language detection quality assurance",
+  "clips": [
+    {
+      "id": "moctezuma_yes_sir",
+      "source": "validation_video/moctezuma_test.wav",
+      "start_s": 35.039,
+      "end_s": 35.663,
+      "pad_s": 0.8,
+      "expected_lang": "OTH",
+      "expect_present": [],
+      "expect_absent": ["(yes|sir|you|you're|thank you|can i)"],
+      "note": "Suppress obvious English leakage - English phrases should NOT appear"
+    },
+    {
+      "id": "hernan_soldados_1",
+      "source": "validation_video/Hernán-1-1-1_00-05.wav",
+      "start_s": 113.5,
+      "end_s": 116.3,
+      "pad_s": 0.0,
+      "expected_lang": "SPA",
+      "expect_present": ["soldad"],
+      "expect_absent": ["(saludo)"],
+      "note": "Recover 'soldado/soldados' form (window sweep winner)"
+    },
+    {
+      "id": "hernan_soldados_2",
+      "source": "validation_video/Hernán-1-1-1_00-05.wav",
+      "start_s": 128.34,
+      "end_s": 129.674,
+      "pad_s": 0.8,
+      "expected_lang": "SPA",
+      "expect_present": ["soldad"],
+      "expect_absent": ["(saludo)"],
+      "note": "Recover 'soldado/soldados' form"
+    },
+    {
+      "id": "hernan_capitan_1",
+      "source": "validation_video/Hernán-1-1-1_00-05.wav",
+      "start_s": 38.564,
+      "end_s": 39.173,
+      "pad_s": 0.7,
+      "expected_lang": "SPA",
+      "expect_present": ["capitan"],
+      "expect_absent": [],
+      "note": "Keep captain term stable"
+    },
+    {
+      "id": "maya_village_01",
+      "source": "validation_video/maya_samples/maya_village_01.wav",
+      "start_s": 0.0,
+      "end_s": 45.0,
+      "pad_s": 0.0,
+      "expected_lang": "MAY",
+      "expect_present": ["\\[MAY\\|"],
+      "expect_absent": [],
+      "note": "Apocalypto village scene - should detect Maya language segments"
+    },
+    {
+      "id": "maya_village_02",
+      "source": "validation_video/maya_samples/maya_village_02.wav",
+      "start_s": 0.0,
+      "end_s": 45.0,
+      "pad_s": 0.0,
+      "expected_lang": "MAY",
+      "expect_present": ["\\[MAY\\|"],
+      "expect_absent": [],
+      "note": "Apocalypto village scene 2 - should detect Maya language segments"
+    },
+    {
+      "id": "maya_march_01",
+      "source": "validation_video/maya_samples/maya_march_01.wav",
+      "start_s": 0.0,
+      "end_s": 45.0,
+      "pad_s": 0.0,
+      "expected_lang": "MAY",
+      "expect_present": ["\\[MAY\\|"],
+      "expect_absent": [],
+      "note": "Apocalypto march scene - should detect Maya language"
+    },
+    {
+      "id": "maya_raid_01",
+      "source": "validation_video/maya_samples/maya_raid_01.wav",
+      "start_s": 0.0,
+      "end_s": 45.0,
+      "pad_s": 0.0,
+      "expected_lang": "MAY",
+      "expect_present": ["\\[MAY\\|"],
+      "expect_absent": [],
+      "note": "Apocalypto raid scene - should detect Maya language"
+    },
+    {
+      "id": "hernan_potonchan_nah_01",
+      "source": "validation_video/hernan_potonchan.mp4",
+      "start_s": 21.0,
+      "end_s": 22.1,
+      "pad_s": 0.5,
+      "expected_lang": "NAH",
+      "expect_present": ["\\[NAH\\|"],
+      "expect_absent": [],
+      "note": "Hernan Potonchan scene - Nahuatl speaker segment at 00:00:21"
+    },
+    {
+      "id": "hernan_potonchan_nah_02",
+      "source": "validation_video/hernan_potonchan.mp4",
+      "start_s": 86.3,
+      "end_s": 87.1,
+      "pad_s": 0.5,
+      "expected_lang": "NAH",
+      "expect_present": ["\\[NAH\\|"],
+      "expect_absent": [],
+      "note": "Hernan Potonchan scene - Nahuatl at 00:01:26"
+    },
+    {
+      "id": "hernan_potonchan_may_01",
+      "source": "validation_video/hernan_potonchan.mp4",
+      "start_s": 243.6,
+      "end_s": 248.0,
+      "pad_s": 0.5,
+      "expected_lang": "MAY",
+      "expect_present": ["\\[MAY\\|"],
+      "expect_absent": [],
+      "note": "Hernan Potonchan scene - Maya speaker SPEAKER_04 at 00:04:03"
+    },
+    {
+      "id": "hernan_latin_baptism",
+      "source": "validation_video/Hernán-1-1-1.wav",
+      "start_s": 1242.7,
+      "end_s": 1246.9,
+      "pad_s": 0.5,
+      "expected_lang": "LAT",
+      "expect_present": ["(baptizo|patris|spiritus|sancti|\\[LAT\\|)"],
+      "expect_absent": [],
+      "note": "Latin liturgical baptism - Ego te baptizo in nomine Patris"
+    }
+  ],
+  "timeout_per_clip_s": 60,
+  "total_timeout_s": 300
+}

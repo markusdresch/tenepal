@@ -1,0 +1,13 @@
+{
+    "_name": "v7_full_track",
+    "_description": "v7_three_levers + allo_full_track: Allosaurus runs ONCE on full vocals, phones mapped to segments by timestamp. Eliminates CTC warmup loss + boundary artifacts.",
+    "speaker_prior_strong": true,
+    "ejective_strict": true,
+    "noise_gate_enabled": true,
+    "two_pass_prior": true,
+    "ft_first": true,
+    "whisper_uncertain_ipa": true,
+    "prior_reset": true,
+    "dj_tc_marker": true,
+    "allo_full_track": true
+}

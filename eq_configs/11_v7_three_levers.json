@@ -1,0 +1,12 @@
+{
+    "_name": "v7_three_levers",
+    "_description": "v7_ft_first + 3 accuracy levers: (1) rescue preserves IPA lang, (2) prior reset after corrections, (3) dʒ+tɕ cross-check NAH marker.",
+    "speaker_prior_strong": true,
+    "ejective_strict": true,
+    "noise_gate_enabled": true,
+    "two_pass_prior": true,
+    "ft_first": true,
+    "whisper_uncertain_ipa": true,
+    "prior_reset": true,
+    "dj_tc_marker": true
+}

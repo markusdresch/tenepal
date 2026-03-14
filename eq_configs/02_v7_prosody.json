@@ -1,0 +1,10 @@
+{
+    "_name": "v7_prosody",
+    "_description": "v7_best + prosody voter (default weight 0.5, threshold 0.65)",
+    "speaker_prior_strong": true,
+    "ejective_strict": true,
+    "noise_gate_enabled": true,
+    "prosody_enabled": true,
+    "prosody_weight": 0.5,
+    "prosody_threshold": 0.65
+}

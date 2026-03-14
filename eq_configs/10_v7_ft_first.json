@@ -1,0 +1,9 @@
+{
+    "_name": "v7_ft_first",
+    "_description": "v7_best + FT-first: run NAH finetuned Whisper on ALL segments before speaker-prior. FT output with NAH morphology overrides SPA→NAH.",
+    "speaker_prior_strong": true,
+    "ejective_strict": true,
+    "noise_gate_enabled": true,
+    "two_pass_prior": true,
+    "ft_first": true
+}

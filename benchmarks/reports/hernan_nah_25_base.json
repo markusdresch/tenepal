@@ -1,0 +1,202 @@
+{
+  "model": "base",
+  "n_segments": 25,
+  "n_errors": 0,
+  "hallucination_rate": 1.0,
+  "hallucination_ci_95": [
+    0.8668,
+    1.0
+  ],
+  "lang_counts": {
+    "en": 6,
+    "ca": 2,
+    "zh": 1,
+    "es": 2,
+    "ja": 2,
+    "el": 1,
+    "hi": 3,
+    "fr": 1,
+    "ar": 2,
+    "bn": 1,
+    "de": 2,
+    "th": 1,
+    "ms": 1
+  },
+  "per_segment": [
+    {
+      "id": "hernan_1_1_1_nah_01",
+      "start_s": 37.324,
+      "end_s": 38.185,
+      "duration_s": 0.861,
+      "whisper_lang": "en"
+    },
+    {
+      "id": "hernan_1_1_1_nah_02",
+      "start_s": 69.184,
+      "end_s": 70.399,
+      "duration_s": 1.215,
+      "whisper_lang": "ca"
+    },
+    {
+      "id": "hernan_1_1_1_nah_03",
+      "start_s": 419.189,
+      "end_s": 420.15,
+      "duration_s": 0.961,
+      "whisper_lang": "zh"
+    },
+    {
+      "id": "hernan_1_1_1_nah_04",
+      "start_s": 437.363,
+      "end_s": 438.764,
+      "duration_s": 1.401,
+      "whisper_lang": "es"
+    },
+    {
+      "id": "hernan_1_1_1_nah_05",
+      "start_s": 439.557,
+      "end_s": 441.16,
+      "duration_s": 1.603,
+      "whisper_lang": "es"
+    },
+    {
+      "id": "hernan_1_1_1_nah_06",
+      "start_s": 701.929,
+      "end_s": 703.499,
+      "duration_s": 1.57,
+      "whisper_lang": "ja"
+    },
+    {
+      "id": "hernan_1_1_1_nah_07",
+      "start_s": 840.608,
+      "end_s": 845.738,
+      "duration_s": 5.13,
+      "whisper_lang": "el"
+    },
+    {
+      "id": "hernan_1_1_1_nah_08",
+      "start_s": 856.268,
+      "end_s": 861.533,
+      "duration_s": 5.265,
+      "whisper_lang": "hi"
+    },
+    {
+      "id": "hernan_1_1_1_nah_09",
+      "start_s": 863.035,
+      "end_s": 865.364,
+      "duration_s": 2.329,
+      "whisper_lang": "fr"
+    },
+    {
+      "id": "hernan_1_1_1_nah_10",
+      "start_s": 881.715,
+      "end_s": 888.179,
+      "duration_s": 6.464,
+      "whisper_lang": "ar"
+    },
+    {
+      "id": "hernan_1_1_1_nah_11",
+      "start_s": 891.57,
+      "end_s": 898.169,
+      "duration_s": 6.599,
+      "whisper_lang": "ar"
+    },
+    {
+      "id": "hernan_1_1_1_nah_12",
+      "start_s": 915.972,
+      "end_s": 917.069,
+      "duration_s": 1.097,
+      "whisper_lang": "en"
+    },
+    {
+      "id": "hernan_1_1_1_nah_13",
+      "start_s": 925.759,
+      "end_s": 926.687,
+      "duration_s": 0.928,
+      "whisper_lang": "en"
+    },
+    {
+      "id": "hernan_1_1_1_nah_14",
+      "start_s": 942.027,
+      "end_s": 944.035,
+      "duration_s": 2.008,
+      "whisper_lang": "en"
+    },
+    {
+      "id": "hernan_1_1_1_nah_15",
+      "start_s": 954.21,
+      "end_s": 955.695,
+      "duration_s": 1.485,
+      "whisper_lang": "hi"
+    },
+    {
+      "id": "hernan_1_1_1_nah_16",
+      "start_s": 958.277,
+      "end_s": 960.336,
+      "duration_s": 2.059,
+      "whisper_lang": "en"
+    },
+    {
+      "id": "hernan_1_1_1_nah_17",
+      "start_s": 963.61,
+      "end_s": 967.795,
+      "duration_s": 4.185,
+      "whisper_lang": "bn"
+    },
+    {
+      "id": "hernan_1_1_1_nah_18",
+      "start_s": 968.74,
+      "end_s": 969.854,
+      "duration_s": 1.114,
+      "whisper_lang": "de"
+    },
+    {
+      "id": "hernan_1_1_1_nah_19",
+      "start_s": 986.695,
+      "end_s": 987.572,
+      "duration_s": 0.877,
+      "whisper_lang": "en"
+    },
+    {
+      "id": "hernan_1_1_1_nah_20",
+      "start_s": 988.315,
+      "end_s": 990.593,
+      "duration_s": 2.278,
+      "whisper_lang": "th"
+    },
+    {
+      "id": "hernan_1_1_1_nah_21",
+      "start_s": 1015.939,
+      "end_s": 1017.559,
+      "duration_s": 1.62,
+      "whisper_lang": "de"
+    },
+    {
+      "id": "hernan_1_1_1_nah_22",
+      "start_s": 1111.199,
+      "end_s": 1114.962,
+      "duration_s": 3.763,
+      "whisper_lang": "ms"
+    },
+    {
+      "id": "hernan_1_1_1_nah_23",
+      "start_s": 1202.762,
+      "end_s": 1203.555,
+      "duration_s": 0.793,
+      "whisper_lang": "ja"
+    },
+    {
+      "id": "hernan_1_1_1_nah_24",
+      "start_s": 1215.672,
+      "end_s": 1216.583,
+      "duration_s": 0.911,
+      "whisper_lang": "hi"
+    },
+    {
+      "id": "hernan_1_1_2_nah_01",
+      "start_s": 333.48,
+      "end_s": 333.987,
+      "duration_s": 0.507,
+      "whisper_lang": "ca"
+    }
+  ]
+}

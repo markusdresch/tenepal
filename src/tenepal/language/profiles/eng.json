@@ -1,0 +1,47 @@
+{
+  "code": "eng",
+  "name": "English",
+  "family": "Indo-European",
+  "marker_phonemes": [
+    "æ",
+    "ɪ",
+    "ʊ",
+    "ɹ",
+    "ð",
+    "θ",
+    "ʌ",
+    "dʒ"
+  ],
+  "absent_phonemes": [
+    "tɬ",
+    "kʷ",
+    "ɬ",
+    "ç",
+    "ʏ"
+  ],
+  "marker_sequences": [
+    [
+      "d",
+      "ʒ"
+    ]
+  ],
+  "priority": 2,
+  "marker_weights": {
+    "ɹ": 0.8,
+    "ð": 0.6,
+    "θ": 0.6,
+    "æ": 0.5,
+    "ʌ": 0.4,
+    "ɪ": 0.2,
+    "ʊ": 0.1,
+    "dʒ": 0.5
+  },
+  "sequence_weights": {},
+  "threshold": 1.0,
+  "negative_markers": {
+    "tɬ": 1.0,
+    "kʷ": 0.8,
+    "ɬ": 0.8,
+    "ʔ": 0.3
+  }
+}

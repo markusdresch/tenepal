@@ -1,0 +1,58 @@
+grapheme,ipa,note
+tla,tɬa,common onset shortcut
+tle,tɬe,common onset shortcut
+tli,tɬi,common onset shortcut
+tlo,tɬo,common onset shortcut
+tlu,tɬu,common onset shortcut
+tl,tɬ,lateral affricate
+tz,ts,alveolar affricate
+ts,ts,alveolar affricate alt spelling
+ch,tʃ,postalveolar affricate
+sh,ʃ,loan/variant spelling
+kw,kʷ,labialized velar
+ku,kʷ,labialized velar alt
+cu,kʷ,classical-influenced spelling
+qu,k,velar before front vowels
+hu,w,semivowel onset
+uh,w,semivowel coda
+ll,l,geminate simplification
+ce,se,soft c
+ci,si,soft c
+ca,ka,hard c
+co,ko,hard c
+cu,kʷ,hard c + u
+k,k,velar stop
+c,k,velar stop fallback
+q,k,velar stop
+x,ʃ,nahuatl x
+z,s,sibilant
+s,s,sibilant
+h,ʔ,glottal stop in modern practical orthographies
+y,j,palatal approximant
+w,w,semivowel
+j,h,spanish loan grapheme
+v,b,loanword adaptation
+b,b,loan stop
+d,d,loan stop
+f,f,loan fricative
+g,ɡ,loan stop
+m,m,nasal
+n,n,nasal
+p,p,stop
+t,t,stop
+l,l,lateral
+r,ɾ,tap
+a,a,vowel
+e,e,vowel
+i,i,vowel
+o,o,vowel
+u,u,vowel
+á,a,accent fold
+é,e,accent fold
+í,i,accent fold
+ó,o,accent fold
+ú,u,accent fold
+ñ,n,loanword adaptation
+':,ː,apostrophe+length fallback
+:,ː,vowel length from corpus notation
+',ʔ,explicit saltillo

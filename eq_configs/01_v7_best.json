@@ -1,0 +1,7 @@
+{
+    "_name": "v7_best",
+    "_description": "Current best: 66.5% on full film. Speaker-prior + ejective-strict + noise-gate.",
+    "speaker_prior_strong": true,
+    "ejective_strict": true,
+    "noise_gate_enabled": true
+}

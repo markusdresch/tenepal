@@ -1,0 +1,14 @@
+{
+    "_name": "v7_prosody_spa_reclaim",
+    "_description": "Kitchen sink: v7_best + prosody gentle + loose SPA reclaim + tight speaker-prior",
+    "speaker_prior_strong": true,
+    "speaker_prior_min_segments": 4,
+    "speaker_prior_min_ratio": 0.70,
+    "ejective_strict": true,
+    "noise_gate_enabled": true,
+    "prosody_enabled": true,
+    "prosody_weight": 0.25,
+    "prosody_threshold": 0.70,
+    "spa_reclaim_min_hits": 1,
+    "spa_reclaim_min_ratio": 0.20
+}
