@@ -6,6 +6,12 @@ Tenepal identifies *what language* is being spoken in audio, with the current pu
 
 > *Tenepal* — associated with Nahuatl senses around "the tongue," eloquence, or facility with words. This project name follows the `Malintzin Tenepal` discussion summarized on the [Wikipedia page for La Malinche](https://en.wikipedia.org/wiki/La_Malinche) and the scholarship cited there, especially Frances Karttunen and James Lockhart. The historical *tenepal* mediated between languages and cultures in conquest-era Mesoamerica.
 
+## Annotator
+
+![Tenepal Annotator on La Otra Conquista](docs/images/annotator/tenepal-annotator.png)
+
+Segment-level review of Nahuatl/Spanish predictions on *La Otra Conquista*. The annotator tool is in `tools/annotator/`.
+
 ## Key Results
 
 | Metric | Value | Description |
@@ -16,10 +22,6 @@ Tenepal identifies *what language* is being spoken in audio, with the current pu
 | **Nahuatl ASR CER** | **108% → 70%** | Whisper-large-v3 baseline vs. LoRA finetune on OpenSLR-92 test sample |
 
 See [PAPER.md](PAPER.md) for the full technical write-up, [docs/AMITH_CORPORA.md](docs/AMITH_CORPORA.md) for corpus access instructions, and [EVOLUTION.md](EVOLUTION.md) for the research journal.
-
-![Tenepal Annotator on La Otra Conquista](docs/images/annotator/tenepal-annotator.png)
-
-Segment-level review of Nahuatl/Spanish predictions on *La Otra Conquista*. The annotator tool is in `tools/annotator/`.
 
 Metric provenance:
 
