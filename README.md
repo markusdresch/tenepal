@@ -156,7 +156,7 @@ Public-facing support docs:
 Current release emphasis:
 
 - **Hernán (2019)** — the original project trigger and the main ablation benchmark; access is region-dependent and clips are not redistributed
-- **La Otra Conquista (1999)** — the culturally better public-facing Nahuatl/Spanish reference for external verification
+- **La Otra Conquista (1999)** — the primary public-facing Nahuatl/Spanish reference, told from an indigenous perspective
 - **OpenSLR 92 Puebla-Nahuatl** — training/evaluation corpus for Whisper finetuning
 - **OpenSLR 147/148 + related lexical sources** — auxiliary Nahuatl corpus and lexicon sources
 - **Apocalypto / Maya materials** — exploratory only; not yet a release-ready benchmark
