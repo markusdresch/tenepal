@@ -4,7 +4,7 @@
 
 Tenepal identifies *what language* is being spoken in audio, with the current public-facing evaluation focused on **Nahuatl vs. Spanish**. It works by analyzing the raw phoneme stream via universal phoneme recognition and matching against phonotactic profiles, with prosodic fusion as a second evidence channel. Maya support remains exploratory and is not yet presented here as a release-ready benchmark.
 
-> *Tenepal* — associated with Nahuatl senses around "the tongue," eloquence, or facility with words. This project name follows the `Malintzin Tenepal` discussion summarized on the La Malinche page and the scholarship cited there, especially Frances Karttunen and James Lockhart. The historical *tenepal* mediated between languages and cultures in conquest-era Mesoamerica.
+> *Tenepal* — associated with Nahuatl senses around "the tongue," eloquence, or facility with words. This project name follows the `Malintzin Tenepal` discussion summarized on the [Wikipedia page for La Malinche](https://en.wikipedia.org/wiki/La_Malinche) and the scholarship cited there, especially Frances Karttunen and James Lockhart. The historical *tenepal* mediated between languages and cultures in conquest-era Mesoamerica.
 
 ## Key Results
 
@@ -108,7 +108,7 @@ src/tenepal/
 ```
 Audio → ffmpeg → Demucs (vocal isolation) → Silero-VAD (segmentation)
   → per segment:
-      Allosaurus → IPA → Phonotactic scoring ─┐
+      Allosaurus → IPA → Phonotactic scoring ──┐
       Parselmouth → Prosody features ──────────┤→ Score fusion → Language ID
       Whisper → text (if language known) ──────┘
   → Speaker diarization (pyannote) → Speaker-level smoothing
@@ -171,6 +171,10 @@ Source notes:
 - OpenSLR 92: https://openslr.org/92/
 - OpenSLR 147: https://openslr.org/147/
 - OpenSLR 148: https://openslr.org/148/
+
+## Acknowledgments
+
+The Nahuatl lexicon and Whisper finetuning in this project build on speech corpora recorded and published by Jonathan D. Amith and collaborators (OpenSLR 92, 147, 148; Mozilla Common Voice Nahuatl). Without that fieldwork, none of this would work. See [docs/AMITH_CORPORA.md](docs/AMITH_CORPORA.md) for corpus details.
 
 ## License
 
