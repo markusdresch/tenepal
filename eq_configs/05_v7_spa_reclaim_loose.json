@@ -1,0 +1,9 @@
+{
+    "_name": "v7_spa_reclaim_loose",
+    "_description": "v7_best but looser SPA reclaim (1 hit, 20% ratio) — catches more hallucinated NAH",
+    "speaker_prior_strong": true,
+    "ejective_strict": true,
+    "noise_gate_enabled": true,
+    "spa_reclaim_min_hits": 1,
+    "spa_reclaim_min_ratio": 0.20
+}

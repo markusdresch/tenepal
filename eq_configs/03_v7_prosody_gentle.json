@@ -1,0 +1,10 @@
+{
+    "_name": "v7_prosody_gentle",
+    "_description": "v7_best + prosody voter with low weight (0.25) — gentle nudge, less override risk",
+    "speaker_prior_strong": true,
+    "ejective_strict": true,
+    "noise_gate_enabled": true,
+    "prosody_enabled": true,
+    "prosody_weight": 0.25,
+    "prosody_threshold": 0.70
+}

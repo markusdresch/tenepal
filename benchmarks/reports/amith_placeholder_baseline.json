@@ -1,0 +1,42 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-02-18T12:09:08Z",
+  "status": "PLACEHOLDER — audio not yet downloaded",
+  "config": {
+    "manifest": "tools/corpus/manifest.json",
+    "whisper_model": "small",
+    "sample_limit": 30,
+    "sample_count": 0,
+    "local": false
+  },
+  "corpus_stats": {
+    "total_samples": 55,
+    "audio_available": 0,
+    "audio_missing": 55,
+    "would_evaluate_at_limit": 0
+  },
+  "download_instructions": {
+    "script": "scripts/download_amith_corpus.py",
+    "env_var": "MOZILLA_DC_TOKEN",
+    "license": "CC-BY-ND-4.0",
+    "source": "Mozilla Common Voice / Amith Zacatlan-Tepetzintla corpus",
+    "steps": [
+      "1. Accept CC-BY-ND-4.0 license at Mozilla Data Collective",
+      "2. Export MOZILLA_DC_TOKEN=<your-token>",
+      "3. Run: python scripts/download_amith_corpus.py",
+      "4. Then: python -m tools.corpus.evaluate --limit 30 --output tools/corpus/results/"
+    ]
+  },
+  "results": {
+    "accuracy": null,
+    "n_samples": 0,
+    "n_correct": 0,
+    "n_skipped": 55,
+    "confusion_matrix": {},
+    "whisper_hallucination_rate": null,
+    "whisper_hallucination_langs": {},
+    "mean_confidence": null,
+    "mean_processing_time_s": null
+  },
+  "per_sample": []
+}

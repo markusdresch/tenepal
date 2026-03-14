@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tenepal"
+version = "0.1.0"
+description = "Phonetic transcription and analysis tool for underrepresented and endangered languages"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Tenepal Team"}
+]
+dependencies = [
+    "allosaurus",
+    "pydub",
+    "numpy",
+    "scipy",
+    "soundfile",
+    "audioop-lts; python_version >= '3.13'",
+    "tqdm>=4.66.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+diarization = [
+    "pyannote.audio>=3.1",
+]
+g2p = [
+    "epitran",
+]
+transcription = [
+    "faster-whisper>=1.0.0",
+]
+
+[project.scripts]
+tenepal = "tenepal.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

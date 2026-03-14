@@ -1,0 +1,8 @@
+{
+    "_name": "v7_two_pass",
+    "_description": "v7_best + two-pass speaker prior (IPA phoneme evidence re-counts before prior). Fixes NAH-only speakers misclassified as SPA.",
+    "speaker_prior_strong": true,
+    "ejective_strict": true,
+    "noise_gate_enabled": true,
+    "two_pass_prior": true
+}

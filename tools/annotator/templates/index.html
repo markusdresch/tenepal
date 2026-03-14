@@ -1,0 +1,2405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenepal Annotator</title>
+    <script src="https://cdn.jsdelivr.net/npm/wavesurfer.js@7/dist/wavesurfer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/wavesurfer.js@7/dist/plugins/regions.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --accent: #60a5fa;
+            --accent-hover: #3b82f6;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --merged: #38bdf8;
+            --merged-part: #22d3ee;
+            --stem-a: #60a5fa;
+            --stem-b: #f87171;
+            --stem-overlap: #a78bfa;
+            --nah: #a78bfa;
+            --spa: #60a5fa;
+            --may: #4ade80;
+            --oth: #94a3b8;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .main-layout {
+            display: block;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--bg-input);
+            margin-bottom: 20px;
+        }
+        
+        header h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+        
+        .stats span { display: flex; align-items: center; gap: 5px; }
+        .stats .count { color: var(--accent); font-weight: bold; }
+
+        .media-select {
+            min-width: 260px;
+            max-width: 520px;
+            padding: 8px 10px;
+            border: 1px solid var(--bg-input);
+            border-radius: 6px;
+            background: var(--bg-input);
+            color: var(--text);
+            font-size: 0.85rem;
+        }
+        
+        /* Media Player Section */
+        .player-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .media-container {
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        video, audio {
+            width: 100%;
+            display: block;
+        }
+        
+        #waveform {
+            height: 100px;
+            background: var(--bg-input);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .stem-tracks {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .stem-track {
+            background: #0b1220;
+            border: 1px solid #243046;
+            border-radius: 8px;
+            padding: 8px;
+        }
+
+        .stem-track-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .stem-track-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .stem-track-controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        .stem-wave {
+            height: 70px;
+            border-radius: 6px;
+            background: #111827;
+            margin-bottom: 6px;
+        }
+
+        .stem-track audio {
+            width: 100%;
+            height: 30px;
+        }
+
+        .stem-btn {
+            border: 1px solid var(--bg-input);
+            background: var(--bg-input);
+            color: var(--text);
+            border-radius: 5px;
+            padding: 2px 8px;
+            font-size: 0.72rem;
+            cursor: pointer;
+        }
+
+        .stem-btn.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .controls button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: var(--bg-input);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        
+        .controls button:hover { background: var(--accent); }
+        .controls button.active { background: var(--accent); }
+
+        .follow-indicator {
+            display: none;
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
+        .follow-indicator.active {
+            display: inline-block;
+        }
+        
+        .time-display {
+            font-family: monospace;
+            font-size: 1rem;
+            color: var(--text-dim);
+            margin-left: auto;
+        }
+        
+        /* Segment + Annotation Area */
+        .right-panel {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+        }
+        
+        .segment-list {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 15px;
+            max-height: calc(100vh - 350px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .speaker-panel {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 14px;
+        }
+
+        .speaker-panel-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .speaker-panel-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .speaker-panel-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .speaker-panel-toggle {
+            border: 1px solid var(--bg-input);
+            background: var(--bg-input);
+            color: var(--text);
+            border-radius: 6px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: 0.78rem;
+        }
+
+        .speaker-panel-export {
+            border: 1px solid var(--bg-input);
+            background: transparent;
+            color: var(--text);
+            border-radius: 6px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            text-decoration: none;
+        }
+
+        .speaker-panel-export:hover {
+            background: var(--bg-input);
+        }
+
+        .speaker-table-wrap {
+            overflow-x: auto;
+        }
+
+        .speaker-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .speaker-table th,
+        .speaker-table td {
+            border-bottom: 1px solid #2a364f;
+            padding: 6px 6px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .speaker-table th {
+            color: var(--text-dim);
+            font-weight: 700;
+        }
+
+        .speaker-table input {
+            width: 100%;
+            min-width: 120px;
+            padding: 6px 8px;
+            border: 1px solid var(--bg-input);
+            border-radius: 6px;
+            background: var(--bg-input);
+            color: var(--text);
+            font-size: 0.78rem;
+        }
+
+        .speaker-save-state {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            min-width: 54px;
+            text-align: right;
+        }
+
+        .speaker-save-state.saving { color: var(--warning); }
+        .speaker-save-state.saved { color: var(--success); }
+        .speaker-save-state.error { color: var(--danger); }
+
+        .speaker-id-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .speaker-role-badge {
+            font-size: 0.68rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 1px 7px;
+            border: 1px solid #475569;
+            color: var(--text-dim);
+            background: #1f2937;
+        }
+
+        .speaker-role-badge.alias {
+            border-color: #7c3aed;
+            background: rgba(124, 58, 237, 0.18);
+            color: #ddd6fe;
+        }
+
+        .speaker-role-hint {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+        
+        .segment-list h2 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: var(--text-dim);
+        }
+        
+        .segment-item {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .segment-item:hover { background: var(--bg-input); }
+        .segment-item.active { background: var(--bg-input); border-left-color: var(--accent); }
+        .segment-item.annotated { border-left-color: var(--border); }
+        .segment-item.confirmed { border-left-color: var(--success); }
+        .segment-item.corrected { border-left-color: var(--warning); }
+        .segment-item.boundary-suspect { border-left-color: var(--warning); }
+        .segment-item.merged-part {
+            border-left-color: var(--merged-part);
+            border-style: dashed;
+            opacity: 0.9;
+        }
+        .segment-item.merged-segment {
+            border-left-color: var(--merged);
+            background: rgba(56, 189, 248, 0.1);
+        }
+        .segment-item.split-source {
+            border-left-color: #f59e0b;
+            border-style: dotted;
+        }
+        .segment-item.split-segment {
+            border-left-color: #34d399;
+            background: rgba(52, 211, 153, 0.08);
+        }
+        .segment-item.stem-a {
+            box-shadow: inset 0 0 0 1px rgba(96, 165, 250, 0.55);
+        }
+        .segment-item.stem-b {
+            box-shadow: inset 0 0 0 1px rgba(248, 113, 113, 0.55);
+        }
+        .segment-item.stem-overlap {
+            box-shadow: inset 0 0 0 1px rgba(167, 139, 250, 0.7);
+        }
+        
+        .segment-item .index {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+        }
+
+        .segment-item .index-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .segment-item .play-segment-btn {
+            border: 1px solid var(--border);
+            background: var(--bg-input);
+            color: var(--text);
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 0.72rem;
+            cursor: pointer;
+        }
+
+        .segment-item .play-segment-btn:hover,
+        .segment-item .pause-segment-btn:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .segment-item .pause-segment-btn {
+            border: 1px solid var(--border);
+            background: var(--bg-input);
+            color: var(--text);
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 0.72rem;
+            cursor: pointer;
+            margin-left: 4px;
+        }
+        
+        .segment-item .lang-tag {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .lang-tag.NAH { background: var(--nah); color: #000; }
+        .lang-tag.SPA { background: var(--spa); color: #000; }
+        .lang-tag.MAY { background: var(--may); color: #000; }
+        .lang-tag.OTH, .lang-tag.UNK { background: var(--oth); color: #000; }
+        .lang-tag.LAT { background: #f472b6; color: #000; }
+        .speaker-tag {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-right: 5px;
+            background: #22d3ee;
+            color: #082f49;
+        }
+        .speaker-tag.secondary {
+            background: #86efac;
+            color: #14532d;
+        }
+        .stem-tag {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-right: 5px;
+            color: #081018;
+        }
+        .stem-tag.stem-a { background: var(--stem-a); }
+        .stem-tag.stem-b { background: var(--stem-b); }
+        .stem-tag.stem-overlap { background: var(--stem-overlap); color: #fff; }
+        
+        .segment-item .text {
+            display: inline-block;
+            font-size: 0.85rem;
+            color: var(--text);
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .segment-item .time {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            font-family: monospace;
+        }
+        
+        /* Annotation Panel */
+        .annotation-panel {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .annotation-panel h2 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel-section {
+            margin-bottom: 25px;
+        }
+        
+        .panel-section h3 {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .pipeline-info {
+            background: var(--bg-input);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .pipeline-info .row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .pipeline-info .label {
+            color: var(--text-dim);
+            min-width: 80px;
+        }
+        
+        .pipeline-info .value {
+            color: var(--text);
+            font-family: monospace;
+        }
+        
+        .pipeline-info .ipa {
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 5px;
+        }
+        
+        select, input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--bg-input);
+            border-radius: 6px;
+            background: var(--bg-input);
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        textarea { resize: vertical; min-height: 80px; }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        /* Boundary Adjuster */
+        .boundary-adjuster {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .adjuster {
+            flex: 1;
+        }
+        
+        .adjuster label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 5px;
+        }
+        
+        .adjuster-controls {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .adjuster-controls button {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 4px;
+            background: var(--bg-input);
+            color: var(--text);
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .adjuster-controls button:hover { background: var(--accent); }
+        
+        .adjuster-controls .value {
+            min-width: 60px;
+            text-align: center;
+            font-family: monospace;
+        }
+        
+        /* Language Selector */
+        .lang-selector {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .lang-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--bg-input);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        
+        .lang-btn:hover { border-color: var(--accent); }
+        .lang-btn.selected { border-color: var(--accent); background: var(--accent); color: #000; }
+        
+        .lang-btn.NAH { border-color: var(--nah); }
+        .lang-btn.NAH.selected { background: var(--nah); }
+        .lang-btn.SPA { border-color: var(--spa); }
+        .lang-btn.SPA.selected { background: var(--spa); }
+        .lang-btn.MAY { border-color: var(--may); }
+        .lang-btn.MAY.selected { background: var(--may); }
+        
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--bg-input);
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+        }
+        .btn-primary:hover { background: var(--accent-hover); }
+        
+        .btn-secondary {
+            background: var(--bg-input);
+            color: var(--text);
+        }
+        .btn-secondary:hover { background: #475569; }
+        
+        .btn-agent {
+            background: var(--nah);
+            color: #000;
+            margin-left: auto;
+        }
+        .btn-agent:hover { background: #8b5cf6; }
+        
+        /* Agent Dialog */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active { display: flex; }
+        
+        .modal {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal h3 {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal .btn-row {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            background: var(--success);
+            color: #000;
+            font-weight: 500;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1001;
+        }
+        
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.error { background: var(--danger); }
+        
+        /* Filter buttons */
+        .filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .speaker-filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 5px 10px;
+            border: 1px solid var(--bg-input);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--bg-input);
+            color: var(--text);
+        }
+        
+        /* Keyboard shortcuts hint */
+        .shortcuts {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 10px;
+        }
+        
+        .shortcuts kbd {
+            background: var(--bg-input);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        /* Wide screens: video left, annotator right */
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 100%;
+                padding: 20px 40px;
+            }
+
+            .main-layout {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                gap: 30px;
+                align-items: start;
+            }
+
+            .left-panel {
+                position: sticky;
+                top: 20px;
+                min-width: 0;
+            }
+
+            .left-panel .player-section {
+                margin-bottom: 0;
+            }
+
+            .right-panel {
+                display: grid;
+                grid-template-columns: 340px minmax(0, 1fr);
+                gap: 20px;
+                min-width: 0;
+                align-items: start;
+            }
+
+            .segment-list {
+                max-height: calc(100vh - 130px);
+                margin: 0;
+            }
+
+            .annotation-panel {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Tenepal Annotator</h1>
+            <div class="stats">
+                <select id="media-select" class="media-select" onchange="selectMedia(this.value)">
+                    <option value="">Select media...</option>
+                </select>
+                <span>Segments: <span class="count" id="stat-total">0</span></span>
+                <span>Annotated: <span class="count" id="stat-annotated">0</span></span>
+                <span>Boundary Issues: <span class="count" id="stat-boundary">0</span></span>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <div class="left-panel">
+                <div class="player-section">
+                    <div class="media-container">
+                        <video id="video-player" controls style="display:none;"></video>
+                        <audio id="audio-player" controls style="display:none;"></audio>
+                    </div>
+                    <div id="waveform"></div>
+                    <div id="stem-tracks" class="stem-tracks"></div>
+                    <div class="controls">
+                        <button onclick="skipTime(-5)">⏪ -5s</button>
+                        <button onclick="skipTime(-1)">◀ -1s</button>
+                        <button onclick="togglePlay()" id="btn-play">▶ Play</button>
+                        <button onclick="skipTime(1)">+1s ▶</button>
+                        <button onclick="skipTime(5)">+5s ⏩</button>
+                        <button onclick="playSegment()">🔁 Replay Segment</button>
+                        <button onclick="toggleFollowMode()" id="btn-follow">📍 Follow</button>
+                        <span id="follow-indicator" class="follow-indicator">Following...</span>
+                        <span class="time-display">
+                            <span id="current-time">00:00.000</span> / <span id="duration">00:00.000</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="speaker-panel">
+                    <div class="speaker-panel-head">
+                        <span class="speaker-panel-title">Speaker Mapping</span>
+                        <div class="speaker-panel-actions">
+                            <a class="speaker-panel-export" href="/api/export_srt" target="_blank" rel="noopener">SRT Export</a>
+                            <button class="speaker-panel-toggle" id="speaker-panel-toggle" onclick="toggleSpeakerPanel()">Collapse</button>
+                        </div>
+                    </div>
+                    <div class="speaker-table-wrap" id="speaker-panel-body">
+                        <table class="speaker-table">
+                            <thead>
+                                <tr>
+                                    <th>Speaker ID</th>
+                                    <th>Character</th>
+                                    <th>Notes</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="speaker-table-body">
+                                <tr><td colspan="4">Loading speakers...</td></tr>
+                            </tbody>
+                        </table>
+                        <details style="margin-top:8px;">
+                            <summary style="cursor:pointer;font-size:12px;color:#888;">Manage characters</summary>
+                            <table class="speaker-table" style="margin-top:4px;">
+                                <thead><tr><th>Slug</th><th>Name</th><th>Category</th><th></th></tr></thead>
+                                <tbody id="character-table-body">
+                                    <tr><td colspan="4">Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="segment-list">
+                <h2>Segments</h2>
+                <div class="filters" id="main-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="unannotated">Unannotated</button>
+                    <button class="filter-btn" data-filter="boundary">Boundary</button>
+                    <button class="filter-btn" data-filter="NAH">NAH</button>
+                    <button class="filter-btn" data-filter="SPA">SPA</button>
+                    <button class="filter-btn" data-filter="MAY">MAY</button>
+                    <button class="filter-btn" data-filter="OTH">OTH</button>
+                    <button class="filter-btn" data-filter="UNK">UNK</button>
+                    <button class="filter-btn" data-filter="LAT">LAT</button>
+                </div>
+                <div class="filters" id="stem-filters">
+                    <button class="filter-btn active" data-stem-filter="all">Alle Stems</button>
+                    <button class="filter-btn" data-stem-filter="STEM_A">Nur STEM_A</button>
+                    <button class="filter-btn" data-stem-filter="STEM_B">Nur STEM_B</button>
+                    <button class="filter-btn" data-stem-filter="OVERLAP">Nur Overlap</button>
+                </div>
+                <div class="speaker-filters" id="speaker-filters"></div>
+                <div id="segments-container"></div>
+            </div>
+
+                <div class="annotation-panel">
+                <h2>
+                    <span id="panel-title">Select a segment</span>
+                </h2>
+                
+                <div class="panel-section">
+                    <h3>Pipeline Output</h3>
+                    <div class="pipeline-info">
+                        <div class="row">
+                            <span class="label">Language:</span>
+                            <span class="value" id="pipeline-lang">-</span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Text:</span>
+                            <span class="value" id="pipeline-text">-</span>
+                        </div>
+                        <div class="row">
+                            <span class="label">IPA:</span>
+                            <span class="value ipa" id="pipeline-ipa">-</span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Confidence:</span>
+                            <span class="value" id="pipeline-conf">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel-section">
+                    <h3>Correct Language</h3>
+                    <div class="lang-selector">
+                        <button class="lang-btn NAH" data-lang="NAH">NAH</button>
+                        <button class="lang-btn SPA" data-lang="SPA">SPA</button>
+                        <button class="lang-btn MAY" data-lang="MAY">MAY</button>
+                        <button class="lang-btn" data-lang="LAT">LAT</button>
+                        <button class="lang-btn" data-lang="OTH">OTH</button>
+                        <button class="lang-btn" data-lang="UNK">UNK</button>
+                    </div>
+                    <div class="form-group" style="margin-top:10px;">
+                        <label for="human-transcription">What I hear (transcription)</label>
+                        <input type="text" id="human-transcription" placeholder="e.g. 'mishcova', 'tlein nican'">
+                    </div>
+                    <div class="form-group" style="margin-top:10px;">
+                        <label for="correct-speaker">Correct Speaker</label>
+                        <select id="correct-speaker">
+                            <option value="">(use pipeline speaker)</option>
+                        </select>
+                    </div>
+                    <div class="checkbox-group" style="margin-top:10px;">
+                        <input type="checkbox" id="overlap">
+                        <label for="overlap">Multiple speakers (overlap)</label>
+                    </div>
+                    <div class="form-group" id="secondary-speaker-group" style="display:none; margin-top:10px;">
+                        <label for="secondary-speaker">Secondary speaker</label>
+                        <select id="secondary-speaker">
+                            <option value="">(keep same speaker)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="panel-section">
+                    <h3>Boundary Check</h3>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="boundary-suspect">
+                        <label for="boundary-suspect">Boundary suspect (segment timing seems wrong)</label>
+                    </div>
+                    <div class="boundary-adjuster" id="boundary-adjuster" style="display:none;">
+                        <div class="adjuster">
+                            <label>Start adjustment</label>
+                            <div class="adjuster-controls">
+                                <button onclick="adjustBoundary('start', -100)">−</button>
+                                <span class="value" id="start-adjust">0ms</span>
+                                <button onclick="adjustBoundary('start', 100)">+</button>
+                            </div>
+                        </div>
+                        <div class="adjuster">
+                            <label>End adjustment</label>
+                            <div class="adjuster-controls">
+                                <button onclick="adjustBoundary('end', -100)">−</button>
+                                <span class="value" id="end-adjust">0ms</span>
+                                <button onclick="adjustBoundary('end', 100)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:10px;">
+                        <input type="text" id="boundary-note" placeholder="What's wrong? (e.g., 'starts too early', 'bleeds into next')">
+                    </div>
+                </div>
+                
+                <div class="panel-section">
+                    <h3>Notes</h3>
+                    <textarea id="notes" placeholder="Any observations about this segment..."></textarea>
+                </div>
+                
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="saveAndNext()">💾 Save & Next</button>
+                    <button class="btn btn-secondary" onclick="saveAnnotation()">💾 Save</button>
+                    <button class="btn btn-secondary" onclick="skipToNext()">⏭ Skip</button>
+                    <button class="btn btn-secondary" onclick="resetAnnotation()">🗑 Reset</button>
+                    <button class="btn btn-secondary" onclick="mergeWithPrevious()">⬆ Merge with Previous</button>
+                    <button class="btn btn-secondary" onclick="mergeWithNext()">⬇ Merge with Next</button>
+                    <button class="btn btn-secondary" onclick="openSplitModal()">✂️ Split Segment</button>
+                    <button class="btn btn-agent" onclick="openAgentDialog()">🤖 Discuss</button>
+                </div>
+                
+                <div class="shortcuts">
+                    <kbd>Space</kbd> Play/Pause &nbsp;
+                    <kbd>←</kbd><kbd>→</kbd> ±1s &nbsp;
+                    <kbd>R</kbd> Replay &nbsp;
+                    <kbd>S</kbd> Save &nbsp;
+                    <kbd>N</kbd> Next
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Agent Dialog -->
+    <div class="modal-overlay" id="agent-modal">
+        <div class="modal">
+            <h3>🤖 Discuss with Agent</h3>
+            <div class="form-group">
+                <label>Select Agent</label>
+                <select id="agent-select">
+                    <option value="">Loading agents...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Question</label>
+                <textarea id="agent-question" placeholder="Why might this be misclassified?"></textarea>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="include-ipa" checked>
+                <label for="include-ipa">Include IPA in message</label>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="closeAgentDialog()">Cancel</button>
+                <button class="btn btn-agent" onclick="sendToAgent()">Send to Agent</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Split Dialog -->
+    <div class="modal-overlay" id="split-modal">
+        <div class="modal">
+            <h3>✂️ Split Segment</h3>
+            <div class="form-group">
+                <label for="split-point">Split at (seconds)</label>
+                <input type="text" id="split-point" placeholder="e.g. 452.930">
+            </div>
+            <div class="form-group">
+                <label for="split-second-speaker">Speaker for Segment B</label>
+                <select id="split-second-speaker">
+                    <option value="">(keep same speaker)</option>
+                </select>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="closeSplitModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmSplit()">Split</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Server-injected filter (from ?filter= URL param)
+        const SERVER_FILTER = {{ url_filter | tojson }};
+
+        // State
+        let segments = [];
+        let currentIndex = -1;
+        let currentFilter = 'all';
+        let wavesurfer = null;
+        let mediaElement = null;
+        let mediaType = 'video';
+        let followMode = false;
+        let segmentPlayEndTime = null;
+        let speakerList = [];
+        let stemTracks = [];
+        let stemWaveSurfers = [];
+        let stemFilter = 'all';
+        let speakerProfiles = new Map();
+        let speakerRows = [];
+        let speakerSaveTimers = new Map();
+        let speakerPanelCollapsed = false;
+        let characterLookup = new Map();
+        let characterList = [];  // [{slug, display_name, category}, ...]
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (SERVER_FILTER) {
+                const banner = document.createElement('div');
+                banner.style.cssText = 'background:#e65100;color:white;padding:6px 12px;font-weight:bold;text-align:center;';
+                banner.textContent = `FILTER ACTIVE: showing only "${SERVER_FILTER.toUpperCase()}" pipeline segments`;
+                document.body.prepend(banner);
+            }
+            await loadStatus();
+            await loadSegments();
+            await loadAgents();
+            setupKeyboardShortcuts();
+            setupStemFilters();
+            setupWaveSurfer();
+        });
+        
+        async function loadStatus() {
+            const resp = await fetch('/api/status');
+            const status = await resp.json();
+            populateMediaSelector(status);
+            
+            if (status.media.path) {
+                mediaType = status.media.type || 'video';
+                const filename = status.media.path.split('/').pop();
+                const mediaRef = status.media.relpath || filename;
+                
+                if (mediaType === 'video') {
+                    mediaElement = document.getElementById('video-player');
+                    document.getElementById('video-player').style.display = 'block';
+                    document.getElementById('audio-player').style.display = 'none';
+                } else {
+                    mediaElement = document.getElementById('audio-player');
+                    document.getElementById('audio-player').style.display = 'block';
+                    document.getElementById('video-player').style.display = 'none';
+                }
+                
+                mediaElement.src = `/media/${encodeURI(mediaRef)}`;
+                mediaElement.addEventListener('timeupdate', handleMediaTimeUpdate);
+                mediaElement.addEventListener('play', () => syncStemPlaybackState(true));
+                mediaElement.addEventListener('pause', () => syncStemPlaybackState(false));
+                mediaElement.addEventListener('seeking', () => syncStemTimes(true));
+                mediaElement.addEventListener('loadedmetadata', () => {
+                    document.getElementById('duration').textContent = formatTime(mediaElement.duration);
+                });
+
+                setupStemTracks(status.stems || [], filename);
+            }
+        }
+
+        function populateMediaSelector(status) {
+            const sel = document.getElementById('media-select');
+            if (!sel) return;
+            const mediaList = status.available_media || [];
+            const current = status?.media?.relpath || '';
+            const options = ['<option value="">Select media...</option>'];
+            for (const m of mediaList) {
+                const selected = m.relpath === current ? ' selected' : '';
+                const labelType = m.type === 'video' ? '🎬' : '🎧';
+                options.push(`<option value="${m.relpath}"${selected}>${labelType} ${m.relpath}</option>`);
+            }
+            sel.innerHTML = options.join('');
+        }
+
+        async function selectMedia(relpath) {
+            if (!relpath) return;
+            const resp = await fetch('/api/media/select', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ relpath })
+            });
+            const data = await resp.json();
+            if (!resp.ok || !data.success) {
+                showToast(data.error || 'Failed to switch media', true);
+                return;
+            }
+            window.location.reload();
+        }
+
+        function setupStemTracks(stems, originalFilename) {
+            stemTracks = [];
+            const container = document.getElementById('stem-tracks');
+            if (!container) return;
+
+            // Ensure deterministic order: original, A, B, rest
+            const orderScore = (s) => {
+                const role = (s.role || '').toUpperCase();
+                if (role.includes('ORIGINAL')) return 0;
+                if (role.includes('STEM_A')) return 1;
+                if (role.includes('STEM_B')) return 2;
+                return 10;
+            };
+            const sorted = [...stems].sort((a, b) => orderScore(a) - orderScore(b) || (a.filename || '').localeCompare(b.filename || ''));
+
+            if (!sorted.length) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = sorted.map((s, i) => `
+                <div class="stem-track" data-stem-role="${s.role}">
+                    <div class="stem-track-head">
+                        <span class="stem-track-title">${s.role || s.name}</span>
+                        <div class="stem-track-controls">
+                            <button class="stem-btn" data-action="mute" data-role="${s.role}" onclick="toggleStemMute('${s.role}')">Mute</button>
+                            <button class="stem-btn" data-action="solo" data-role="${s.role}" onclick="toggleStemSolo('${s.role}')">Solo</button>
+                        </div>
+                    </div>
+                    <div class="stem-wave" id="stem-wave-${i}"></div>
+                    <audio id="stem-audio-${i}" controls preload="metadata" src="/media/${s.filename}"></audio>
+                </div>
+            `).join('');
+
+            stemTracks = sorted.map((s, i) => ({
+                role: s.role || `STEM_${i + 1}`,
+                filename: s.filename,
+                element: document.getElementById(`stem-audio-${i}`),
+                waveContainer: `#stem-wave-${i}`,
+                mutedByUser: false,
+                solo: false,
+            }));
+        }
+
+        function applyStemMix() {
+            const anySolo = stemTracks.some(t => t.solo);
+            for (const t of stemTracks) {
+                if (!t.element) continue;
+                t.element.muted = anySolo ? !t.solo : t.mutedByUser;
+                const muteBtn = document.querySelector(`.stem-btn[data-action="mute"][data-role="${t.role}"]`);
+                const soloBtn = document.querySelector(`.stem-btn[data-action="solo"][data-role="${t.role}"]`);
+                if (muteBtn) muteBtn.classList.toggle('active', t.mutedByUser);
+                if (soloBtn) soloBtn.classList.toggle('active', t.solo);
+            }
+        }
+
+        function toggleStemMute(role) {
+            const t = stemTracks.find(x => x.role === role);
+            if (!t) return;
+            t.mutedByUser = !t.mutedByUser;
+            applyStemMix();
+        }
+
+        function toggleStemSolo(role) {
+            const t = stemTracks.find(x => x.role === role);
+            if (!t) return;
+            t.solo = !t.solo;
+            applyStemMix();
+        }
+
+        function syncStemTimes(force = false) {
+            if (!mediaElement) return;
+            for (const t of stemTracks) {
+                if (!t.element) continue;
+                const delta = Math.abs((t.element.currentTime || 0) - mediaElement.currentTime);
+                if (force || delta > 0.08) {
+                    try { t.element.currentTime = mediaElement.currentTime; } catch (e) {}
+                }
+            }
+        }
+
+        function syncStemPlaybackState(playing) {
+            for (const t of stemTracks) {
+                if (!t.element) continue;
+                if (playing) {
+                    syncStemTimes(true);
+                    t.element.play().catch(() => {});
+                } else {
+                    t.element.pause();
+                }
+            }
+            applyStemMix();
+        }
+        
+        async function loadSegments() {
+            const apiUrl = SERVER_FILTER ? `/api/segments?filter=${encodeURIComponent(SERVER_FILTER)}` : '/api/segments';
+            const resp = await fetch(apiUrl);
+            if (!resp.ok) {
+                showToast('Failed to load segments', true);
+                return;
+            }
+            segments = await resp.json();
+            await loadCharacterMappings();
+            await loadSpeakerProfiles();
+            refreshSpeakerData();
+            renderSegmentList();
+            updateStats();
+        }
+
+        async function loadCharacterMappings() {
+            try {
+                const resp = await fetch('/api/characters');
+                if (!resp.ok) {
+                    characterLookup = new Map();
+                    characterList = [];
+                    return;
+                }
+                const data = await resp.json();
+                characterLookup = new Map(Object.entries(data?.speaker_lookup || {}));
+                characterList = data?.characters || [];
+            } catch (e) {
+                characterLookup = new Map();
+                characterList = [];
+            }
+        }
+
+        async function loadSpeakerProfiles() {
+            const tbody = document.getElementById('speaker-table-body');
+            try {
+                const resp = await fetch('/api/speakers');
+                if (!resp.ok) {
+                    speakerProfiles = new Map();
+                    speakerRows = [];
+                    if (tbody) tbody.innerHTML = '<tr><td colspan="4">Speaker API error</td></tr>';
+                    return;
+                }
+                const rows = await resp.json();
+                speakerRows = rows || [];
+                speakerProfiles = new Map((rows || []).map(r => [r.speaker_id, r]));
+                renderSpeakerNamingTable();
+                renderCharacterTable();
+            } catch (e) {
+                speakerProfiles = new Map();
+                speakerRows = [];
+                if (tbody) tbody.innerHTML = '<tr><td colspan="4">Failed to load speakers</td></tr>';
+            }
+        }
+
+        function toggleSpeakerPanel() {
+            speakerPanelCollapsed = !speakerPanelCollapsed;
+            const body = document.getElementById('speaker-panel-body');
+            const btn = document.getElementById('speaker-panel-toggle');
+            if (!body || !btn) return;
+            body.style.display = speakerPanelCollapsed ? 'none' : 'block';
+            btn.textContent = speakerPanelCollapsed ? 'Expand' : 'Collapse';
+        }
+
+        function rowIdForSpeaker(speakerId) {
+            return `speaker-row-${String(speakerId).replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+        }
+
+        function renderSpeakerNamingTable() {
+            const tbody = document.getElementById('speaker-table-body');
+            if (!tbody) return;
+
+            // Show pipeline SPEAKER_XX → character mapping (not slugs)
+            const speakers = speakerRows.length
+                ? speakerRows.map(r => r.speaker_id).filter(s => /^SPEAKER_\d+$/.test(s))
+                : [];
+
+            if (!speakers.length) {
+                tbody.innerHTML = '<tr><td colspan="4">No speakers detected</td></tr>';
+                return;
+            }
+
+            // Build character options for dropdown
+            const charOpts = characterList
+                .filter(c => c.category !== 'irrelevant')
+                .map(c => `<option value="${c.slug}">${c.display_name}</option>`)
+                .join('');
+
+            tbody.innerHTML = speakers.map(speakerId => {
+                const profile = speakerProfiles.get(speakerId) || {};
+                const rowId = rowIdForSpeaker(speakerId);
+                const currentSlug = profile.character_slug || '';
+                const notesValue = (profile.notes || '');
+                return `
+                    <tr id="${rowId}" data-speaker-id="${speakerId}">
+                        <td><code>${speakerId}</code></td>
+                        <td style="display:flex;gap:4px;align-items:center;">
+                            <select class="speaker-char-select" data-speaker-id="${speakerId}" style="flex:1">
+                                <option value="">(unassigned)</option>
+                                <option value="__new__">+ New character...</option>
+                                ${charOpts}
+                            </select>
+                        </td>
+                        <td><input type="text" class="speaker-notes-input" data-speaker-id="${speakerId}" value="${notesValue.replace(/"/g, '&quot;')}" placeholder="Notes"></td>
+                        <td><span class="speaker-save-state" data-speaker-state="${speakerId}"></span></td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Set current character selection
+            speakers.forEach(speakerId => {
+                const profile = speakerProfiles.get(speakerId) || {};
+                const sel = tbody.querySelector(`select[data-speaker-id="${speakerId}"]`);
+                if (sel && profile.character_slug) sel.value = profile.character_slug;
+            });
+
+            tbody.querySelectorAll('.speaker-char-select').forEach(sel => {
+                sel.addEventListener('change', async () => {
+                    if (sel.value !== '__new__') {
+                        scheduleSpeakerSave(sel.dataset.speakerId);
+                        return;
+                    }
+                    const name = prompt('Character Name (z.B. "Fray Diego"):');
+                    if (!name || !name.trim()) { sel.value = ''; return; }
+                    const cat = prompt('Category: named / background / irrelevant', 'named') || 'named';
+                    try {
+                        const resp = await fetch('/api/characters', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({ display_name: name.trim(), category: cat.trim() })
+                        });
+                        if (!resp.ok) throw new Error('create failed');
+                        const data = await resp.json();
+                        // Reload characters and re-render
+                        await loadCharacterMappings();
+                        renderSpeakerNamingTable();
+                        populateSpeakerDropdowns();
+                        // Set the newly created character on this speaker
+                        const newSel = document.querySelector(`.speaker-char-select[data-speaker-id="${sel.dataset.speakerId}"]`);
+                        if (newSel && data.slug) { newSel.value = data.slug; }
+                        scheduleSpeakerSave(sel.dataset.speakerId);
+                    } catch (e) {
+                        alert('Create failed: ' + e.message);
+                        sel.value = '';
+                    }
+                });
+            });
+
+            tbody.querySelectorAll('.speaker-notes-input').forEach(input => {
+                input.addEventListener('input', () => {
+                    const speakerId = input.dataset.speakerId;
+                    scheduleSpeakerSave(speakerId);
+                });
+            });
+        }
+
+        function renderCharacterTable() {
+            const tbody = document.getElementById('character-table-body');
+            if (!tbody || !characterList.length) return;
+
+            const cats = ['named', 'background', 'irrelevant'];
+            tbody.innerHTML = characterList.map(c => `
+                <tr data-char-slug="${c.slug}">
+                    <td><code style="font-size:11px">${c.slug}</code></td>
+                    <td><input type="text" class="char-name-input" data-slug="${c.slug}" value="${(c.display_name || '').replace(/"/g, '&quot;')}" style="width:120px;padding:2px 4px;font-size:12px"></td>
+                    <td><select class="char-cat-select" data-slug="${c.slug}" style="padding:2px;font-size:12px">
+                        ${cats.map(cat => `<option value="${cat}" ${c.category === cat ? 'selected' : ''}>${cat}</option>`).join('')}
+                    </select></td>
+                    <td><span class="char-save-state" data-slug="${c.slug}" style="font-size:11px"></span></td>
+                </tr>
+            `).join('');
+
+            let saveTimer = null;
+            tbody.querySelectorAll('.char-name-input, .char-cat-select').forEach(el => {
+                el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => {
+                    const slug = el.dataset.slug;
+                    const stateEl = tbody.querySelector(`.char-save-state[data-slug="${slug}"]`);
+                    if (stateEl) stateEl.textContent = 'saving...';
+                    if (saveTimer) clearTimeout(saveTimer);
+                    saveTimer = setTimeout(async () => {
+                        const nameInput = tbody.querySelector(`.char-name-input[data-slug="${slug}"]`);
+                        const catSelect = tbody.querySelector(`.char-cat-select[data-slug="${slug}"]`);
+                        try {
+                            const resp = await fetch(`/api/characters/${encodeURIComponent(slug)}`, {
+                                method: 'PATCH',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({
+                                    display_name: nameInput.value.trim(),
+                                    category: catSelect.value
+                                })
+                            });
+                            if (!resp.ok) throw new Error('save failed');
+                            if (stateEl) { stateEl.textContent = 'saved'; setTimeout(() => stateEl.textContent = '', 900); }
+                            await loadCharacterMappings();
+                            refreshSpeakerData();
+                            populateSpeakerDropdowns();
+                            renderSpeakerNamingTable();
+                        } catch (e) {
+                            if (stateEl) stateEl.textContent = 'error';
+                        }
+                    }, 450);
+                });
+            });
+        }
+
+        function setSpeakerSaveState(speakerId, stateText, stateClass = '') {
+            const el = document.querySelector(`[data-speaker-state="${speakerId}"]`);
+            if (!el) return;
+            el.textContent = stateText;
+            el.classList.remove('saving', 'saved', 'error');
+            if (stateClass) el.classList.add(stateClass);
+        }
+
+        function scheduleSpeakerSave(speakerId) {
+            const prior = speakerSaveTimers.get(speakerId);
+            if (prior) clearTimeout(prior);
+            setSpeakerSaveState(speakerId, 'saving...', 'saving');
+            const timer = setTimeout(() => saveSpeakerProfile(speakerId), 450);
+            speakerSaveTimers.set(speakerId, timer);
+        }
+
+        async function saveSpeakerProfile(speakerId) {
+            const charSelect = document.querySelector(`.speaker-char-select[data-speaker-id="${speakerId}"]`);
+            const notesInput = document.querySelector(`.speaker-notes-input[data-speaker-id="${speakerId}"]`);
+            if (!charSelect || !notesInput) return;
+
+            const selectedSlug = charSelect.value;
+            const charEntry = characterList.find(c => c.slug === selectedSlug);
+
+            try {
+                const resp = await fetch(`/api/speakers/${encodeURIComponent(speakerId)}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        character_slug: selectedSlug,
+                        display_name: charEntry ? charEntry.display_name : '',
+                        notes: notesInput.value.trim()
+                    })
+                });
+                if (!resp.ok) throw new Error('save failed');
+                const data = await resp.json();
+                if (!data.success) throw new Error(data.error || 'save failed');
+
+                const profile = data.speaker || {
+                    speaker_id: speakerId,
+                    display_name: displayInput.value.trim(),
+                    notes: notesInput.value.trim()
+                };
+                speakerProfiles.set(speakerId, profile);
+                const idx = speakerRows.findIndex(r => r.speaker_id === speakerId);
+                if (idx >= 0) speakerRows[idx] = profile;
+                else speakerRows.push(profile);
+
+                refreshSpeakerData();
+                renderSegmentList();
+                setSpeakerSaveState(speakerId, 'saved', 'saved');
+                setTimeout(() => setSpeakerSaveState(speakerId, ''), 900);
+            } catch (e) {
+                setSpeakerSaveState(speakerId, 'error', 'error');
+            }
+        }
+
+        function normalizeSpeakerLabel(speaker) {
+            if (!speaker) return '';
+            const s = String(speaker);
+            // 1. If it's a character slug, look up display_name from characterList
+            const charEntry = characterList.find(c => c.slug === s);
+            if (charEntry) return charEntry.display_name;
+            // 2. If it's a SPEAKER_XX, resolve via speakerProfiles (which has display_name from character)
+            const profile = speakerProfiles.get(s);
+            if (profile && profile.display_name && String(profile.display_name).trim()) {
+                return String(profile.display_name).trim();
+            }
+            // 3. Fallback: characterLookup (pipeline SPEAKER_XX → character)
+            const hint = characterLookup.get(s);
+            if (hint && hint.character && String(hint.character).trim()) {
+                return String(hint.character).trim();
+            }
+            const m = s.match(/SPEAKER_(\d+)/);
+            if (!m) return s;
+            return `S${m[1]}`;
+        }
+
+        function getPrimarySpeaker(seg) {
+            return seg?.annotation?.correct_speaker || seg?.pipeline?.speaker || null;
+        }
+
+        function getSegmentStem(seg) {
+            const stem = seg?.pipeline?.stem || '';
+            if (!stem) return '';
+            const up = String(stem).toUpperCase();
+            if (up.includes('STEM_A') && up.includes('STEM_B')) return 'OVERLAP';
+            if (up.includes('OVERLAP')) return 'OVERLAP';
+            if (up.includes('STEM_A')) return 'STEM_A';
+            if (up.includes('STEM_B')) return 'STEM_B';
+            return up;
+        }
+
+        function stemClass(stem) {
+            if (stem === 'STEM_A') return 'stem-a';
+            if (stem === 'STEM_B') return 'stem-b';
+            if (stem === 'OVERLAP') return 'stem-overlap';
+            return '';
+        }
+
+        function resolveToCharacterKey(speaker) {
+            // Resolve SPEAKER_XX → character slug via speakerProfiles or characterLookup
+            if (!speaker) return null;
+            const s = String(speaker);
+            // Already a slug (not SPEAKER_XX)?
+            if (!s.match(/^SPEAKER_\d+$/)) return s;
+            // 1. speakerProfiles: pipeline SPEAKER_XX → character_slug
+            const profile = speakerProfiles.get(s);
+            if (profile && profile.character_slug) return profile.character_slug;
+            // 2. characterLookup fallback (from /api/characters speaker_lookup)
+            const hint = characterLookup.get(s);
+            if (hint && hint.slug) return hint.slug;
+            return s;  // unmapped pipeline speaker
+        }
+
+        function refreshSpeakerData() {
+            const counts = new Map();
+            for (const seg of segments) {
+                const raw = getPrimarySpeaker(seg);
+                const key = resolveToCharacterKey(raw);
+                if (!key) continue;
+                counts.set(key, (counts.get(key) || 0) + 1);
+            }
+            speakerList = Array.from(counts.keys()).sort((a, b) => {
+                // Sort: named characters first (alphabetically), then SPEAKER_XX numerically
+                const aIsSpeaker = a.match(/^SPEAKER_(\d+)$/);
+                const bIsSpeaker = b.match(/^SPEAKER_(\d+)$/);
+                if (!aIsSpeaker && !bIsSpeaker) return normalizeSpeakerLabel(a).localeCompare(normalizeSpeakerLabel(b));
+                if (!aIsSpeaker) return -1;
+                if (!bIsSpeaker) return 1;
+                return parseInt(aIsSpeaker[1], 10) - parseInt(bIsSpeaker[1], 10);
+            });
+            renderSpeakerNamingTable();
+            renderSpeakerFilters(counts);
+            populateSpeakerDropdowns();
+        }
+
+        function renderSpeakerFilters(counts) {
+            const container = document.getElementById('speaker-filters');
+            container.innerHTML = speakerList.map(spk => {
+                const key = `speaker:${spk}`;
+                const active = currentFilter === key ? 'active' : '';
+                return `<button class="filter-btn ${active}" data-filter="${key}">${normalizeSpeakerLabel(spk)} (${counts.get(spk) || 0})</button>`;
+            }).join('');
+
+            container.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderSegmentList();
+                });
+            });
+        }
+
+        function populateSpeakerDropdowns() {
+            const selectConfigs = [
+                { id: 'correct-speaker', empty: '(use pipeline speaker)' },
+                { id: 'secondary-speaker', empty: '(keep same speaker)' },
+                { id: 'split-second-speaker', empty: '(keep same speaker)' }
+            ];
+
+            // Build options from characters (stable slugs) — not volatile SPEAKER_XX
+            const charOptions = characterList
+                .filter(c => c.category !== 'irrelevant')
+                .map(c => `<option value="${c.slug}">${c.display_name}</option>`)
+                .join('');
+
+            for (const cfg of selectConfigs) {
+                const sel = document.getElementById(cfg.id);
+                if (!sel) continue;
+                const current = sel.value;
+                sel.innerHTML = `<option value="">${cfg.empty}</option>`
+                    + `<option value="__new__">+ New character...</option>`
+                    + charOptions;
+                if (current) {
+                    const opt = sel.querySelector(`option[value="${current}"]`);
+                    if (opt) sel.value = current;
+                }
+                // Handle "new character" inline
+                if (!sel._newCharHandler) {
+                    sel._newCharHandler = true;
+                    sel.addEventListener('change', async () => {
+                        if (sel.value !== '__new__') return;
+                        const name = prompt('Character Name:');
+                        if (!name || !name.trim()) { sel.value = ''; return; }
+                        try {
+                            const resp = await fetch('/api/characters', {
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({ display_name: name.trim(), category: 'named' })
+                            });
+                            const data = await resp.json();
+                            if (!resp.ok && resp.status === 409) {
+                                sel.value = data.slug;  // already exists, just select it
+                                return;
+                            }
+                            if (!resp.ok) throw new Error(data.error);
+                            await loadCharacterMappings();
+                            populateSpeakerDropdowns();
+                            sel.value = data.slug;
+                        } catch (e) {
+                            alert('Error: ' + e.message);
+                            sel.value = '';
+                        }
+                    });
+                }
+            }
+        }
+        
+        async function loadAgents() {
+            const resp = await fetch('/api/agents');
+            const agents = await resp.json();
+            
+            const select = document.getElementById('agent-select');
+            select.innerHTML = agents.length 
+                ? agents.map(a => `<option value="${a}">${a}</option>`).join('')
+                : '<option value="">No agents running</option>';
+        }
+        
+        function setupWaveSurfer() {
+            if (!mediaElement) return;
+            
+            wavesurfer = WaveSurfer.create({
+                container: '#waveform',
+                waveColor: '#4a9eff',
+                progressColor: '#60a5fa',
+                cursorColor: '#fff',
+                barWidth: 2,
+                barRadius: 3,
+                cursorWidth: 1,
+                height: 100,
+                barGap: 2,
+                media: mediaElement
+            });
+
+            stemWaveSurfers.forEach(ws => {
+                try { ws.destroy(); } catch (e) {}
+            });
+            stemWaveSurfers = [];
+            for (const track of stemTracks) {
+                if (!track.element) continue;
+                try {
+                    const ws = WaveSurfer.create({
+                        container: track.waveContainer,
+                        waveColor: '#9ca3af',
+                        progressColor: '#38bdf8',
+                        cursorColor: '#fff',
+                        barWidth: 1,
+                        barRadius: 2,
+                        cursorWidth: 1,
+                        height: 70,
+                        barGap: 1,
+                        media: track.element
+                    });
+                    stemWaveSurfers.push(ws);
+                } catch (e) {}
+            }
+            applyStemMix();
+        }
+        
+        function renderSegmentList() {
+            const container = document.getElementById('segments-container');
+            const filtered = filterSegments(segments);
+            
+            container.innerHTML = filtered.map((seg, idx) => {
+                const realIdx = segments.indexOf(seg);
+                const classes = ['segment-item'];
+                if (realIdx === currentIndex) classes.push('active');
+                if (seg.has_annotation) {
+                    classes.push('annotated');
+                    if (seg.annotation?.correct_lang) {
+                        classes.push('corrected');
+                    } else {
+                        classes.push('confirmed');
+                    }
+                }
+                if (seg.annotation?.boundary_suspect) classes.push('boundary-suspect');
+                if (seg.is_merged_part) classes.push('merged-part');
+                if (seg.is_merged_segment) classes.push('merged-segment');
+                if (seg.is_split_source) classes.push('split-source');
+                if (seg.is_split_segment) classes.push('split-segment');
+                const segStem = getSegmentStem(seg);
+                const segStemClass = stemClass(segStem);
+                if (segStemClass) classes.push(segStemClass);
+                
+                const lang = seg.annotation?.correct_lang || seg.pipeline?.lang || '?';
+                const primarySpeaker = getPrimarySpeaker(seg);
+                const secondarySpeaker = seg.annotation?.overlap ? seg.annotation?.secondary_speaker : null;
+                const mergeHint = seg.is_merged_part
+                    ? `Part of merged segment ${seg.annotation?.merged_into || '(unknown)'}`
+                    : (seg.is_merged_segment ? 'Merged synthetic segment' : '');
+                const splitHint = seg.is_split_source
+                    ? `Split into ${seg.annotation?.split_into || '(unknown)'}`
+                    : (seg.is_split_segment ? `Split from ${seg.annotation?.split_from || '(unknown)'}` : '');
+                const titleHint = [mergeHint, splitHint].filter(Boolean).join(' | ');
+                
+                return `
+                    <div class="${classes.join(' ')}" onclick="selectSegment(${realIdx})" data-index="${realIdx}" title="${titleHint}">
+                        <div class="index index-row">
+                            <span>#${seg.index} <span class="time">${formatTime(seg.start_s)} - ${formatTime(seg.end_s)}</span></span>
+                            <span>
+                                <button class="play-segment-btn" onclick="event.stopPropagation(); playSegmentByIndex(${realIdx});">▶</button>
+                                <button class="pause-segment-btn" onclick="event.stopPropagation(); pausePlayback();">⏸</button>
+                            </span>
+                        </div>
+                        <div>
+                            <span class="lang-tag ${lang}">${lang}</span>
+                            ${primarySpeaker ? `<span class="speaker-tag">${normalizeSpeakerLabel(primarySpeaker)}</span>` : ''}
+                            ${secondarySpeaker ? `<span class="speaker-tag secondary">${normalizeSpeakerLabel(secondarySpeaker)}</span>` : ''}
+                            ${segStem ? `<span class="stem-tag ${segStemClass}">${segStem}</span>` : ''}
+                            <span class="text">${seg.pipeline?.text || seg.pipeline?.ipa || '(no text)'}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function filterSegments(segs) {
+            switch (currentFilter) {
+                case 'unannotated':
+                    segs = segs.filter(s => !s.has_annotation);
+                    break;
+                case 'boundary':
+                    segs = segs.filter(s => s.annotation?.boundary_suspect);
+                    break;
+                case 'NAH':
+                case 'SPA':
+                case 'MAY':
+                case 'OTH':
+                case 'UNK':
+                case 'LAT':
+                    segs = segs.filter(s => (s.annotation?.correct_lang || s.pipeline?.lang) === currentFilter);
+                    break;
+                default:
+                    if (currentFilter.startsWith('speaker:')) {
+                        const filterKey = currentFilter.slice('speaker:'.length);
+                        segs = segs.filter(s => resolveToCharacterKey(getPrimarySpeaker(s)) === filterKey);
+                    }
+                    break;
+            }
+            if (stemFilter !== 'all') {
+                segs = segs.filter(s => getSegmentStem(s) === stemFilter);
+            }
+            return segs;
+        }
+
+        function setupStemFilters() {
+            const container = document.getElementById('stem-filters');
+            if (!container) return;
+            container.querySelectorAll('[data-stem-filter]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    container.querySelectorAll('[data-stem-filter]').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    stemFilter = btn.dataset.stemFilter;
+                    renderSegmentList();
+                });
+            });
+        }
+        
+        function selectSegment(idx, options = {}) {
+            const { seek = true, scroll = false } = options;
+            currentIndex = idx;
+            const seg = segments[idx];
+            
+            // Update list highlighting
+            document.querySelectorAll('.segment-item').forEach(el => {
+                el.classList.toggle('active', parseInt(el.dataset.index) === idx);
+            });
+            
+            // Update panel
+            document.getElementById('panel-title').textContent = `Segment #${seg.index}`;
+            document.getElementById('pipeline-lang').innerHTML = seg.pipeline?.lang 
+                ? `<span class="lang-tag ${seg.pipeline.lang}">${seg.pipeline.lang}</span>` 
+                : '-';
+            document.getElementById('pipeline-text').textContent = seg.pipeline?.text || '-';
+            document.getElementById('pipeline-ipa').textContent = seg.pipeline?.ipa || '-';
+            document.getElementById('pipeline-conf').textContent = seg.pipeline?.confidence?.toFixed(2) || '-';
+            
+            // Load existing annotation or pipeline default
+            const ann = seg.annotation || {};
+            setSelectedLang(ann.correct_lang || seg.pipeline?.lang || null);
+            document.getElementById('boundary-suspect').checked = ann.boundary_suspect || false;
+            document.getElementById('boundary-adjuster').style.display = ann.boundary_suspect ? 'flex' : 'none';
+            document.getElementById('human-transcription').value = ann.human_transcription || '';
+            document.getElementById('correct-speaker').value = ann.correct_speaker || '';
+            document.getElementById('overlap').checked = ann.overlap || false;
+            document.getElementById('secondary-speaker').value = ann.secondary_speaker || '';
+            document.getElementById('secondary-speaker-group').style.display = ann.overlap ? 'block' : 'none';
+            document.getElementById('start-adjust').textContent = `${ann.start_adjust_ms || 0}ms`;
+            document.getElementById('end-adjust').textContent = `${ann.end_adjust_ms || 0}ms`;
+            document.getElementById('boundary-note').value = ann.boundary_note || '';
+            document.getElementById('notes').value = ann.notes || '';
+            
+            // Seek media
+            if (mediaElement && seek) {
+                mediaElement.currentTime = seg.start_s;
+            }
+
+            if (scroll) {
+                const activeEl = document.querySelector(`.segment-item[data-index="${idx}"]`);
+                if (activeEl) {
+                    activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+        }
+        
+        function setSelectedLang(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('selected', btn.dataset.lang === lang);
+            });
+        }
+        
+        // Language button clicks
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => setSelectedLang(btn.dataset.lang));
+        });
+        
+        // Boundary checkbox
+        document.getElementById('boundary-suspect').addEventListener('change', (e) => {
+            document.getElementById('boundary-adjuster').style.display = e.target.checked ? 'flex' : 'none';
+        });
+        document.getElementById('overlap').addEventListener('change', (e) => {
+            document.getElementById('secondary-speaker-group').style.display = e.target.checked ? 'block' : 'none';
+        });
+        
+        // Filter buttons
+        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderSegmentList();
+            });
+        });
+        
+        function adjustBoundary(which, delta) {
+            const el = document.getElementById(`${which}-adjust`);
+            const current = parseInt(el.textContent) || 0;
+            el.textContent = `${current + delta}ms`;
+        }
+        
+        async function saveAnnotation() {
+            if (currentIndex < 0) return;
+            
+            const seg = segments[currentIndex];
+            const selectedLang = document.querySelector('.lang-btn.selected')?.dataset.lang;
+            
+            const data = {
+                start_s: seg.start_s,
+                end_s: seg.end_s,
+                pipeline: seg.pipeline,
+                annotation: {
+                    correct_lang: selectedLang,
+                    correct_speaker: document.getElementById('correct-speaker').value || null,
+                    human_transcription: document.getElementById('human-transcription').value,
+                    overlap: document.getElementById('overlap').checked,
+                    secondary_speaker: document.getElementById('secondary-speaker').value || null,
+                    boundary_suspect: document.getElementById('boundary-suspect').checked,
+                    start_adjust_ms: parseInt(document.getElementById('start-adjust').textContent) || 0,
+                    end_adjust_ms: parseInt(document.getElementById('end-adjust').textContent) || 0,
+                    boundary_note: document.getElementById('boundary-note').value,
+                    notes: document.getElementById('notes').value
+                }
+            };
+            
+            const resp = await fetch(`/api/segments/${seg.index}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            
+            if (resp.ok) {
+                showToast('Saved!');
+                // Update local state
+                segments[currentIndex].has_annotation = true;
+                segments[currentIndex].annotation = data.annotation;
+                refreshSpeakerData();
+                renderSegmentList();
+                updateStats();
+            } else {
+                showToast('Save failed', true);
+            }
+        }
+        
+        async function saveAndNext() {
+            await saveAnnotation();
+            skipToNext();
+        }
+
+        async function mergeWithPrevious() {
+            if (currentIndex < 0) return;
+            const prevIdx = findAdjacentSourceSegment(currentIndex, -1);
+            if (prevIdx < 0) {
+                showToast('No previous segment', true);
+                return;
+            }
+            await mergeSegments(prevIdx, currentIndex, 'prev');
+        }
+
+        async function mergeWithNext() {
+            if (currentIndex < 0) return;
+            const nextIdx = findAdjacentSourceSegment(currentIndex, 1);
+            if (nextIdx < 0) {
+                showToast('No next segment', true);
+                return;
+            }
+            await mergeSegments(currentIndex, nextIdx, 'next');
+        }
+
+        function findAdjacentSourceSegment(startIdx, step) {
+            for (let i = startIdx + step; i >= 0 && i < segments.length; i += step) {
+                if (segments[i] && segments[i].index > 0) return i;
+            }
+            return -1;
+        }
+
+        async function mergeSegments(firstIdx, secondIdx, direction) {
+            const first = segments[firstIdx];
+            const second = segments[secondIdx];
+            if (!first || !second) {
+                showToast('Invalid merge selection', true);
+                return;
+            }
+            if (first.index <= 0 || second.index <= 0) {
+                showToast('Only source segments can be merged', true);
+                return;
+            }
+
+            const resp = await fetch('/api/segments/merge', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    segment_ids: [first.index, second.index],
+                    direction: direction
+                })
+            });
+            const result = await resp.json();
+            if (!resp.ok || !result.success) {
+                showToast(result.error || 'Merge failed', true);
+                return;
+            }
+
+            await loadSegments();
+            const mergedIdx = segments.findIndex(s => s.segment_id === result.segment_id);
+            if (mergedIdx >= 0) {
+                selectSegment(mergedIdx, { seek: true, scroll: true });
+            }
+            showToast(`Merged #${first.index} + #${second.index}`);
+        }
+
+        function openSplitModal() {
+            if (currentIndex < 0) {
+                showToast('Select a segment first', true);
+                return;
+            }
+            const seg = segments[currentIndex];
+            if (!seg || seg.index <= 0) {
+                showToast('Only source segments can be split', true);
+                return;
+            }
+            const now = mediaElement ? mediaElement.currentTime : (seg.start_s + seg.end_s) / 2;
+            const splitAt = Math.max(seg.start_s + 0.01, Math.min(seg.end_s - 0.01, now));
+            document.getElementById('split-point').value = splitAt.toFixed(3);
+            document.getElementById('split-second-speaker').value = '';
+            document.getElementById('split-modal').classList.add('active');
+        }
+
+        function closeSplitModal() {
+            document.getElementById('split-modal').classList.remove('active');
+        }
+
+        async function confirmSplit() {
+            if (currentIndex < 0) return;
+            const seg = segments[currentIndex];
+            const splitAt = parseFloat(document.getElementById('split-point').value);
+            if (!Number.isFinite(splitAt)) {
+                showToast('Invalid split timestamp', true);
+                return;
+            }
+
+            const resp = await fetch('/api/segments/split', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    cue_index: seg.index,
+                    split_at: splitAt,
+                    second_speaker: document.getElementById('split-second-speaker').value || null
+                })
+            });
+            const result = await resp.json();
+            if (!resp.ok || !result.success) {
+                showToast(result.error || 'Split failed', true);
+                return;
+            }
+
+            closeSplitModal();
+            await loadSegments();
+            const splitIdx = segments.findIndex(s => s.segment_id === (result.split_segments || [])[0]);
+            if (splitIdx >= 0) {
+                selectSegment(splitIdx, { seek: true, scroll: true });
+            }
+            showToast(`Split segment #${seg.index}`);
+        }
+
+        async function resetAnnotation() {
+            if (currentIndex < 0) return;
+            const seg = segments[currentIndex];
+
+            const ok = window.confirm(`Reset annotation for segment #${seg.index}?`);
+            if (!ok) return;
+
+            const resp = await fetch(`/api/segments/${seg.index}`, { method: 'DELETE' });
+            if (!resp.ok) {
+                showToast('Reset failed', true);
+                return;
+            }
+
+            // Reset local state to unannotated
+            segments[currentIndex].has_annotation = false;
+            segments[currentIndex].annotation = null;
+
+            // Reset UI form fields
+            setSelectedLang(null);
+            document.getElementById('human-transcription').value = '';
+            document.getElementById('correct-speaker').value = '';
+            document.getElementById('overlap').checked = false;
+            document.getElementById('secondary-speaker').value = '';
+            document.getElementById('secondary-speaker-group').style.display = 'none';
+            document.getElementById('boundary-suspect').checked = false;
+            document.getElementById('boundary-adjuster').style.display = 'none';
+            document.getElementById('start-adjust').textContent = '0ms';
+            document.getElementById('end-adjust').textContent = '0ms';
+            document.getElementById('boundary-note').value = '';
+            document.getElementById('notes').value = '';
+
+            refreshSpeakerData();
+            renderSegmentList();
+            updateStats();
+            showToast('Annotation reset');
+        }
+        
+        function skipToNext() {
+            const filtered = filterSegments(segments);
+            if (filtered.length === 0) return;
+
+            // Find next segment in filtered list that comes AFTER current position.
+            // This handles the case where the current segment just left the filter
+            // (e.g., annotated while filtering "unannotated").
+            const currentSeg = segments[currentIndex];
+            const currentTime = currentSeg ? currentSeg.start_s : -1;
+
+            let currentInFiltered = filtered.findIndex(s => segments.indexOf(s) === currentIndex);
+            if (currentInFiltered >= 0) {
+                // Current segment is still in filtered list — go to next
+                const nextInFiltered = (currentInFiltered + 1) % filtered.length;
+                selectSegment(segments.indexOf(filtered[nextInFiltered]));
+            } else {
+                // Current segment left the filter — find first filtered segment after current time
+                const next = filtered.find(s => s.start_s > currentTime);
+                selectSegment(segments.indexOf(next || filtered[0]));
+            }
+        }
+        
+        function playSegment() {
+            if (currentIndex < 0 || !mediaElement) return;
+            playSegmentByIndex(currentIndex);
+        }
+
+        function playSegmentByIndex(idx) {
+            if (!mediaElement || idx < 0 || idx >= segments.length) return;
+            const seg = segments[idx];
+            selectSegment(idx, { seek: false, scroll: true });
+            mediaElement.currentTime = seg.start_s;
+            syncStemTimes(true);
+            segmentPlayEndTime = seg.end_s;
+            mediaElement.play();
+            syncStemPlaybackState(true);
+        }
+
+        function pausePlayback() {
+            if (!mediaElement) return;
+            mediaElement.pause();
+            syncStemPlaybackState(false);
+            segmentPlayEndTime = null;
+        }
+        
+        function togglePlay() {
+            if (!mediaElement) return;
+            if (mediaElement.paused) {
+                mediaElement.play();
+                syncStemPlaybackState(true);
+                document.getElementById('btn-play').textContent = '⏸ Pause';
+            } else {
+                mediaElement.pause();
+                syncStemPlaybackState(false);
+                document.getElementById('btn-play').textContent = '▶ Play';
+            }
+        }
+        
+        function skipTime(delta) {
+            if (mediaElement) {
+                mediaElement.currentTime += delta;
+                syncStemTimes(true);
+            }
+        }
+        
+        function updateTimeDisplay() {
+            if (mediaElement) {
+                document.getElementById('current-time').textContent = formatTime(mediaElement.currentTime);
+            }
+        }
+
+        function findSegmentIndexByTime(currentTime) {
+            if (!segments.length) return -1;
+            for (let i = 0; i < segments.length; i++) {
+                if (currentTime >= segments[i].start_s && currentTime <= segments[i].end_s) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        function handleMediaTimeUpdate() {
+            if (!mediaElement) return;
+            updateTimeDisplay();
+            syncStemTimes(false);
+
+            if (segmentPlayEndTime !== null && mediaElement.currentTime >= segmentPlayEndTime) {
+                mediaElement.pause();
+                syncStemPlaybackState(false);
+                segmentPlayEndTime = null;
+                return;
+            }
+
+            if (!followMode || mediaElement.paused) return;
+
+            const segIdx = findSegmentIndexByTime(mediaElement.currentTime);
+            if (segIdx >= 0 && segIdx !== currentIndex) {
+                selectSegment(segIdx, { seek: false, scroll: true });
+            }
+        }
+
+        function toggleFollowMode() {
+            followMode = !followMode;
+            const btn = document.getElementById('btn-follow');
+            const indicator = document.getElementById('follow-indicator');
+            btn.classList.toggle('active', followMode);
+            indicator.classList.toggle('active', followMode);
+            showToast(followMode ? 'Follow mode ON' : 'Follow mode OFF');
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = (seconds % 60).toFixed(3);
+            return `${mins.toString().padStart(2, '0')}:${secs.padStart(6, '0')}`;
+        }
+        
+        function updateStats() {
+            document.getElementById('stat-total').textContent = segments.length;
+            document.getElementById('stat-annotated').textContent = segments.filter(s => s.has_annotation).length;
+            document.getElementById('stat-boundary').textContent = segments.filter(s => s.annotation?.boundary_suspect).length;
+
+            // Update counts on all filter buttons
+            function effectiveLang(s) {
+                return (s.annotation && s.annotation.correct_lang) || (s.pipeline && s.pipeline.lang) || '';
+            }
+            var counts = {
+                'all': segments.length,
+                'unannotated': segments.filter(function(s) { return !s.has_annotation; }).length,
+                'boundary': segments.filter(function(s) { return s.annotation && s.annotation.boundary_suspect; }).length,
+                'NAH': segments.filter(function(s) { return effectiveLang(s) === 'NAH'; }).length,
+                'SPA': segments.filter(function(s) { return effectiveLang(s) === 'SPA'; }).length,
+                'MAY': segments.filter(function(s) { return effectiveLang(s) === 'MAY'; }).length,
+                'OTH': segments.filter(function(s) { return effectiveLang(s) === 'OTH'; }).length,
+                'UNK': segments.filter(function(s) { return effectiveLang(s) === 'UNK'; }).length,
+                'LAT': segments.filter(function(s) { return effectiveLang(s) === 'LAT'; }).length,
+            };
+            var labels = {
+                'all': 'All', 'unannotated': 'Unannotated', 'boundary': 'Boundary',
+                'NAH': 'NAH', 'SPA': 'SPA', 'MAY': 'MAY', 'OTH': 'OTH', 'UNK': 'UNK', 'LAT': 'LAT'
+            };
+            var btns = document.querySelectorAll('#main-filters .filter-btn');
+            btns.forEach(function(btn) {
+                var f = btn.getAttribute('data-filter');
+                if (f && counts.hasOwnProperty(f)) {
+                    btn.textContent = (labels[f] || f) + ' (' + counts[f] + ')';
+                }
+            });
+        }
+        
+        // Agent Dialog
+        function openAgentDialog() {
+            if (currentIndex < 0) {
+                showToast('Select a segment first', true);
+                return;
+            }
+            document.getElementById('agent-modal').classList.add('active');
+        }
+        
+        function closeAgentDialog() {
+            document.getElementById('agent-modal').classList.remove('active');
+        }
+        
+        async function sendToAgent() {
+            const agent = document.getElementById('agent-select').value;
+            if (!agent) {
+                showToast('Select an agent', true);
+                return;
+            }
+            
+            const seg = segments[currentIndex];
+            const question = document.getElementById('agent-question').value;
+            const includeIpa = document.getElementById('include-ipa').checked;
+            
+            const data = {
+                agent,
+                segment_id: seg.segment_id,
+                cue_index: seg.index,
+                start_s: seg.start_s,
+                end_s: seg.end_s,
+                question,
+                include_ipa: includeIpa,
+                pipeline: seg.pipeline,
+                annotation: {
+                    correct_lang: document.querySelector('.lang-btn.selected')?.dataset.lang,
+                    boundary_suspect: document.getElementById('boundary-suspect').checked,
+                    boundary_note: document.getElementById('boundary-note').value
+                }
+            };
+            
+            const resp = await fetch('/api/discuss', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            
+            const result = await resp.json();
+            
+            if (result.success) {
+                showToast(`Sent to ${agent}!`);
+                closeAgentDialog();
+            } else {
+                showToast(result.error || 'Failed to send', true);
+            }
+        }
+        
+        // Keyboard shortcuts
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                // Ignore if typing in input
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                
+                switch (e.key) {
+                    case ' ':
+                        e.preventDefault();
+                        togglePlay();
+                        break;
+                    case 'ArrowLeft':
+                        skipTime(-1);
+                        break;
+                    case 'ArrowRight':
+                        skipTime(1);
+                        break;
+                    case 'r':
+                    case 'R':
+                        playSegment();
+                        break;
+                    case 's':
+                    case 'S':
+                        saveAnnotation();
+                        break;
+                    case 'n':
+                    case 'N':
+                        skipToNext();
+                        break;
+                }
+            });
+        }
+        
+        // Toast
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.toggle('error', isError);
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+    </script>
+</body>
+</html>

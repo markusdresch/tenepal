@@ -1,0 +1,152 @@
+{
+  "source_db": "tools/annotator/annotations.db",
+  "media_exports": [
+    {
+      "media_file": "Hernán-1-3.mp4",
+      "output": "hernan_1_3_mp4.jsonl",
+      "rows": 600,
+      "languages": {
+        "LAT": 1,
+        "MAY": 8,
+        "NAH": 373,
+        "OTH": 8,
+        "SPA": 178,
+        "UNK": 32
+      },
+      "speakers": {
+        "aguilar": 14,
+        "alvarado": 3,
+        "background": 19,
+        "hernan": 28,
+        "ignore": 1,
+        "marina": 22,
+        "maxixcatl": 9,
+        "motecuzoma": 25,
+        "mutilated_tlaxcaltec": 8,
+        "old_xicontencatl": 5,
+        "olid": 3,
+        "tlaxcaltec": 4,
+        "tlecuiluatzin": 23,
+        "totonac": 5,
+        "young_xicontencatl": 57,
+        "young_xicontencatl_as_teen": 2
+      }
+    },
+    {
+      "media_file": "La-Otra-Conquista_14m15-24m15.mp4",
+      "output": "la_otra_conquista_14m15_24m15_mp4.jsonl",
+      "rows": 39,
+      "languages": {
+        "LAT": 1,
+        "NAH": 15,
+        "SPA": 20,
+        "UNK": 3
+      },
+      "speakers": {}
+    },
+    {
+      "media_file": "La-Otra-Conquista_24m15-34m15.mp4",
+      "output": "la_otra_conquista_24m15_34m15_mp4.jsonl",
+      "rows": 78,
+      "languages": {
+        "NAH": 43,
+        "SPA": 32,
+        "UNK": 3
+      },
+      "speakers": {}
+    },
+    {
+      "media_file": "La-Otra-Conquista_24m15-34m15.wav",
+      "output": "la_otra_conquista_24m15_34m15_wav.jsonl",
+      "rows": 1,
+      "languages": {
+        "SPA": 1
+      },
+      "speakers": {}
+    },
+    {
+      "media_file": "La-Otra-Conquista_34m15-44m25.mp4",
+      "output": "la_otra_conquista_34m15_44m25_mp4.jsonl",
+      "rows": 136,
+      "languages": {
+        "NAH": 5,
+        "SPA": 130,
+        "UNK": 1
+      },
+      "speakers": {}
+    },
+    {
+      "media_file": "La-Otra-Conquista_44m25-55m25.mp4",
+      "output": "la_otra_conquista_44m25_55m25_mp4.jsonl",
+      "rows": 104,
+      "languages": {
+        "LAT": 2,
+        "NAH": 7,
+        "SPA": 84,
+        "UNK": 11
+      },
+      "speakers": {}
+    },
+    {
+      "media_file": "La-Otra-Conquista_84m25-94m25.mp4",
+      "output": "la_otra_conquista_84m25_94m25_mp4.jsonl",
+      "rows": 31,
+      "languages": {
+        "NAH": 6,
+        "OTH": 5,
+        "SPA": 20
+      },
+      "speakers": {}
+    },
+    {
+      "media_file": "La-Otra-Conquista_84m25-94m25.wav",
+      "output": "la_otra_conquista_84m25_94m25_wav.jsonl",
+      "rows": 4,
+      "languages": {
+        "OTH": 1,
+        "SPA": 3
+      },
+      "speakers": {}
+    },
+    {
+      "media_file": "La-Otra-Conquista_test10m.wav",
+      "output": "la_otra_conquista_test10m_wav.jsonl",
+      "rows": 33,
+      "languages": {
+        "NAH": 8,
+        "OTH": 2,
+        "SPA": 23
+      },
+      "speakers": {}
+    },
+    {
+      "media_file": "SOURCE_00.wav",
+      "output": "source_00_wav.jsonl",
+      "rows": 16,
+      "languages": {
+        "MAY": 7,
+        "SPA": 9
+      },
+      "speakers": {
+        "hernan": 5
+      }
+    },
+    {
+      "media_file": "SOURCE_01.wav",
+      "output": "source_01_wav.jsonl",
+      "rows": 8,
+      "languages": {
+        "NAH": 5,
+        "UNK": 3
+      },
+      "speakers": {
+        "background": 1
+      }
+    }
+  ],
+  "notes": [
+    "This export excludes freeform annotator notes and local SQLite metadata.",
+    "Character slugs are preserved; media files themselves are not redistributed.",
+    "Use these JSONL files as the public audit trail instead of shipping annotations.db."
+  ]
+}

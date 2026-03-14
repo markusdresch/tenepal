@@ -1,0 +1,10 @@
+{
+  "code": "nah",
+  "name": "Nahuatl",
+  "rhythm_class": "stress-accent",
+  "f0_range": {"min": 40, "max": 180, "target": 100},
+  "f0_std": {"min": 15, "max": 50, "target": 30},
+  "npvi_v": {"min": 45, "max": 65, "target": 55},
+  "speech_rate": {"min": 5.0, "max": 7.5, "target": 6.2},
+  "weight": 0.5
+}

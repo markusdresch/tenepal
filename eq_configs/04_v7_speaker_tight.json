@@ -1,0 +1,9 @@
+{
+    "_name": "v7_speaker_tight",
+    "_description": "v7_best but stricter speaker-prior (80% majority needed, 5 min segments) — less aggressive override for bilingual speakers",
+    "speaker_prior_strong": true,
+    "speaker_prior_min_segments": 5,
+    "speaker_prior_min_ratio": 0.80,
+    "ejective_strict": true,
+    "noise_gate_enabled": true
+}

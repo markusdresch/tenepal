@@ -1,0 +1,10 @@
+{
+    "_name": "v7_two_pass_unk",
+    "_description": "v7_best + two-pass prior + UNK gate. Best of both: IPA-informed prior + honest abstention.",
+    "speaker_prior_strong": true,
+    "ejective_strict": true,
+    "noise_gate_enabled": true,
+    "two_pass_prior": true,
+    "unk_gate_enabled": true,
+    "unk_gate_threshold": 0.5
+}

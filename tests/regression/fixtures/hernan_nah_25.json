@@ -1,0 +1,256 @@
+{
+  "version": "1.0",
+  "description": "Initial NAH regression subset: 24 segments from Hernán-1-1-1 + 1 segment from Hernán-1-1-2",
+  "segments": [
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "6",
+      "start_s": 37.324,
+      "end_s": 38.185,
+      "expected_lang": "NAH",
+      "reference_text": "? Y conchacar suena.",
+      "id": "hernan_1_1_1_nah_01",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "16",
+      "start_s": 69.184,
+      "end_s": 70.399,
+      "expected_lang": "NAH",
+      "reference_text": "? aunque sean castellanos",
+      "id": "hernan_1_1_1_nah_02",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "71",
+      "start_s": 419.189,
+      "end_s": 420.15,
+      "expected_lang": "NAH",
+      "reference_text": "? No, ¡sé si lo va!",
+      "id": "hernan_1_1_1_nah_03",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "79",
+      "start_s": 437.363,
+      "end_s": 438.764,
+      "expected_lang": "NAH",
+      "reference_text": "? Tomad vuestras espadas",
+      "id": "hernan_1_1_1_nah_04",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "80",
+      "start_s": 439.557,
+      "end_s": 441.16,
+      "expected_lang": "NAH",
+      "reference_text": "? ¡Y plasmad vuestros nombres!",
+      "id": "hernan_1_1_1_nah_05",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "137",
+      "start_s": 701.929,
+      "end_s": 703.499,
+      "expected_lang": "NAH",
+      "reference_text": "? ¡Ah, su ch...!",
+      "id": "hernan_1_1_1_nah_06",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "149",
+      "start_s": 840.608,
+      "end_s": 845.738,
+      "expected_lang": "NAH",
+      "reference_text": "? Ya no es huilquin Chahan, y este no cueste más que el quejo.",
+      "id": "hernan_1_1_1_nah_07",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "151",
+      "start_s": 856.268,
+      "end_s": 861.533,
+      "expected_lang": "NAH",
+      "reference_text": "? Dacxa ni, cutasico nu cuch cacas balcheo",
+      "id": "hernan_1_1_1_nah_08",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "152",
+      "start_s": 863.035,
+      "end_s": 865.364,
+      "expected_lang": "NAH",
+      "reference_text": "? Canjole no he dicho...",
+      "id": "hernan_1_1_1_nah_09",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "156",
+      "start_s": 881.715,
+      "end_s": 888.179,
+      "expected_lang": "NAH",
+      "reference_text": "",
+      "id": "hernan_1_1_1_nah_10",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "158",
+      "start_s": 891.57,
+      "end_s": 898.169,
+      "expected_lang": "NAH",
+      "reference_text": "? ¡Colelob, mi hijo mutuol! ¡Colel, tingulon tuyetelob!",
+      "id": "hernan_1_1_1_nah_11",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "161",
+      "start_s": 915.972,
+      "end_s": 917.069,
+      "expected_lang": "NAH",
+      "reference_text": "",
+      "id": "hernan_1_1_1_nah_12",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "163",
+      "start_s": 925.759,
+      "end_s": 926.687,
+      "expected_lang": "NAH",
+      "reference_text": "? ¡Veis a mí!",
+      "id": "hernan_1_1_1_nah_13",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "170",
+      "start_s": 942.027,
+      "end_s": 944.035,
+      "expected_lang": "NAH",
+      "reference_text": "? y la boca tan guaca de gente que...",
+      "id": "hernan_1_1_1_nah_14",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "172",
+      "start_s": 954.21,
+      "end_s": 955.695,
+      "expected_lang": "NAH",
+      "reference_text": "? Incapaz de jacen.",
+      "id": "hernan_1_1_1_nah_15",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "174",
+      "start_s": 958.277,
+      "end_s": 960.336,
+      "expected_lang": "NAH",
+      "reference_text": "",
+      "id": "hernan_1_1_1_nah_16",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "176",
+      "start_s": 963.61,
+      "end_s": 967.795,
+      "expected_lang": "NAH",
+      "reference_text": "",
+      "id": "hernan_1_1_1_nah_17",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "177",
+      "start_s": 968.74,
+      "end_s": 969.854,
+      "expected_lang": "NAH",
+      "reference_text": "? ¡Gan te desgulabas!",
+      "id": "hernan_1_1_1_nah_18",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "182",
+      "start_s": 986.695,
+      "end_s": 987.572,
+      "expected_lang": "NAH",
+      "reference_text": "",
+      "id": "hernan_1_1_1_nah_19",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "183",
+      "start_s": 988.315,
+      "end_s": 990.593,
+      "expected_lang": "NAH",
+      "reference_text": "? Buenico pico, que me lo veis chanto.",
+      "id": "hernan_1_1_1_nah_20",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "187",
+      "start_s": 1015.939,
+      "end_s": 1017.559,
+      "expected_lang": "NAH",
+      "reference_text": "? Están en la tic-tic-tio.",
+      "id": "hernan_1_1_1_nah_21",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "216",
+      "start_s": 1111.199,
+      "end_s": 1114.962,
+      "expected_lang": "NAH",
+      "reference_text": "",
+      "id": "hernan_1_1_1_nah_22",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "244",
+      "start_s": 1202.762,
+      "end_s": 1203.555,
+      "expected_lang": "NAH",
+      "reference_text": "? Moc... Moc, ¿te sumas?",
+      "id": "hernan_1_1_1_nah_23",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-1.srt",
+      "source_cue_index": "247",
+      "start_s": 1215.672,
+      "end_s": 1216.583,
+      "expected_lang": "NAH",
+      "reference_text": "? Muchísimas gracias, Capitán.",
+      "id": "hernan_1_1_1_nah_24",
+      "source_audio": "validation_video/Hernán-1-1-1.wav"
+    },
+    {
+      "source_srt": "validation_video/Hernán-1-1-2.srt",
+      "source_cue_index": "19",
+      "start_s": 333.48,
+      "end_s": 333.987,
+      "expected_lang": "NAH",
+      "reference_text": "n ʌ n lː lʲ e ʂ a",
+      "id": "hernan_1_1_2_nah_01",
+      "source_audio": "validation_video/Hernán-1-1-2.wav"
+    }
+  ]
+}

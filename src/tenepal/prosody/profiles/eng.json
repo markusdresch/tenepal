@@ -1,0 +1,10 @@
+{
+  "code": "eng",
+  "name": "English",
+  "rhythm_class": "stress-timed",
+  "f0_range": {"min": 60, "max": 250, "target": 150},
+  "f0_std": {"min": 20, "max": 70, "target": 45},
+  "npvi_v": {"min": 50, "max": 73, "target": 57},
+  "speech_rate": {"min": 5.0, "max": 7.5, "target": 6.2},
+  "weight": 1.0
+}

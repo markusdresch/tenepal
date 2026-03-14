@@ -1,0 +1,9 @@
+{
+    "_name": "v7_unk_gate",
+    "_description": "v7_best + UNK reject gate (conf<0.5 → UNK). Honest abstention on coin-flip segments.",
+    "speaker_prior_strong": true,
+    "ejective_strict": true,
+    "noise_gate_enabled": true,
+    "unk_gate_enabled": true,
+    "unk_gate_threshold": 0.5
+}

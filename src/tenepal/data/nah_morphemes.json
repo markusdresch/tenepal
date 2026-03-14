@@ -1,0 +1,183 @@
+{
+  "_meta": {
+    "description": "Nahuatl morpheme database for agglutinative segmentation",
+    "sources": [
+      "Sullivan (1988) Compendium of Nahuatl Grammar",
+      "Karttunen (1983) Analytical Dictionary of Nahuatl",
+      "Lockhart (2001) Nahuatl as Written",
+      "Molina (1571) Vocabulario"
+    ],
+    "variant": "Classical Nahuatl with modern orthography adaptations",
+    "note": "IPA forms use modern practical orthography G2P mapping"
+  },
+
+  "subject_prefixes": [
+    {"form": "ni", "ipa": ["n", "i"], "gloss": "1SG (I)", "slot": 1},
+    {"form": "ti", "ipa": ["t", "i"], "gloss": "2SG (you)", "slot": 1},
+    {"form": "ti", "ipa": ["t", "i"], "gloss": "1PL (we)", "slot": 1, "note": "disambiguated by plural suffix -h"},
+    {"form": "an", "ipa": ["a", "n"], "gloss": "2PL (you.pl)", "slot": 1},
+    {"form": "am", "ipa": ["a", "m"], "gloss": "2PL allomorph before p/m", "slot": 1}
+  ],
+
+  "object_prefixes": [
+    {"form": "nech", "ipa": ["n", "e", "tʃ"], "gloss": "1SG.OBJ (me)", "slot": 2},
+    {"form": "mitz", "ipa": ["m", "i", "ts"], "gloss": "2SG.OBJ (you)", "slot": 2},
+    {"form": "ki", "ipa": ["k", "i"], "gloss": "3SG.OBJ (him/her/it)", "slot": 2},
+    {"form": "k", "ipa": ["k"], "gloss": "3SG.OBJ (before vowel)", "slot": 2},
+    {"form": "tech", "ipa": ["t", "e", "tʃ"], "gloss": "1PL.OBJ (us)", "slot": 2},
+    {"form": "amech", "ipa": ["a", "m", "e", "tʃ"], "gloss": "2PL.OBJ (you.pl)", "slot": 2},
+    {"form": "kin", "ipa": ["k", "i", "n"], "gloss": "3PL.OBJ (them)", "slot": 2},
+    {"form": "kim", "ipa": ["k", "i", "m"], "gloss": "3PL.OBJ allomorph before p/m", "slot": 2},
+    {"form": "tla", "ipa": ["tɬ", "a"], "gloss": "INDEF.OBJ (something)", "slot": 2},
+    {"form": "te", "ipa": ["t", "e"], "gloss": "INDEF.HUM.OBJ (someone)", "slot": 2}
+  ],
+
+  "directional_prefixes": [
+    {"form": "on", "ipa": ["o", "n"], "gloss": "DIR.away", "slot": 3},
+    {"form": "hual", "ipa": ["w", "a", "l"], "gloss": "DIR.toward", "slot": 3}
+  ],
+
+  "reflexive_prefixes": [
+    {"form": "mo", "ipa": ["m", "o"], "gloss": "REFL (self)", "slot": 2},
+    {"form": "no", "ipa": ["n", "o"], "gloss": "REFL.1SG / POSS.1SG (my)", "slot": 2},
+    {"form": "to", "ipa": ["t", "o"], "gloss": "POSS.1PL (our)", "slot": 2},
+    {"form": "i", "ipa": ["i"], "gloss": "POSS.3SG (his/her)", "slot": 2},
+    {"form": "in", "ipa": ["i", "n"], "gloss": "POSS.3PL (their)", "slot": 2},
+    {"form": "anmo", "ipa": ["a", "n", "m", "o"], "gloss": "POSS.2PL (your.pl)", "slot": 2}
+  ],
+
+  "tense_aspect_suffixes": [
+    {"form": "z", "ipa": ["s"], "gloss": "FUT", "slot": 10},
+    {"form": "s", "ipa": ["s"], "gloss": "FUT (variant)", "slot": 10},
+    {"form": "ki", "ipa": ["k", "i"], "gloss": "PRET (preterit)", "slot": 10},
+    {"form": "k", "ipa": ["k"], "gloss": "PRET (before consonant)", "slot": 10},
+    {"form": "ya", "ipa": ["j", "a"], "gloss": "IMPERF (imperfect)", "slot": 10},
+    {"form": "yaya", "ipa": ["j", "a", "j", "a"], "gloss": "IMPERF.DIST (distant past)", "slot": 10},
+    {"form": "skia", "ipa": ["s", "k", "i", "a"], "gloss": "COND (conditional)", "slot": 10},
+    {"form": "ske", "ipa": ["s", "k", "e"], "gloss": "COND (variant)", "slot": 10},
+    {"form": "tika", "ipa": ["t", "i", "k", "a"], "gloss": "PROG (progressive)", "slot": 10},
+    {"form": "tok", "ipa": ["t", "o", "k"], "gloss": "STAT (stative)", "slot": 10},
+    {"form": "to", "ipa": ["t", "o"], "gloss": "STAT (variant)", "slot": 10}
+  ],
+
+  "noun_suffixes": [
+    {"form": "tl", "ipa": ["tɬ"], "gloss": "ABS (absolutive, after vowel)", "slot": 11},
+    {"form": "tli", "ipa": ["tɬ", "i"], "gloss": "ABS (after consonant)", "slot": 11},
+    {"form": "li", "ipa": ["l", "i"], "gloss": "ABS (after l)", "slot": 11},
+    {"form": "in", "ipa": ["i", "n"], "gloss": "DEF.ART (the)", "slot": 0},
+    {"form": "tzin", "ipa": ["ts", "i", "n"], "gloss": "REV/DIM (reverential/diminutive)", "slot": 12},
+    {"form": "tzintli", "ipa": ["ts", "i", "n", "tɬ", "i"], "gloss": "REV.ABS", "slot": 12},
+    {"form": "ton", "ipa": ["t", "o", "n"], "gloss": "AUGM (augmentative, pejorative)", "slot": 12},
+    {"form": "pil", "ipa": ["p", "i", "l"], "gloss": "DIM (diminutive, affectionate)", "slot": 12},
+    {"form": "tin", "ipa": ["t", "i", "n"], "gloss": "PL (animate plural)", "slot": 13},
+    {"form": "meh", "ipa": ["m", "e"], "gloss": "PL (general plural)", "slot": 13},
+    {"form": "me", "ipa": ["m", "e"], "gloss": "PL (variant)", "slot": 13},
+    {"form": "h", "ipa": ["ʔ"], "gloss": "PL.SUBJ (plural subject marker)", "slot": 13},
+    {"form": "yo", "ipa": ["j", "o"], "gloss": "ABSTR (abstract noun)", "slot": 12},
+    {"form": "yotl", "ipa": ["j", "o", "tɬ"], "gloss": "ABSTR.ABS", "slot": 12},
+    {"form": "kan", "ipa": ["k", "a", "n"], "gloss": "LOC (place of)", "slot": 12},
+    {"form": "yan", "ipa": ["j", "a", "n"], "gloss": "LOC (place where action occurs)", "slot": 12},
+    {"form": "pan", "ipa": ["p", "a", "n"], "gloss": "LOC.on (on/upon)", "slot": 12}
+  ],
+
+  "verbal_suffixes": [
+    {"form": "a", "ipa": ["a"], "gloss": "PRES (present, class 2/3)", "slot": 10},
+    {"form": "ti", "ipa": ["t", "i"], "gloss": "LIG (ligature)", "slot": 9},
+    {"form": "ka", "ipa": ["k", "a"], "gloss": "COP (copula: to be)", "slot": 10},
+    {"form": "lia", "ipa": ["l", "i", "a"], "gloss": "APPL (applicative)", "slot": 8},
+    {"form": "tia", "ipa": ["t", "i", "a"], "gloss": "CAUS (causative)", "slot": 8},
+    {"form": "ltia", "ipa": ["l", "t", "i", "a"], "gloss": "CAUS (causative variant)", "slot": 8},
+    {"form": "lo", "ipa": ["l", "o"], "gloss": "PASS (passive)", "slot": 8},
+    {"form": "hua", "ipa": ["w", "a"], "gloss": "POSS (possessor)", "slot": 8},
+    {"form": "e", "ipa": ["e"], "gloss": "POSS.have (possessor variant)", "slot": 8}
+  ],
+
+  "relational_suffixes": [
+    {"form": "ko", "ipa": ["k", "o"], "gloss": "REL.in (inside)", "slot": 12},
+    {"form": "pal", "ipa": ["p", "a", "l"], "gloss": "REL.for (benefactive)", "slot": 12},
+    {"form": "ka", "ipa": ["k", "a"], "gloss": "REL.with (instrumental)", "slot": 12},
+    {"form": "wan", "ipa": ["w", "a", "n"], "gloss": "REL.with (comitative)", "slot": 12},
+    {"form": "tech", "ipa": ["t", "e", "tʃ"], "gloss": "REL.on (contact)", "slot": 12},
+    {"form": "tlan", "ipa": ["tɬ", "a", "n"], "gloss": "REL.near (proximity)", "slot": 12},
+    {"form": "nahuak", "ipa": ["n", "a", "w", "a", "k"], "gloss": "REL.near (next to)", "slot": 12}
+  ],
+
+  "common_particles": [
+    {"form": "amo", "ipa": ["a", "m", "o"], "gloss": "NEG (not)"},
+    {"form": "ma", "ipa": ["m", "a"], "gloss": "OPT (optative/imperative)"},
+    {"form": "intla", "ipa": ["i", "n", "tɬ", "a"], "gloss": "COND (if)"},
+    {"form": "ihkuak", "ipa": ["i", "kʷ", "a", "k"], "gloss": "TEMP (when)"},
+    {"form": "ipan", "ipa": ["i", "p", "a", "n"], "gloss": "PREP (on/in)"},
+    {"form": "ika", "ipa": ["i", "k", "a"], "gloss": "PREP (with/by means of)"},
+    {"form": "inik", "ipa": ["i", "n", "i", "k"], "gloss": "CONJ (so that)"},
+    {"form": "auh", "ipa": ["a", "w"], "gloss": "CONJ (and/but)"},
+    {"form": "ihuan", "ipa": ["i", "w", "a", "n"], "gloss": "CONJ (and)"},
+    {"form": "zan", "ipa": ["s", "a", "n"], "gloss": "ADV (only/just)"},
+    {"form": "nel", "ipa": ["n", "e", "l"], "gloss": "ADV (truly)"},
+    {"form": "nochi", "ipa": ["n", "o", "tʃ", "i"], "gloss": "QUANT (all)"},
+    {"form": "miak", "ipa": ["m", "i", "a", "k"], "gloss": "QUANT (much/many)"},
+    {"form": "se", "ipa": ["s", "e"], "gloss": "NUM (one)"},
+    {"form": "ome", "ipa": ["o", "m", "e"], "gloss": "NUM (two)"},
+    {"form": "eyi", "ipa": ["e", "j", "i"], "gloss": "NUM (three)"},
+    {"form": "nahui", "ipa": ["n", "a", "w", "i"], "gloss": "NUM (four)"},
+    {"form": "makuili", "ipa": ["m", "a", "k", "i", "l", "i"], "gloss": "NUM (five)"}
+  ],
+
+  "root_dictionary": [
+    {"form": "notza", "ipa": ["n", "o", "ts", "a"], "gloss": "call/summon", "class": "verb"},
+    {"form": "mati", "ipa": ["m", "a", "t", "i"], "gloss": "know", "class": "verb"},
+    {"form": "chihua", "ipa": ["tʃ", "i", "w", "a"], "gloss": "make/do", "class": "verb"},
+    {"form": "itta", "ipa": ["i", "t", "a"], "gloss": "see", "class": "verb"},
+    {"form": "kaki", "ipa": ["k", "a", "k", "i"], "gloss": "hear", "class": "verb"},
+    {"form": "piya", "ipa": ["p", "i", "j", "a"], "gloss": "have/guard", "class": "verb"},
+    {"form": "neki", "ipa": ["n", "e", "k", "i"], "gloss": "want/desire", "class": "verb"},
+    {"form": "yauh", "ipa": ["j", "a", "w"], "gloss": "go", "class": "verb"},
+    {"form": "huallauh", "ipa": ["w", "a", "l", "a", "w"], "gloss": "come", "class": "verb"},
+    {"form": "kisa", "ipa": ["k", "i", "s", "a"], "gloss": "exit/leave", "class": "verb"},
+    {"form": "kalaki", "ipa": ["k", "a", "l", "a", "k", "i"], "gloss": "enter", "class": "verb"},
+    {"form": "kochia", "ipa": ["k", "o", "tʃ", "i", "a"], "gloss": "sleep/wait", "class": "verb"},
+    {"form": "kua", "ipa": ["kʷ", "a"], "gloss": "eat", "class": "verb"},
+    {"form": "namaka", "ipa": ["n", "a", "m", "a", "k", "a"], "gloss": "sell", "class": "verb"},
+    {"form": "koua", "ipa": ["k", "o", "w", "a"], "gloss": "buy", "class": "verb"},
+    {"form": "tlazohtla", "ipa": ["tɬ", "a", "s", "o", "tɬ", "a"], "gloss": "love", "class": "verb"},
+    {"form": "ilhuia", "ipa": ["i", "l", "w", "i", "a"], "gloss": "tell/say to", "class": "verb"},
+    {"form": "ihta", "ipa": ["i", "t", "a"], "gloss": "see (variant)", "class": "verb"},
+    {"form": "tlalia", "ipa": ["tɬ", "a", "l", "i", "a"], "gloss": "place/put", "class": "verb"},
+    {"form": "poloa", "ipa": ["p", "o", "l", "o", "a"], "gloss": "lose/destroy", "class": "verb"},
+    {"form": "miki", "ipa": ["m", "i", "k", "i"], "gloss": "die", "class": "verb"},
+    {"form": "teki", "ipa": ["t", "e", "k", "i"], "gloss": "cut", "class": "verb"},
+    {"form": "paki", "ipa": ["p", "a", "k", "i"], "gloss": "be happy", "class": "verb"},
+
+    {"form": "tlaka", "ipa": ["tɬ", "a", "k", "a"], "gloss": "man/person", "class": "noun"},
+    {"form": "siua", "ipa": ["s", "i", "w", "a"], "gloss": "woman", "class": "noun"},
+    {"form": "kone", "ipa": ["k", "o", "n", "e"], "gloss": "child", "class": "noun"},
+    {"form": "kalli", "ipa": ["k", "a", "l", "i"], "gloss": "house", "class": "noun"},
+    {"form": "a", "ipa": ["a"], "gloss": "water", "class": "noun"},
+    {"form": "te", "ipa": ["t", "e"], "gloss": "stone", "class": "noun"},
+    {"form": "xochi", "ipa": ["ʃ", "o", "tʃ", "i"], "gloss": "flower", "class": "noun"},
+    {"form": "kuauh", "ipa": ["kʷ", "a", "w"], "gloss": "tree/wood/eagle", "class": "noun"},
+    {"form": "tona", "ipa": ["t", "o", "n", "a"], "gloss": "sun/heat", "class": "noun"},
+    {"form": "metztli", "ipa": ["m", "e", "ts", "tɬ", "i"], "gloss": "moon", "class": "noun"},
+    {"form": "tepe", "ipa": ["t", "e", "p", "e"], "gloss": "mountain/hill", "class": "noun"},
+    {"form": "ohtli", "ipa": ["o", "tɬ", "i"], "gloss": "road/path", "class": "noun"},
+    {"form": "tlatoa", "ipa": ["tɬ", "a", "t", "o", "a"], "gloss": "speak/rule", "class": "verb"},
+    {"form": "tlahtoani", "ipa": ["tɬ", "a", "t", "o", "a", "n", "i"], "gloss": "ruler/speaker (tlatoani)", "class": "noun"},
+    {"form": "yaotl", "ipa": ["j", "a", "o", "tɬ"], "gloss": "war/enemy", "class": "noun"},
+    {"form": "yaoyotl", "ipa": ["j", "a", "o", "j", "o", "tɬ"], "gloss": "warfare", "class": "noun"},
+    {"form": "maka", "ipa": ["m", "a", "k", "a"], "gloss": "give", "class": "verb"},
+    {"form": "tequi", "ipa": ["t", "e", "k", "i"], "gloss": "work/tribute", "class": "noun"},
+    {"form": "tlaxka", "ipa": ["tɬ", "a", "ʃ", "k", "a"], "gloss": "tortilla/bread", "class": "noun"},
+    {"form": "chilli", "ipa": ["tʃ", "i", "l", "i"], "gloss": "chili pepper", "class": "noun"},
+    {"form": "kakaua", "ipa": ["k", "a", "k", "a", "w", "a"], "gloss": "cacao", "class": "noun"},
+    {"form": "tomaua", "ipa": ["t", "o", "m", "a", "w", "a"], "gloss": "tomato plant", "class": "noun"},
+    {"form": "ahuaka", "ipa": ["a", "w", "a", "k", "a"], "gloss": "avocado", "class": "noun"},
+    {"form": "mexika", "ipa": ["m", "e", "ʃ", "i", "k", "a"], "gloss": "Mexica (people)", "class": "noun"},
+    {"form": "nahual", "ipa": ["n", "a", "w", "a", "l"], "gloss": "spirit/disguise", "class": "noun"},
+    {"form": "teotl", "ipa": ["t", "e", "o", "tɬ"], "gloss": "god/divine force", "class": "noun"},
+    {"form": "miktlan", "ipa": ["m", "i", "k", "tɬ", "a", "n"], "gloss": "underworld", "class": "noun"},
+    {"form": "altepetl", "ipa": ["a", "l", "t", "e", "p", "e", "tɬ"], "gloss": "city/polity", "class": "noun"},
+    {"form": "kili", "ipa": ["k", "i", "l", "i"], "gloss": "quelite/greens", "class": "noun"},
+    {"form": "tlatquihua", "ipa": ["tɬ", "a", "t", "k", "i", "w", "a"], "gloss": "possess things (be rich)", "class": "verb"},
+    {"form": "kamati", "ipa": ["k", "a", "m", "a", "t", "i"], "gloss": "thank (tlazocamati root)", "class": "verb"}
+  ]
+}
