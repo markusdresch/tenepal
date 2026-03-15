@@ -524,7 +524,7 @@ def format_comparison_md(seg: dict, acoustic: dict, agreement: dict) -> str:
     
     # Summary
     summ = acoustic.get("summary", {})
-    lines.append(f"**Akustik:** {summ.get('duration_ms', 0):.0f}ms, "
+    lines.append(f"**Acoustics:** {summ.get('duration_ms', 0):.0f}ms, "
                  f"voiced={summ.get('voiced_ratio', 0):.0%}, "
                  f"F0={summ.get('mean_f0', 0):.0f}Hz "
                  f"(range {summ.get('f0_range', 0):.0f}Hz)")
@@ -537,9 +537,9 @@ def format_comparison_md(seg: dict, acoustic: dict, agreement: dict) -> str:
     if agreement.get("has_acoustic_tl") or agreement.get("has_ipa_tl"):
         tl_status = []
         if agreement["has_acoustic_tl"]:
-            tl_status.append("✅ akustisch bestätigt")
+            tl_status.append("✅ acoustically confirmed")
         if agreement["has_ipa_tl"]:
-            tl_status.append("IPA vorhanden")
+            tl_status.append("present in IPA")
         lines.append(f"**tɬ-Signal:** {', '.join(tl_status)}")
     
     # Conflicts
@@ -550,39 +550,39 @@ def format_comparison_md(seg: dict, acoustic: dict, agreement: dict) -> str:
     
     lines.append("")
     
-    # Erläuterung der Parselmouth-Notation
+    # Parselmouth notation explanation
     return "\n".join(lines)
 
 
 def format_legend() -> str:
     """Parselmouth transliteration legend."""
-    return """## Parselmouth Transliterations-Legende
+    return """## Parselmouth Transliteration Legend
 
-Die Parselmouth-Zeile ist **keine Phonem-Erkennung** — sie beschreibt die
-**akustische Physik** des Signals in 20ms-Frames:
+The Parselmouth row is **not phoneme recognition** — it describes the
+**acoustic physics** of the signal in 20ms frames:
 
-| Symbol | Bedeutung | Akustische Evidenz |
-|--------|-----------|-------------------|
-| `V:a/e/i/o/u` | Voiced + Formant-Position → Vokal | F0 > 0, F1/F2 gemappt |
-| `V:~` | Voiced, aber kein klarer Vokal | F0 > 0, Formanten unklar → Sonorant (n/m/l/r/w/j) |
-| `U:tɬ!` | **Unvoiced lateral Affricate** | Stop-Burst + Friktion 3-5kHz, kein Voicing |
-| `U:tʃ` | Unvoiced postalveolar Affricate | Stop-Burst + Friktion > 5kHz |
-| `U:stop` | Unvoiced Stop (p/t/k) | Intensitäts-Dip > 10dB |
-| `U:s/ʃ` | Unvoiced Sibilant | Friktion-Ratio > 0.3, Centroid > 5.5kHz |
-| `U:ɬ/x` | Unvoiced lateral/velar Frikativ | Friktion 3-6kHz (tiefer als s/ʃ) |
-| `U:h` | Aspiration/Glottal Frikativ | Schwache Friktion < 3kHz |
-| `U:~` | Schwache Friktion (Übergang) | Friktion 0.1-0.3 |
-| `_` | Stille/Pause | Keine Energie |
-| `×N` | N konsekutive identische Frames | z.B. `V:a×3` = 60ms /a/ |
+| Symbol | Meaning | Acoustic Evidence |
+|--------|---------|-------------------|
+| `V:a/e/i/o/u` | Voiced + formant position → vowel | F0 > 0, F1/F2 mapped |
+| `V:~` | Voiced, but no clear vowel | F0 > 0, formants unclear → sonorant (n/m/l/r/w/j) |
+| `U:tɬ!` | **Unvoiced lateral affricate** | Stop burst + friction 3-5kHz, no voicing |
+| `U:tʃ` | Unvoiced postalveolar affricate | Stop burst + friction > 5kHz |
+| `U:stop` | Unvoiced stop (p/t/k) | Intensity dip > 10dB |
+| `U:s/ʃ` | Unvoiced sibilant | Friction ratio > 0.3, centroid > 5.5kHz |
+| `U:ɬ/x` | Unvoiced lateral/velar fricative | Friction 3-6kHz (lower than s/ʃ) |
+| `U:h` | Aspiration/glottal fricative | Weak friction < 3kHz |
+| `U:~` | Weak friction (transition) | Friction 0.1-0.3 |
+| `_` | Silence/pause | No energy |
+| `×N` | N consecutive identical frames | e.g. `V:a×3` = 60ms /a/ |
 
 ### Interpretation
 
-- **Wo Parselmouth V:a sagt und Allo `a` → bestätigt** ✅
-- **Wo Parselmouth U:tɬ! sagt → harter NAH-Marker**, egal was die Backends sagen
-- **Wo Parselmouth V:~ sagt → Sonorant**: Allo/w2v2 müssen klären ob n/m/l/r
-- **Voiced ratio** misst den Anteil stimmhafter Frames — sollte ungefähr zum 
-  Anteil stimmhafter Phone in den Backends passen
-- **Konflikte** zeigen wo Backends und Akustik auseinandergehen
+- **Where Parselmouth says V:a and Allo says `a` → confirmed** ✅
+- **Where Parselmouth says U:tɬ! → hard NAH marker**, regardless of what backends say
+- **Where Parselmouth says V:~ → sonorant**: Allo/w2v2 must determine if n/m/l/r
+- **Voiced ratio** measures the proportion of voiced frames — should roughly match
+  the proportion of voiced phones in the backends
+- **Conflicts** show where backends and acoustics diverge
 """
 
 
@@ -671,42 +671,42 @@ def main():
     avg_w2v2_agree = np.mean([r["agreement"]["w2v2_voice_agree"] for r in results])
     
     md_blocks.append("---\n")
-    md_blocks.append("## Zusammenfassung\n")
-    md_blocks.append(f"| Metrik | Wert |")
-    md_blocks.append(f"|--------|------|")
-    md_blocks.append(f"| Segmente analysiert | {len(results)} |")
-    md_blocks.append(f"| Ø Voicing-Agreement Allo | **{avg_allo_agree:.0%}** |")
-    md_blocks.append(f"| Ø Voicing-Agreement w2v2 | **{avg_w2v2_agree:.0%}** |")
-    md_blocks.append(f"| tɬ akustisch bestätigt | {tl_acoustic} |")
-    md_blocks.append(f"| tɬ nur in IPA | {tl_ipa - tl_acoustic if tl_ipa > tl_acoustic else 0} |")
-    md_blocks.append(f"| Konflikte gesamt | {conflicts_total} |")
-    
+    md_blocks.append("## Summary\n")
+    md_blocks.append(f"| Metric | Value |")
+    md_blocks.append(f"|--------|-------|")
+    md_blocks.append(f"| Segments analyzed | {len(results)} |")
+    md_blocks.append(f"| Avg voicing agreement Allo | **{avg_allo_agree:.0%}** |")
+    md_blocks.append(f"| Avg voicing agreement w2v2 | **{avg_w2v2_agree:.0%}** |")
+    md_blocks.append(f"| tɬ acoustically confirmed | {tl_acoustic} |")
+    md_blocks.append(f"| tɬ only in IPA | {tl_ipa - tl_acoustic if tl_ipa > tl_acoustic else 0} |")
+    md_blocks.append(f"| Total conflicts | {conflicts_total} |")
+
     # Winner analysis
     md_blocks.append("")
-    md_blocks.append("### Wer ist besser?")
+    md_blocks.append("### Which backend is closer?")
     md_blocks.append("")
     if avg_allo_agree > avg_w2v2_agree + 0.05:
-        md_blocks.append(f"**→ Allosaurus** liegt beim Voicing näher an der Akustik "
+        md_blocks.append(f"**→ Allosaurus** is closer to the acoustics for voicing "
                         f"({avg_allo_agree:.0%} vs {avg_w2v2_agree:.0%})")
     elif avg_w2v2_agree > avg_allo_agree + 0.05:
-        md_blocks.append(f"**→ wav2vec2** liegt beim Voicing näher an der Akustik "
+        md_blocks.append(f"**→ wav2vec2** is closer to the acoustics for voicing "
                         f"({avg_w2v2_agree:.0%} vs {avg_allo_agree:.0%})")
     else:
-        md_blocks.append(f"**→ Gleichstand** beim Voicing "
+        md_blocks.append(f"**→ Tie** for voicing "
                         f"(Allo {avg_allo_agree:.0%}, w2v2 {avg_w2v2_agree:.0%})")
-    
+
     md_blocks.append("")
-    md_blocks.append("### Empfehlung")
+    md_blocks.append("### Recommendation")
     md_blocks.append("")
-    md_blocks.append("Parselmouth liefert die **akustische Grundwahrheit** für:")
-    md_blocks.append("1. **tɬ-Detektion**: Harter NAH-Marker, unabhängig von ML-Modellen")
-    md_blocks.append("2. **Voicing-Validierung**: Wo Voiced/Unvoiced nicht zum Backend passt → Backend-Fehler")
-    md_blocks.append("3. **Vokal-Approximation**: F1/F2-basiert, aber gröber als trainierte Modelle")
-    md_blocks.append("4. **Frikativ-Klassifikation**: Centroid unterscheidet s/ʃ von ɬ/x")
+    md_blocks.append("Parselmouth provides **acoustic ground truth** for:")
+    md_blocks.append("1. **tɬ detection**: Hard NAH marker, independent of ML models")
+    md_blocks.append("2. **Voicing validation**: Where voiced/unvoiced disagrees with backend → backend error")
+    md_blocks.append("3. **Vowel approximation**: F1/F2-based, but coarser than trained models")
+    md_blocks.append("4. **Fricative classification**: Centroid distinguishes s/ʃ from ɬ/x")
     md_blocks.append("")
-    md_blocks.append("Allosaurus und w2v2 sind bei **Konsonanten-Identifikation** besser — ")
-    md_blocks.append("Parselmouth kann Manner (Stop/Frikativ/Affricate) erkennen, aber nicht Place.")
-    md_blocks.append("Die **Fusion** sollte Parselmouth als Validator nutzen, nicht als Ersatz.")
+    md_blocks.append("Allosaurus and w2v2 are better at **consonant identification** — ")
+    md_blocks.append("Parselmouth can detect manner (stop/fricative/affricate), but not place.")
+    md_blocks.append("**Fusion** should use Parselmouth as validator, not replacement.")
     
     # Output
     md_text = "\n".join(md_blocks)
