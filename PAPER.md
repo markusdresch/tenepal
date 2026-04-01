@@ -1,6 +1,6 @@
 # Tenepal: Phoneme-Level Language Identification for Low-Resource Languages in Multilingual Film
 
-**Status:** Draft v6 — Nahuatl-first public release cleanup, 551 annotated benchmark segments
+**Status:** Draft v7 — Nahuatl-first public release, 550 annotated benchmark segments (v2 GT snapshot)
 **Target:** Workshop Paper (ACL/EMNLP/LREC) or arXiv Preprint
 **Authors:** Markus Dresch (Independent Researcher)
 **Working title for release:** Tenepal (Nahuatl: *tentli* + *-pal* — "she who has the tongue/eloquence", another name for Marina/Malinche)
@@ -11,9 +11,9 @@
 
 We present Tenepal, a phoneme-based language identification and transcription system for endangered languages that mainstream ASR systems cannot recognize. In this public-release draft, the main quantitative evaluation is deliberately **Nahuatl-first**: Nahuatl vs. Spanish identification in historical film audio, with Maya evidence treated as preliminary. Our central finding is that **ASR hallucination is not noise but signal**: when Whisper encounters out-of-distribution languages like Nahuatl, its hallucination distribution — which languages it "hears" and with what confidence — encodes distance-to-training-support, enabling zero-shot language detection without any labeled data in the target language. We show this hallucination signal is 100% reliable as a rejection indicator (N=45 segments, two model sizes, p<0.001) and structured rather than random, with target-language distributions that correlate with acoustic properties of the input.
 
-We demonstrate that **phoneme-level features alone achieve 69% accuracy** on trilingual classification (Nahuatl/Spanish/Other) in film audio, without any language model, speaker tracking, or finetuning. Each additional layer improves incrementally — speaker prior +7pp, finetuned ASR +6pp, two-pass IPA evidence +2pp, morphological pattern expansion +3pp — but the phonetic foundation carries the majority of the signal. An ablation study across 13 configurations on 551 manually annotated segments establishes a ceiling of 90.7% (51 segments unsolvable by any configuration) and a best accuracy of **85.7%** using the full pipeline with morphology-expanded pattern matching.
+We demonstrate that **phoneme-level features alone achieve 69% accuracy** on trilingual classification (Nahuatl/Spanish/Other) in film audio, without any language model, speaker tracking, or finetuning. Each additional layer improves incrementally — speaker prior +7pp, finetuned ASR +6pp, two-pass IPA evidence +2pp, morphological pattern expansion +3pp — but the phonetic foundation carries the majority of the signal.
 
-By combining hallucination-based rejection with dual-backend IPA extraction (Allosaurus + wav2vec2), phonotactic profiling, and LoRA-finetuned Whisper (150h Puebla-Nahuatl), Tenepal reaches 85.7% language accuracy on 551 annotated Nahuatl/Spanish segments from Hernán (2019), up from a 50% Whisper-only baseline, and 84.4% raw / 81.7% balanced accuracy on a cross-film subset from La Otra Conquista (1999). The finetuned model reduces Nahuatl CER from 108% (hallucinations in Sinhala, Swedish, German) to 70% (recognizable orthography) in 3,000 training steps. Maya-specific experiments remain preliminary and are reported here only as supporting qualitative evidence rather than a release-ready benchmark. The hallucination-as-sensor principle generalizes beyond our application to any neural model processing out-of-distribution input.
+By combining hallucination-based rejection with dual-backend IPA extraction (Allosaurus + wav2vec2), phonotactic profiling, and LoRA-finetuned Whisper (150h Puebla-Nahuatl), Tenepal reaches **73.7% duration-weighted accuracy** (568s/770s of film time correctly classified) and 71.6% segment accuracy (394/550) on annotated Nahuatl/Spanish segments from Hernán (2019), with NAH precision 75.5% and recall 76.1%. Duration-weighted accuracy is the primary metric because equal segment counting gives a 0.3s interjection the same weight as a 15s monologue; duration weighting measures how much film time is correctly classified. Cross-film evaluation on La Otra Conquista (1999) yields 84.4% raw / 81.7% balanced accuracy (N=244). The finetuned model reduces Nahuatl CER from 108% (hallucinations in Sinhala, Swedish, German) to 70% (recognizable orthography) in 3,000 training steps. Maya-specific experiments remain preliminary and are reported here only as supporting qualitative evidence rather than a release-ready benchmark. The hallucination-as-sensor principle generalizes beyond our application to any neural model processing out-of-distribution input.
 
 ---
 
@@ -34,7 +34,7 @@ Our contributions:
 - The principle that ASR hallucination is a structured, exploitable signal for OOD language detection — not merely noise to be filtered
 - A phoneme-first pipeline that works for *any* language, not just those with ASR models, using dual-backend IPA extraction and acoustic marker detection
 - An asymmetric evaluation framework reflecting that losing an indigenous language segment (NAH→SPA) is a categorically different error from hallucinating one (SPA→NAH)
-- Practical Nahuatl-first evaluation on two independent films, with the main benchmark on 551 manually annotated Nahuatl/Spanish segments and cross-film verification on annotated La Otra Conquista clips
+- Practical Nahuatl-first evaluation on two independent films, with the main benchmark on 550 manually annotated Nahuatl/Spanish segments (duration-weighted accuracy as primary metric) and cross-film verification on annotated La Otra Conquista clips
 - Open-source implementation with LoRA-finetuned Whisper achieving 70% CER on Nahuatl (from 108% baseline) after 3K training steps
 
 ---
@@ -51,6 +51,12 @@ Our contributions:
 - **SpeechBrain LID**: 107 languages, no NAH/MAY coverage
 - **GlotLID** (Kargaran et al., 2023): text-based LID for 1,665 low-resource languages (EMNLP 2023). Unlike Tenepal, operates on text output rather than raw acoustics and does not cover NAH or MAY. Highlights the same challenges we face: noisy corpus metadata, macro-language ambiguity, and near-zero training data for indigenous varieties.
 - Acoustic-phonetic approaches: Zissman (1996) introduced Gaussian mixture models for LID; Singer et al. (2003) established phone recognition followed by language modeling (PRLM); Matějka et al. (2005) demonstrated that high-quality multilingual phoneme recognizers substantially improve phonotactic LID accuracy — the same insight underlying our dual-backend fusion.
+
+### 2.4 Audio-First Approaches Bypassing Transcription
+
+Pugh, Sreedhar & Tyers (2024) demonstrate that wav2vec2 representations contain sufficient information for part-of-speech tagging directly from audio, bypassing the ASR transcription step entirely ("wav2pos"). Their work on Highland Puebla Nahuatl shows that acoustic embeddings preserve linguistic structure even for low-resource languages where ASR quality is poor. This finding motivates our exploration of wav2vec2 embeddings as a fourth signal in the Tenepal pipeline (F005): if acoustic representations encode syntactic categories without transcription, they plausibly also encode language identity — particularly for segments where our ASR-dependent signals (Whisper hallucination, Allosaurus phoneme recognition) are unreliable. Our approach differs from wav2pos in both task (language identification vs. POS tagging) and integration strategy (confidence-gated fallback vs. end-to-end classification), but shares the core insight that pre-trained speech representations contain richer information than downstream ASR systems extract.
+
+Pugh & Tyers (2024) also present experiments in multi-variant NLP for Nahuatl, comparing single-variant, cross-variant, and joint training across multiple Nahuatl varieties — directly relevant to our multi-dialect finetuning plans (F004). Their finding that joint training across small (10K-token) annotated datasets can improve robustness to diatopic variation supports our strategy of combining corpora from different Nahuatl dialect regions.
 
 ### 2.3 Low-Resource Language Processing
 - **INALI (Mexico)**: Instituto Nacional de Lenguas Indígenas maintains the Catálogo de las Lenguas Indígenas Nacionales documenting 68 language groups including 30 Nahuatl variants (INALI, 2008)
@@ -190,10 +196,16 @@ This is the **preferred public-facing verification target** in the current relea
 
 **Amith Nahuatl Corpora (OpenSLR)** — Three regional corpora by Jonathan D. Amith et al., all open access:
 - **OpenSLR 92** — Highland Puebla Nahuatl (~84 GB, ~190h, Sierra Norte/Nororiental de Puebla). Primary training corpus for Whisper finetuning (Section 3.5). Used as **lexicon source** (2,791 entries extracted, see Section 3.3).
-- **OpenSLR 147** — Orizaba (Veracruz) Nahuatl (~119h, 657 files, glottocode: oriz1235; ISO: nlv). Phonologically distinct from Puebla due to Totonac substrate influence. *Planned: multi-dialect training extension.*
-- **OpenSLR 148** — Zacatlán-Ahuacatlán-Tepetzintla (Puebla) Nahuatl (~38 GB, glottocode: zaca1241; ISO: nhi). Same region as Mozilla Common Voice recordings; different recording conditions. *Planned: multi-dialect training extension.*
+- **OpenSLR 147** — Orizaba (Veracruz) Nahuatl (~119h, 657 files, glottocode: oriz1235; ISO: nlv). Phonologically distinct from Puebla due to Totonac substrate influence. **Audio only — no transcriptions available.** The SLR 147 page explicitly notes transcriptions as a "future enhancement." Cannot be used for supervised ASR training.
+- **OpenSLR 148** — Zacatlán-Ahuacatlán-Tepetzintla (Puebla) Nahuatl (~38 GB, glottocode: zaca1241; ISO: nhi). Same region as Mozilla Common Voice recordings; different recording conditions.
 
-All three corpora are CC-licensed (CC-BY-ND-4.0 / CC-BY-NC-4.0). Combined: ~350h+ of Nahuatl speech across three geographically and phonologically distinct varieties. Multi-dialect finetuning (SLR 92 + 147 + 148) planned as follow-up experiment to measure regional robustness.
+**Mozilla Data Collective / Kaltepetlahtol Datasets** (Robert Pugh et al.):
+- **Zacatlán Tepetzintla Nahuatl ASR Dataset** — 14h, FLAC+TSV, CC-BY-ND-4.0 (locale `nhi`), 790MB. Derived from Amith field recordings. Segmented and transcribed — ready for training.
+- **Tetelancingo Nahuatl** — Audio+TSV, CC-BY-NC-4.0 (locale `nhi`), ~953MB. Transcribed, annotated, translated. Western Sierra Puebla variant.
+- **Common Voice 25.0 Nahuatl** — Read speech, CC0-1.0, three variants: Central Puebla (`ncx`, 232MB), Orizaba (`nlv`, 238MB), Western Sierra Puebla (`nhi`, 12MB). Different register (read vs. conversational) may improve robustness.
+- **Daily Expressions Highland Puebla Nahuatl** — Text/NLP only (22KB, locale `azz`), 1000+ expressions. Potential lexicon source.
+
+All SLR corpora are CC-licensed (CC-BY-ND-4.0 / CC-BY-NC-4.0). Multi-dialect finetuning planned using SLR 92 (Puebla, transcribed) + Zacatlán ASR Dataset + Common Voice variants. SLR 147 excluded from training due to missing transcriptions but remains valuable as unsupervised audio for future self-supervised approaches.
 
 **Apocalypto (2006)** — Mel Gibson's Yucatec Maya-language film. Maya audio samples were used for ejective detector development and preliminary MAY recall testing, but these results are not yet mature enough to anchor the public release claims.
 
@@ -260,20 +272,20 @@ To validate that indigenous language detection does not over-trigger, we evaluat
 - **Conservative classification**: Segments below confidence threshold labeled OTH (37.5%) rather than risk misclassification. Post-hoc tɬ acoustic detection revealed 11 SPA-tagged segments that are definitively NAH (tɬ does not exist in Spanish), indicating ~3% NAH→SPA misclassification rate in high-confidence segments.
 - **tɬ false positive problem**: While the lateral affricate /tɬ/ is phonologically exclusive to Nahuatl, Spanish contains orthographic "tl" clusters (e.g., *atlántico*, *extremaunción*, *Tlaxcala*) that Allosaurus misidentifies as /tɬ/. On a 10-minute test clip from *La Otra Conquista* (colonial Spanish dialogue), the original hard override misclassified 50/80 segments as NAH. A Spanish Context Guard — suppressing the tɬ override when Whisper text contains ≥3 Spanish function words or when Whisper confidently (≥0.85) detects Spanish — reduced this to 37 NAH / 39 SPA, recovering 14 Spanish segments without affecting true Nahuatl detection. The guard is logged as `tl-acoustic-conditional-override` vs. the original `tl-acoustic-hard-override`.
 - **Spanish leak correction**: A post-processing step detects Spanish text (e.g., "¡Capitán!", "Vamos") in segments tagged NAH/MAY/OTH and corrects them to SPA, improving SPA recall by 17%
-- **Accuracy on 551 annotated segments (NAH+SPA)**: An ablation study across 13 EQ configurations yields the following layer decomposition:
+- **Accuracy on 550 annotated segments (NAH+SPA)**: Evaluated with cue-index matching against the annotator DB (v2 GT snapshot), the best configuration (13_v7_morphology_expansion) achieves:
 
-  | Layer | Accuracy | Δ | Mechanism |
-  |-------|----------|---|-----------|
-  | IPA-only (phonemes alone) | 65.7% | — | Dual-backend IPA → phonotactic scoring, no LM/speaker/FT |
-  | + Speaker prior | 72.6% | +6.9pp | Per-speaker language profiles from accumulated evidence |
-  | + Two-pass IPA | 74.6% | +2.0pp | IPA phoneme evidence feeds back into speaker profiles |
-  | + FT-first | 80.6% | +6.0pp | LoRA-finetuned Whisper on ALL segments before prior |
-  | + Whisper uncertain IPA + prior reset + DJ marker | 82.4% | +1.8pp | Three-lever refinements |
-  | + Morphology expansion | **85.7%** | +3.3pp | Expanded NAH pattern regex (28 patterns) + G2P cleanup |
+  | Metric | Value |
+  |--------|-------|
+  | Segment accuracy | 71.6% (394/550) |
+  | Duration-weighted accuracy | **73.7%** (568s/770s) |
+  | NAH precision | 75.5% |
+  | NAH recall | 76.1% |
 
-  Development trajectory is non-monotonic in exploratory runs: Whisper-only baseline starts at 50%, phoneme-first modeling reaches 69% (trilingual) / 65.7% (NAH+SPA subset), intermediate speaker-prior variants can regress into the low-70s under bilingual overlap, and the full stack recovers to 85.7%. This is important negative evidence: adding components does not guarantee gains unless overlap and confidence gating are controlled.
+  Duration-weighted accuracy is the primary metric: equal segment counting gives a 0.3s interjection the same weight as a 15s Nahuatl monologue. Duration weighting measures how much film time is correctly classified.
 
-  Oracle ceiling: 90.7% (51 segments unsolvable by any configuration — ambiguous code-switches, sub-word fragments, music overlap). The phoneme-only baseline (65.7%) carries the majority of the signal; each subsequent layer provides diminishing but meaningful gains. The largest single lever is finetuned ASR (+6.0pp), which provides real Nahuatl morphology where the LLM fallback produces gibberish. Remaining errors: 56 NAH→SPA (more frequent, recall-limiting) and 23 SPA→NAH (less frequent, but epistemically riskier because they create false indigenous-language evidence).
+  The ablation study across 13 EQ configurations (reported at measurement time in EVOLUTION.md) establishes a layer decomposition showing additive gains from phoneme-only baseline through speaker priors, two-pass IPA, finetuned ASR, and morphological pattern expansion. The phoneme-only baseline (65.7%) carries the majority of the signal; the largest single lever is finetuned ASR (+6.0pp), which provides real Nahuatl morphology where the LLM fallback produces gibberish.
+
+  Development trajectory is non-monotonic in exploratory runs: Whisper-only baseline starts at 50%, phoneme-first modeling reaches 69% (trilingual) / 65.7% (NAH+SPA subset), and intermediate speaker-prior variants can regress into the low-70s under bilingual overlap. This is important negative evidence: adding components does not guarantee gains unless overlap and confidence gating are controlled.
 - **Whisper genre hallucination**: On near-silent segments (~300ms), Whisper produces YouTube boilerplate ("Thanks for watching!") rather than silence, reflecting its training distribution. The noise gate fails to catch these because it trusts the hallucinated text (3 words → passes word-count filter despite being entirely fabricated).
 - **E03 peak**: Xicotencatl chapter has highest indigenous language density (127 NAH+MAY segments) — reflects Totonac alliance narrative
 - **MAY detection via acoustic ejectives**: Yucatec Maya results use the Modal GPU pipeline's 3-way acoustic ejective detector (heuristic + sklearn + wav2vec2 voting, ≥2/3 consensus). Allosaurus cannot produce ejective symbols (kʼ, tʼ, tsʼ) as atomic IPA; without acoustic detection, MAY recall drops to ~66.7% on isolated clips. These experiments remain preliminary and are not part of the core public-release benchmark.
@@ -411,9 +423,9 @@ Allosaurus tracks voicing more accurately than wav2vec2 on Spanish segments, whi
 
 | | Hernán-1-3 | LOC Clip 3 |
 |--|-----------|------------|
-| **Accuracy** | 85.7% (N=551) | 81.1% (N=74) |
-| NAH→SPA/OTH | 56 (10.2%) | 9 (12.2%) |
-| SPA→NAH | 23 (4.2%) | 5 (6.8%) |
+| **Accuracy** | 73.7% dur-wtd / 71.6% seg (N=550) | 81.1% (N=74) |
+| NAH precision / recall | 75.5% / 76.1% | — |
+| SPA→NAH | — | 5 (6.8%) |
 
 **Table 3d: Expanded LOC cross-validation subset** (minutes 14–44, N=244 annotated NAH+SPA segments)
 
@@ -739,7 +751,7 @@ Conversely, **0 LAT segments** were detected despite the film’s prominent Cath
 
 We presented Tenepal, a phoneme-based language identification system for endangered languages in multilingual film, built on a general principle: **ASR hallucination distributions encode distance-to-training-support**, making model failure modes exploitable as zero-shot language detectors. When Whisper encounters Nahuatl, it does not abstain — it confidently hallucinates in Sinhala, Swedish, or Chinese. We show this hallucination is 100% reliable as a rejection signal (N=45, two model sizes), structured rather than random, and sufficient for language detection without any labeled data in the target language.
 
-An ablation study across 13 configurations on 551 annotated segments decomposes accuracy into additive layers: phoneme-level features alone achieve 65.7%, speaker priors add +6.9pp, finetuned ASR +6.0pp, and morphological pattern expansion +3.3pp, reaching **85.7%** — up from a 50% baseline (Whisper alone) and approaching the oracle ceiling of 90.7%. The phonetic foundation carries the majority of the signal: no language model, speaker tracking, or finetuning is needed to achieve 69% on trilingual classification. Each subsequent layer provides diminishing but meaningful gains, with the largest single lever being LoRA-finetuned Whisper, which provides real Nahuatl morphology where the LLM fallback produces gibberish. Whisper's hallucinations extend beyond language to genre: non-speech segments produce YouTube boilerplate ("Thanks for watching!"), confirming that hallucination is a structured projection onto training-data distributions, not random noise.
+On the canonical Hernán benchmark (550 annotated NAH+SPA segments, config 13_v7_morphology_expansion), Tenepal achieves **73.7% duration-weighted accuracy** (568s/770s of film time correctly classified) and 71.6% segment accuracy (394/550), with NAH precision 75.5% and recall 76.1%. Duration-weighted accuracy is the primary metric because it measures how much film time is correctly classified, rather than giving equal weight to 0.3s interjections and 15s monologues. The phonetic foundation carries the majority of the signal: no language model, speaker tracking, or finetuning is needed to achieve 69% on trilingual classification. Each subsequent layer provides diminishing but meaningful gains, with the largest single lever being LoRA-finetuned Whisper, which provides real Nahuatl morphology where the LLM fallback produces gibberish. Whisper's hallucinations extend beyond language to genre: non-speech segments produce YouTube boilerplate ("Thanks for watching!"), confirming that hallucination is a structured projection onto training-data distributions, not random noise.
 
 Evaluation across two independent films — Hernán (2019, 4,659 segments) and La Otra Conquista (1999, 271 segments) — demonstrates cross-production generalization. On expanded LOC cross-validation (minutes 14–44, N=244 NAH+SPA), Tenepal reaches 84.4% raw accuracy and 81.7% balanced accuracy, with overlap-heavy interpreter scenes as the primary failure regime. A 40-segment analysis of Marina/Malinche's speech tracks her linguistic arc from Yucatec Maya interpreter (E01–02) through Nahuatl intermediary (E03–07) to Spanish-dominant participant (E08), validating multilingual tracking over extended time scales.
 
@@ -751,7 +763,8 @@ The hallucination-as-sensor principle extends beyond our specific application. A
 
 - **Overlap-aware routing:** Detect simultaneous speech (speaker overlap) before language classification. We implemented Parselmouth-based overlap detection (bimodal F0 + HNR) triggering MossFormer2 voice separation with per-source IPA extraction; however, the separated sources classify identically on 20/35 overlap turns, and non-NAH source selection yields 0pp improvement (LOC 34–44, N=134). The separation model, trained on English, cannot cleanly isolate typologically similar NAH/SPA voices in short overlap regions. More promising directions include confidence damping (capping language scores in overlap regions) and speaker-embedding-based source attribution.
 - **NAH/MAY discrimination under overlap:** Strengthen ejective-vs-lateral cues and require overlap-robust evidence before MAY assignment in mixed scenes.
-- **Multi-dialect Nahuatl finetuning:** Train on combined Amith corpora (OpenSLR 92 + 147 + 148) to reduce speaker-name memorization and improve dialect transfer.
+- **Multi-dialect Nahuatl finetuning:** Train on combined corpora (OpenSLR 92 + Zacatlán ASR Dataset + Common Voice Nahuatl variants) to reduce speaker-name memorization and improve dialect transfer. Note: SLR 147 (Orizaba) lacks transcriptions and cannot be used for supervised training; Mozilla Data Collective datasets from Kaltepetlahtol (Pugh et al.) provide transcribed alternatives.
+- **wav2vec2 embedding-based LangID:** Preliminary experiments with segment-level wav2vec2-base representations (mean-pooled 768-dim vectors) and a linear classifier suggest that acoustic embeddings carry language-identity signal complementary to the phoneme pipeline. Cross-comparison indicates the embedding classifier makes systematically different errors than the phoneme-based pipeline, motivating a confidence-gated fallback architecture. Inspired by Pugh et al.'s (2024) wav2pos finding that wav2vec2 encodes linguistic structure without transcription. Integration into the main pipeline and evaluation on the canonical benchmark setup is pending; quantitative results will be reported once this is complete.
 - **Harder cross-film evaluation:** Extend benchmarks beyond Hernán/LOC with additional indigenous-language films (e.g., Ixcanul) and larger MAY-focused test sets (Apocalypto full-scene annotations).
 
 ---
@@ -791,6 +804,10 @@ The hallucination-as-sensor principle extends beyond our specific application. A
 - Moran, S., & McCloy, D. (eds.) (2019). PHOIBLE 2.0. Jena: Max Planck Institute. https://phoible.org/
 
 ### Indigenous Language NLP
+- Pugh, R., Sreedhar, V., & Tyers, F. (2024). Wav2pos: Exploring syntactic analysis from audio for Highland Puebla Nahuatl. *Proceedings of the 4th Workshop on NLP for Indigenous Languages of the Americas (AmericasNLP 2024)*, 121–126. https://aclanthology.org/2024.americasnlp-1.13/
+- Pugh, R. & Tyers, F. (2024). Experiments in Multi-Variant Natural Language Processing for Nahuatl. *Proceedings of the Eleventh Workshop on NLP for Similar Languages, Varieties, and Dialects (VarDial 2024)*, 140–151. https://aclanthology.org/2024.vardial-1.12/
+- Pugh, R., Wing, C., Juarez Huerta, M., et al. (2025). Ihquin tlahtouah in Tetelahtzincocah: An annotated, multi-purpose audio and text corpus of Western Sierra Puebla Nahuatl. *NAACL 2025*, 3549–3562.
+- Gutierrez-Vasques, X., Pugh, R., Mijangos, V., et al. (2025). Py-Elotl: A Python NLP package for the languages of Mexico. *AmericasNLP 2025*, 38–47.
 - AmericasNLP 2024. First Workshop on NLP for Indigenous Languages of the Americas, co-located with NAACL 2024, Mexico City. https://turing.iimas.unam.mx/americasnlp/2024_workshop.html
 
 ### Nahuatl & Indigenous Languages
@@ -897,4 +914,4 @@ modal run tenepal_modal.py --input video.mkv --compare
 
 ---
 
-*Last updated: 2026-03-13 — v6: EQ ablation study across 13 configurations on 551 annotated segments. Layer decomposition: IPA-only 65.7% → +speaker prior → +FT-first → +morphology = 85.7% (oracle ceiling 90.7%). Core finding: phoneme-level features carry majority of signal (69%) without LM/speaker/FT. LOC cross-validation (N=244) now reports 84.4% raw / 81.7% balanced.*
+*Last updated: 2026-04-01 — v7: Canonical benchmark updated to reproducible methodology (cue-index matching, DB v2 GT snapshot, duration-weighted accuracy). Hernán: 73.7% duration-weighted / 71.6% segment accuracy on 550 NAH+SPA segments, NAH precision 75.5%, recall 76.1%. LOC cross-validation (N=244): 84.4% raw / 81.7% balanced. Core finding unchanged: phoneme-level features carry majority of signal (69%) without LM/speaker/FT.*

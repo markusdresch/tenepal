@@ -91,6 +91,10 @@ tr.playing { background: rgba(78, 204, 163, 0.15) !important; outline: 1px solid
           font-size: 9px; margin-right: 1px; }
 .ejective { background: var(--may); color: #000; }
 
+.f005-agree { color: var(--ok); }
+.f005-disagree { color: var(--err); }
+.f005-null { color: var(--unk); }
+tr.f005-split-row { border-left: 3px solid #3498db; }
 .ipa-cell { max-width: 200px; word-break: break-all; font-size: 11px; color: var(--fg2); }
 .ipa-hl { color: var(--accent); font-weight: 700; }
 
@@ -153,7 +157,10 @@ tr.clickable { cursor: pointer; }
   <a href="/">&#8592; Annotator</a>
   <div class="stat" id="statTotal">-</div>
   <div class="stat" id="statAcc">-</div>
+  <div class="stat" id="statF005Acc">-</div>
   <div class="stat err" id="statErr">-</div>
+  <div class="stat" id="statF005Rescue">-</div>
+  <div class="stat err" id="statF005Break">-</div>
   <div class="stat" id="statCost">-</div>
 </div>
 
@@ -223,6 +230,7 @@ tr.clickable { cursor: pointer; }
   <th data-col="speaker">Speaker</th>
   <th data-col="gt_lang">GT</th>
   <th data-col="lang">Pred</th>
+  <th data-col="f005_lang">F005</th>
   <th data-col="match">OK</th>
   <th data-col="error_type">Error</th>
   <th data-col="cost" data-type="num">$</th>
@@ -364,9 +372,20 @@ function updateStats() {
   const errors = ROWS.filter(r => r.match === false).length;
   const cost = ROWS.reduce((s, r) => s + r.cost, 0);
   document.getElementById('statTotal').innerHTML = `Segments: <b>${ROWS.length}</b>`;
-  document.getElementById('statAcc').innerHTML = `Accuracy: <b>${correct}/${annotated} (${annotated ? (100*correct/annotated).toFixed(1) : 0}%)</b>`;
+  document.getElementById('statAcc').innerHTML = `Pipeline: <b>${correct}/${annotated} (${annotated ? (100*correct/annotated).toFixed(1) : 0}%)</b>`;
   document.getElementById('statErr').innerHTML = `Errors: <b>${errors}</b>`;
   document.getElementById('statCost').innerHTML = `Cost: <b>${cost.toFixed(0)}</b>`;
+
+  // F005 stats
+  const f005Annotated = ROWS.filter(r => r.gt_lang && r.f005_lang).length;
+  const f005Correct = ROWS.filter(r => r.gt_lang && r.f005_lang && r.f005_lang === r.gt_lang).length;
+  const rescue = ROWS.filter(r => r.gt_lang && r.f005_lang && r.match === false && r.f005_lang === r.gt_lang).length;
+  const breakCount = ROWS.filter(r => r.gt_lang && r.f005_lang && r.match === true && r.f005_lang !== r.gt_lang).length;
+  document.getElementById('statF005Acc').innerHTML = f005Annotated
+    ? `F005: <b>${f005Correct}/${f005Annotated} (${(100*f005Correct/f005Annotated).toFixed(1)}%)</b>`
+    : 'F005: <b>-</b>';
+  document.getElementById('statF005Rescue').innerHTML = `Rescue: <b style="color:var(--ok)">${rescue}</b>`;
+  document.getElementById('statF005Break').innerHTML = `Break: <b>${breakCount}</b>`;
 }
 
 // --- Filtering ---
@@ -484,7 +503,7 @@ function toggleDetail(cue) {
   detailTr.id = `detail-${cue}`;
   detailTr.className = 'detail-row';
   const td = document.createElement('td');
-  td.colSpan = fullTrackVisible ? 17 : 16;
+  td.colSpan = fullTrackVisible ? 18 : 17;
   td.innerHTML = `<div class="decision">${decisionHTML(r)}</div>`;
   detailTr.appendChild(td);
   tr.after(detailTr);
@@ -501,7 +520,9 @@ function render() {
   const tbody = document.getElementById('tbody');
   const html = [];
   for (const r of filtered) {
-    const cls = (r.match === true ? 'ok-row' : r.match === false ? 'err-row' : 'na-row') + ' clickable';
+    let cls = (r.match === true ? 'ok-row' : r.match === false ? 'err-row' : 'na-row') + ' clickable';
+    // Highlight rows where F005 and pipeline disagree
+    if (r.f005_lang && r.lang && r.f005_lang !== r.lang) cls += ' f005-split-row';
     const matchIcon = r.match === true ? '<span style="color:var(--ok)">&#10003;</span>'
                     : r.match === false ? '<span style="color:var(--err)">&#10007;</span>'
                     : '<span style="color:var(--unk)">-</span>';
@@ -509,6 +530,15 @@ function render() {
     const markers = r.nah_markers.map(m => `<span class="marker">${esc(m)}</span>`).join('') +
                     r.ejectives.map(m => `<span class="marker ejective">${esc(m)}</span>`).join('');
     const srcCls = r.source === 'ft' ? 'src-ft' : r.source === 'llm' ? 'src-llm' : 'src-whisper';
+
+    // F005 badge
+    let f005Cell;
+    if (!r.f005_lang) {
+      f005Cell = '<span class="lang f005-null">-</span>';
+    } else {
+      const f005Cls = r.gt_lang && r.f005_lang === r.gt_lang ? 'f005-agree' : r.gt_lang ? 'f005-disagree' : '';
+      f005Cell = `<span class="lang lang-${r.f005_lang} ${f005Cls}">${r.f005_lang.toUpperCase()}</span>`;
+    }
 
     html.push(`<tr class="${cls}" data-cue="${r.cue}" onclick="toggleDetail(${r.cue})">
       <td>${r.cue}</td>
@@ -518,6 +548,7 @@ function render() {
       <td><span class="spk" title="${esc(r.speaker)}">${esc(r.speaker.replace('SPEAKER_','S'))}</span></td>
       <td>${langBadge(r.gt_lang)}</td>
       <td>${langBadge(r.lang)}</td>
+      <td>${f005Cell}</td>
       <td style="text-align:center">${matchIcon}</td>
       <td class="error-type">${esc(r.error_type)}</td>
       <td class="${costCls}">${r.cost ? r.cost.toFixed(1) : ''}</td>

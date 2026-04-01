@@ -2,8 +2,8 @@
 # Full-Film EQ Comparison: 6 configs PARALLEL against Hernán-1-3
 set -euo pipefail
 
-INPUT="validation_video/Hernán-1-3.wav"
-GT="eq_comparison_gt.json"
+INPUT="validation_video/hernan/Hernán-1-3.wav"
+GT="benchmarks/snapshots/eq_comparison_gt_v1.json"
 RESULTS_DIR="eq_comparison_results"
 SUMMARY="$RESULTS_DIR/SUMMARY.md"
 

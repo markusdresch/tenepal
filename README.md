@@ -4,20 +4,15 @@
 
 Tenepal identifies *what language* is being spoken in audio, with the current public-facing evaluation focused on **Nahuatl vs. Spanish**. It works by analyzing the raw phoneme stream via universal phoneme recognition and matching against phonotactic profiles, with prosodic fusion as a second evidence channel. Maya support remains exploratory and is not yet presented here as a release-ready benchmark.
 
-> *Tenepal* — associated with Nahuatl senses around "the tongue," eloquence, or facility with words. This project name follows the `Malintzin Tenepal` discussion summarized on the [Wikipedia page for La Malinche](https://en.wikipedia.org/wiki/La_Malinche) and the scholarship cited there, especially Frances Karttunen and James Lockhart. The historical *tenepal* mediated between languages and cultures in conquest-era Mesoamerica.
-
-## Annotator
-
-![Tenepal Annotator on La Otra Conquista](docs/images/annotator/tenepal-annotator.png)
-
-Segment-level review of Nahuatl/Spanish predictions on *La Otra Conquista*. The annotator tool is in `tools/annotator/`.
+> *Tenepal* — associated with Nahuatl senses around "the tongue," eloquence, or facility with words. This project name follows the `Malintzin Tenepal` discussion summarized on the La Malinche page and the scholarship cited there, especially Frances Karttunen and James Lockhart. The historical *tenepal* mediated between languages and cultures in conquest-era Mesoamerica.
 
 ## Key Results
 
 | Metric | Value | Description |
 |--------|-------|-------------|
-| **Hernán subset accuracy** | **85.7%** | Best configuration on 551 annotated NAH+SPA segments from `Hernán-1-3` |
-| **Phoneme-only baseline** | **65.7%** | Same 551-segment subset, without Whisper or speaker priors |
+| **Hernán duration-weighted accuracy** | **73.7%** | Best configuration on 550 annotated NAH+SPA segments from `Hernán-1-3` (568s/770s of film time) |
+| **Hernán segment accuracy** | **71.6%** | Same benchmark, segment-level (394/550 segments) |
+| **NAH precision / recall** | **75.5% / 76.1%** | Nahuatl detection on Hernán benchmark |
 | **Cross-film LOC accuracy** | **84.4% raw / 81.7% balanced** | 244 annotated NAH+SPA segments from *La Otra Conquista* (minutes 14-44) |
 | **Nahuatl ASR CER** | **108% → 70%** | Whisper-large-v3 baseline vs. LoRA finetune on OpenSLR-92 test sample |
 
@@ -25,8 +20,8 @@ See [PAPER.md](PAPER.md) for the full technical write-up, [docs/AMITH_CORPORA.md
 
 Metric provenance:
 
-- `85.7%`, `65.7%`, and the `551`-segment Hernán subset are the current audited benchmark numbers documented in [EVOLUTION.md](EVOLUTION.md) and exported via `benchmarks/annotations/` plus `benchmarks/reports/eq_comparison_gt.json`.
-- `84.4% raw / 81.7% balanced` comes from the annotated `La Otra Conquista` subset exported under `benchmarks/annotations/` and discussed in [PAPER.md](PAPER.md).
+- `73.7%` duration-weighted and `71.6%` segment accuracy are the canonical Hernán benchmark numbers, evaluated with `evaluate.py` using cue-index matching against the annotator DB as ground truth (v2 snapshot, 550 NAH+SPA segments). Duration weighting reflects how much film time is correctly classified, avoiding equal weight for 0.3s interjections and 15s monologues.
+- `84.4% raw / 81.7% balanced` comes from the annotated `La Otra Conquista` subset (5 clips, 244 NAH+SPA segments). GT snapshot: [`benchmarks/snapshots/loc_gt_v2.json`](benchmarks/snapshots/loc_gt_v2.json), methodology in [PAPER.md](PAPER.md).
 - `108% -> 70%` CER is the current public draft finetuning result from [PAPER.md](PAPER.md), based on OpenSLR-92 test sampling.
 
 ## Installation
@@ -114,7 +109,7 @@ src/tenepal/
 ```
 Audio → ffmpeg → Demucs (vocal isolation) → Silero-VAD (segmentation)
   → per segment:
-      Allosaurus → IPA → Phonotactic scoring ──┐
+      Allosaurus → IPA → Phonotactic scoring ─┐
       Parselmouth → Prosody features ──────────┤→ Score fusion → Language ID
       Whisper → text (if language known) ──────┘
   → Speaker diarization (pyannote) → Speaker-level smoothing
@@ -146,6 +141,12 @@ Public-facing support docs:
 - [docs/ANNOTATOR_SCREENSHOTS.md](docs/ANNOTATOR_SCREENSHOTS.md) — guidance for safe public annotator screenshots
 - [docs/OPEN_PROBLEMS.md](docs/OPEN_PROBLEMS.md) — current highest-priority unresolved technical problems
 
+## Annotator
+
+![Tenepal Annotator on La Otra Conquista](docs/images/annotator/tenepal-annotator.png)
+
+`Tenepal Annotator` for segment-level review of Nahuatl/Spanish predictions on *La Otra Conquista*.
+
 ## Research
 
 - [PAPER.md](PAPER.md) — Technical paper: methodology, experiments, results
@@ -156,7 +157,7 @@ Public-facing support docs:
 Current release emphasis:
 
 - **Hernán (2019)** — the original project trigger and the main ablation benchmark; access is region-dependent and clips are not redistributed
-- **La Otra Conquista (1999)** — the primary public-facing Nahuatl/Spanish reference, told from an indigenous perspective
+- **La Otra Conquista (1999)** — the culturally better public-facing Nahuatl/Spanish reference for external verification
 - **OpenSLR 92 Puebla-Nahuatl** — training/evaluation corpus for Whisper finetuning
 - **OpenSLR 147/148 + related lexical sources** — auxiliary Nahuatl corpus and lexicon sources
 - **Apocalypto / Maya materials** — exploratory only; not yet a release-ready benchmark
@@ -172,10 +173,6 @@ Source notes:
 - OpenSLR 147: https://openslr.org/147/
 - OpenSLR 148: https://openslr.org/148/
 
-## Acknowledgments
-
-The Nahuatl lexicon and Whisper finetuning in this project build on speech corpora recorded and published by Jonathan D. Amith and collaborators (OpenSLR 92, 147, 148; Mozilla Common Voice Nahuatl). Without that fieldwork, none of this would work. See [docs/AMITH_CORPORA.md](docs/AMITH_CORPORA.md) for corpus details.
-
 ## License
 
 MIT License. See [LICENSE](LICENSE).
@@ -187,7 +184,7 @@ MIT License. See [LICENSE](LICENSE).
   title={Tenepal: Phoneme-Based Language Identification for Endangered Languages},
   author={Dresch, Markus},
   year={2026},
-  url={https://github.com/markusd/tenepal}
+  url={https://github.com/markusdresch/tenepal}
 }
 ```
 

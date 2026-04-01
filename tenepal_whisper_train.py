@@ -68,16 +68,42 @@ WHISPER_MODEL = "openai/whisper-large-v3"
 PROXY_LANGUAGE = "spanish"  # Nahuatl not in Whisper; Spanish is closest proxy
 TARGET_SR = 16000
 
+# Mozilla Data Collective — Multi-dialect Nahuatl corpora
+# User downloads tarballs (accept license on web), uploads to Modal volume.
+MOZILLA_DIR = f"{RAW_DIR}/mozilla"
+MOZILLA_CORPORA = {
+    "zacatlan_asr": {
+        "tarball": "zacatl-n-tepetzintla-nahuatl-asr-dataset-467222b1.tar.gz",
+        "format": "flac_tsv",  # clips/ + train.tsv/dev.tsv/test.tsv
+        "region": "Zacatlán-Tepetzintla",
+    },
+    "tetelancingo": {
+        "tarball": "tetelancingo-nahuatl-4dd81077.tar.gz",
+        "format": "wav_tsv",  # WAV + TSV with normalized ortho
+        "region": "Tetelancingo (Sierra Oeste)",
+    },
+    "cv_orizaba": {
+        "tarball": "common-voice-scripted-speech-25-0-orizab-946e6fd2.tar.gz",
+        "format": "cv_mp3",  # Common Voice: clips/ + validated.tsv
+        "region": "Orizaba (Veracruz)",
+    },
+}
+LOCAL_MOZILLA_DIR = "corpus_audio/mozilla_nah"
+
+# Multi-dialect continual learning
+MULTIDIALECT_LR = 5e-6
+DIALECT_TEMPERATURE = 2.0
+
 # ---------------------------------------------------------------------------
 # Modal setup
 # ---------------------------------------------------------------------------
 
 app = modal.App("tenepal-whisper")
-vol = modal.Volume.from_name("tenepal-data", create_if_missing=True)
+vol = modal.Volume.from_name("slangophone-data", create_if_missing=True)
 
 train_image = (
     modal.Image.debian_slim(python_version="3.11")
-    .apt_install("ffmpeg", "sox", "wget")
+    .apt_install("ffmpeg", "sox", "wget", "unzip")
     .pip_install(
         "torch==2.5.1",
         "torchaudio==2.5.1",
@@ -451,6 +477,233 @@ def download_corpus():
     return stats
 
 
+# ---------------------------------------------------------------------------
+# Phase 1b: Prepare Mozilla Data Collective corpora
+# ---------------------------------------------------------------------------
+
+def _parse_corpus_tsv(tsv_path: str) -> tuple[list[str], list[dict]]:
+    """Auto-detect TSV structure and parse into segments.
+
+    Returns (fieldnames, segments) where each segment has 'audio', 'text', 'speaker'.
+    """
+    import csv
+
+    segments = []
+    with open(tsv_path, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f, delimiter="\t")
+        fields = reader.fieldnames or []
+
+        # Auto-detect text column (prefer normalized over raw)
+        text_col = None
+        for candidate in [
+            "normalized", "normalized_text", "norm_text",
+            "sentence", "text", "transcription", "raw_text",
+        ]:
+            if candidate in fields:
+                text_col = candidate
+                break
+
+        # Auto-detect audio column
+        audio_col = None
+        for candidate in [
+            "path", "audio", "audio_file", "clip",
+            "filename", "audio_filename",
+        ]:
+            if candidate in fields:
+                audio_col = candidate
+                break
+
+        if not text_col or not audio_col:
+            return fields, []
+
+        # Speaker + split columns
+        spk_col = None
+        for candidate in ["speaker", "speaker_id", "client_id"]:
+            if candidate in fields:
+                spk_col = candidate
+                break
+        split_col = "split" if "split" in fields else None
+
+        for row in reader:
+            text = row.get(text_col, "").strip()
+            audio = row.get(audio_col, "").strip()
+            if not text or not audio:
+                continue
+            seg = {
+                "audio": audio,
+                "text": text,
+                "speaker": row.get(spk_col, "") if spk_col else "",
+            }
+            if split_col and row.get(split_col, "").strip():
+                seg["split"] = row[split_col].strip()
+            segments.append(seg)
+
+    return fields, segments
+
+
+@app.function(
+    image=train_image,
+    volumes={DATA_DIR: vol},
+    timeout=14400,  # 4h — extraction + audio conversion
+    memory=32768,
+)
+def prepare_mozilla_corpora():
+    """Extract uploaded tarballs, parse TSVs, convert audio to 16kHz WAV segments.
+
+    Expects tarballs uploaded to /data/raw/mozilla/ by the local entrypoint.
+    Produces per-corpus metadata JSONs in /data/raw/mozilla/<name>/metadata.json.
+    """
+    import tarfile
+    import librosa
+    import soundfile as sf
+    from pathlib import Path
+
+    vol.reload()
+    os.makedirs(MOZILLA_DIR, exist_ok=True)
+
+    done = f"{MOZILLA_DIR}/.prepare_complete"
+    if os.path.exists(done):
+        stats = json.loads(Path(done).read_text())
+        print(f"[mozilla] Already complete: {json.dumps(stats, indent=2)}")
+        return stats
+
+    all_stats = {}
+
+    for corpus_name, info in MOZILLA_CORPORA.items():
+        tarball_path = f"{MOZILLA_DIR}/{info['tarball']}"
+        corpus_dir = f"{MOZILLA_DIR}/{corpus_name}"
+        corpus_done = f"{corpus_dir}/.done"
+
+        if os.path.exists(corpus_done):
+            cstats = json.loads(Path(corpus_done).read_text())
+            print(f"[mozilla] {corpus_name}: already done ({cstats.get('segments', '?')} segs)")
+            all_stats[corpus_name] = cstats
+            continue
+
+        if not os.path.exists(tarball_path):
+            print(f"[mozilla] {corpus_name}: tarball not found, skipping")
+            continue
+
+        # --- Extract ---
+        print(f"[mozilla] {corpus_name}: extracting {info['tarball']}...")
+        os.makedirs(corpus_dir, exist_ok=True)
+        with tarfile.open(tarball_path, "r:gz") as tar:
+            tar.extractall(corpus_dir)
+        vol.commit()
+
+        # --- Find TSV files ---
+        tsv_files = sorted(Path(corpus_dir).rglob("*.tsv"))
+        print(f"[mozilla] {corpus_name}: found {len(tsv_files)} TSV files")
+
+        # --- Parse TSVs ---
+        all_segments = []
+        for tsv in tsv_files:
+            tsv_name = tsv.name.lower()
+            # Skip unvalidated/rejected for Common Voice
+            if "unvalidated" in tsv_name or "invalidated" in tsv_name:
+                continue
+            fields, segments = _parse_corpus_tsv(str(tsv))
+            if segments:
+                print(f"  {tsv.name}: {len(segments)} segments "
+                      f"(cols: {', '.join(fields[:5])}...)")
+                # Determine split: prefer per-row split column, else filename
+                file_split = "train"
+                if "test" in tsv_name:
+                    file_split = "test"
+                elif "dev" in tsv_name:
+                    file_split = "dev"
+                for seg in segments:
+                    seg["tsv_split"] = seg.pop("split", file_split)
+                    seg["tsv_path"] = str(tsv.parent)
+                all_segments.extend(segments)
+
+        if not all_segments:
+            print(f"[mozilla] {corpus_name}: no segments parsed, skipping")
+            continue
+
+        # --- Build audio file lookup (fast, avoids rglob per segment) ---
+        audio_lookup = {}
+        for p in Path(corpus_dir).rglob("*"):
+            if p.suffix.lower() in (".wav", ".flac", ".mp3"):
+                audio_lookup[p.name] = str(p)
+                audio_lookup[p.stem] = str(p)
+        print(f"  {corpus_name}: {len(audio_lookup) // 2} audio files indexed")
+
+        # --- Convert audio to 16kHz WAV ---
+        segments_dir = f"{corpus_dir}/segments_16k"
+        os.makedirs(segments_dir, exist_ok=True)
+        metadata = []
+        skipped = 0
+
+        for i, seg in enumerate(all_segments):
+            # Resolve audio path via lookup
+            audio_ref = seg["audio"]
+            audio_path = (
+                audio_lookup.get(audio_ref)
+                or audio_lookup.get(os.path.basename(audio_ref))
+                or audio_lookup.get(Path(audio_ref).stem)
+            )
+
+            if not audio_path:
+                skipped += 1
+                continue
+
+            try:
+                audio, _ = librosa.load(audio_path, sr=TARGET_SR, mono=True)
+            except Exception:
+                skipped += 1
+                continue
+
+            dur = len(audio) / TARGET_SR
+            if dur < 0.5 or dur > 30.0:
+                skipped += 1
+                continue
+
+            out_path = f"{segments_dir}/seg_{i:06d}.wav"
+            sf.write(out_path, audio, TARGET_SR)
+            metadata.append({
+                "path": out_path,
+                "sentence": seg["text"],
+                "speaker": seg.get("speaker", ""),
+                "duration_s": round(dur, 2),
+                "source": corpus_name,
+                "split": seg.get("tsv_split", "train"),
+            })
+
+            if (i + 1) % 500 == 0:
+                print(f"  {corpus_name}: {i + 1}/{len(all_segments)} converted...")
+                vol.commit()
+
+        # Save corpus metadata
+        meta_path = f"{corpus_dir}/metadata.json"
+        with open(meta_path, "w") as f:
+            json.dump(metadata, f, ensure_ascii=False)
+
+        total_dur = sum(m["duration_s"] for m in metadata)
+        cstats = {
+            "segments": len(metadata),
+            "hours": round(total_dur / 3600, 2),
+            "skipped": skipped,
+            "speakers": len(set(m["speaker"] for m in metadata if m["speaker"])),
+            "region": info["region"],
+        }
+        Path(corpus_done).write_text(json.dumps(cstats))
+        vol.commit()
+
+        # Remove tarball to save space
+        os.remove(tarball_path)
+        vol.commit()
+
+        all_stats[corpus_name] = cstats
+        print(f"[mozilla] {corpus_name}: {cstats['segments']} segments, "
+              f"{cstats['hours']}h, {cstats['skipped']} skipped")
+
+    Path(done).write_text(json.dumps(all_stats))
+    vol.commit()
+    print(f"\n[mozilla] COMPLETE:\n{json.dumps(all_stats, indent=2)}")
+    return all_stats
+
+
 def _parse_speech_trans(st_dir: str) -> list:
     """Parse the SpeechTranslation_Nahuatl_Manifest for aligned segments.
 
@@ -710,13 +963,113 @@ def preprocess():
 
 
 # ---------------------------------------------------------------------------
+# Phase 2b: Preprocess multi-dialect (SLR 92 + Mozilla corpora)
+# ---------------------------------------------------------------------------
+
+@app.function(
+    image=train_image,
+    volumes={DATA_DIR: vol},
+    timeout=7200,
+    memory=16384,
+)
+def preprocess_multidialect():
+    """Merge SLR 92 preprocessed data with Mozilla corpus segments."""
+    import random
+    from pathlib import Path
+    from collections import Counter
+
+    done = f"{PROCESSED_DIR}/.preprocess_multidialect_complete"
+    if os.path.exists(done):
+        stats = json.loads(Path(done).read_text())
+        print(f"[pp-multi] Already complete: {json.dumps(stats, indent=2)}")
+        return stats
+
+    vol.reload()
+
+    # --- 1. Load SLR 92 metadata ---
+    slr92_meta_path = f"{PROCESSED_DIR}/metadata.json"
+    if not os.path.exists(slr92_meta_path):
+        raise FileNotFoundError(
+            f"{slr92_meta_path} not found — run preprocess (SLR 92) first"
+        )
+    slr92_metadata = json.loads(Path(slr92_meta_path).read_text())
+    for m in slr92_metadata:
+        m["source"] = "slr92"
+    print(f"[pp-multi] SLR 92: {len(slr92_metadata)} segments")
+
+    # --- 2. Load Mozilla corpus metadata (from prepare_mozilla_corpora) ---
+    mozilla_metadata = []
+    for corpus_name in MOZILLA_CORPORA:
+        meta_path = f"{MOZILLA_DIR}/{corpus_name}/metadata.json"
+        if not os.path.exists(meta_path):
+            print(f"[pp-multi] {corpus_name}: not found, skipping")
+            continue
+        corpus_meta = json.loads(Path(meta_path).read_text())
+        # Re-split corpora that only have "train" (e.g. Common Voice validated)
+        needs_resplit = all(m.get("split") == "train" for m in corpus_meta)
+        if needs_resplit and len(corpus_meta) > 20:
+            random.seed(hash(corpus_name))
+            speakers = list({m.get("speaker", str(i)) for i, m in enumerate(corpus_meta)})
+            random.shuffle(speakers)
+            n = len(speakers)
+            test_spk = set(speakers[:max(1, int(n * 0.1))])
+            dev_spk = set(speakers[max(1, int(n * 0.1)):max(2, int(n * 0.2))])
+            for m in corpus_meta:
+                spk = m.get("speaker", "")
+                if spk in test_spk:
+                    m["split"] = "test"
+                elif spk in dev_spk:
+                    m["split"] = "dev"
+                # else stays "train"
+        mozilla_metadata.extend(corpus_meta)
+        n_train = sum(1 for m in corpus_meta if m["split"] == "train")
+        dur = sum(m["duration_s"] for m in corpus_meta) / 3600
+        print(f"[pp-multi] {corpus_name}: {len(corpus_meta)} segments "
+              f"({dur:.1f}h, {n_train} train)")
+
+    if not mozilla_metadata:
+        raise RuntimeError(
+            "No Mozilla corpus data found — run prepare_mozilla_corpora first"
+        )
+
+    # --- 3. Merge and save ---
+    combined = slr92_metadata + mozilla_metadata
+    meta_path = f"{PROCESSED_DIR}/metadata_multidialect.json"
+    with open(meta_path, "w") as f:
+        json.dump(combined, f, ensure_ascii=False)
+
+    # Stats
+    sources = sorted(set(m.get("source", "unknown") for m in combined))
+    split_counts = Counter((m["split"], m.get("source", "unknown")) for m in combined)
+    source_stats = {}
+    for src in sources:
+        src_items = [m for m in combined if m.get("source") == src]
+        source_stats[src] = {
+            "segments": len(src_items),
+            "hours": round(sum(m["duration_s"] for m in src_items) / 3600, 2),
+            "train": sum(1 for m in src_items if m["split"] == "train"),
+        }
+
+    stats = {
+        "total_segments": len(combined),
+        "sources": source_stats,
+        "split_source_counts": {f"{k[0]}_{k[1]}": v for k, v in split_counts.items()},
+    }
+
+    Path(done).write_text(json.dumps(stats))
+    vol.commit()
+    print(f"\n[pp-multi] COMPLETE:\n{json.dumps(stats, indent=2)}")
+    return stats
+
+
+# ---------------------------------------------------------------------------
 # Phase 3: Train
 # ---------------------------------------------------------------------------
 
 @app.function(
     image=train_image,
     volumes={DATA_DIR: vol},
-    gpu="A100",
+    gpu="H100",
     timeout=28800,  # 8h
     memory=32768,
     secrets=[modal.Secret.from_name("huggingface-secret")],
@@ -725,8 +1078,16 @@ def train(
     max_steps: int = DEFAULT_MAX_STEPS,
     batch_size: int = DEFAULT_BATCH_SIZE,
     learning_rate: float = DEFAULT_LR,
+    metadata_file: str = "metadata.json",
+    resume_from: str = "",
+    dialect_temperature: float = 1.0,
 ):
-    """Finetune Whisper-large-v3 with LoRA on Nahuatl."""
+    """Finetune Whisper-large-v3 with LoRA on Nahuatl.
+
+    Args:
+        resume_from: LoRA adapter dir name to resume from (e.g. "lora-adapter").
+        dialect_temperature: >1 upsamples minority dialects. 2.0 = good default.
+    """
     import torch
     import soundfile as sf
     import numpy as np
@@ -741,12 +1102,13 @@ def train(
         Seq2SeqTrainingArguments,
         Seq2SeqTrainer,
     )
-    from peft import LoraConfig, get_peft_model
+    from peft import LoraConfig, get_peft_model, PeftModel
+    from collections import Counter
 
     vol.reload()
 
     # Check prerequisites
-    meta_path = f"{PROCESSED_DIR}/metadata.json"
+    meta_path = f"{PROCESSED_DIR}/{metadata_file}"
     if not os.path.exists(meta_path):
         raise FileNotFoundError(f"{meta_path} not found — run preprocess first")
 
@@ -835,18 +1197,63 @@ def train(
     )
 
     # --- Apply LoRA ---
-    print("[train] Applying LoRA adapter...")
-    lora_config = LoraConfig(
-        r=LORA_R,
-        lora_alpha=LORA_ALPHA,
-        target_modules=LORA_TARGET_MODULES,
-        lora_dropout=LORA_DROPOUT,
-        bias="none",
-    )
-    model = get_peft_model(model, lora_config)
+    if resume_from:
+        adapter_path = f"{CHECKPOINT_DIR}/{resume_from}"
+        if not os.path.exists(adapter_path):
+            raise FileNotFoundError(
+                f"{adapter_path} not found — available: "
+                + str([p.name for p in Path(CHECKPOINT_DIR).iterdir()])
+            )
+        print(f"[train] Resuming from LoRA adapter: {adapter_path}")
+        model = PeftModel.from_pretrained(model, adapter_path, is_trainable=True)
+    else:
+        print("[train] Applying fresh LoRA adapter...")
+        lora_config = LoraConfig(
+            r=LORA_R,
+            lora_alpha=LORA_ALPHA,
+            target_modules=LORA_TARGET_MODULES,
+            lora_dropout=LORA_DROPOUT,
+            bias="none",
+        )
+        model = get_peft_model(model, lora_config)
     model.print_trainable_parameters()
 
+    # --- Temperature-sampled trainer for dialect balancing ---
+    class _DialectBalancedTrainer(Seq2SeqTrainer):
+        def __init__(self, *args, sample_weights=None, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._sample_weights = sample_weights
+
+        def _get_train_sampler(self, dataset=None):
+            if self._sample_weights is not None:
+                return torch.utils.data.WeightedRandomSampler(
+                    self._sample_weights,
+                    num_samples=len(dataset or self.train_dataset),
+                    replacement=True,
+                )
+            return super()._get_train_sampler(dataset)
+
+    # Compute dialect sampling weights
+    sample_weights = None
+    if dialect_temperature != 1.0:
+        source_counts = Counter(m.get("source", "slr92") for m in train_items)
+        if len(source_counts) > 1:
+            sample_weights = []
+            for m in train_items:
+                n = source_counts[m.get("source", "slr92")]
+                sample_weights.append(n ** (1.0 / dialect_temperature - 1.0))
+            # Log effective proportions
+            total_w = sum(sample_weights)
+            for src, count in sorted(source_counts.items()):
+                src_w = sum(w for w, m in zip(sample_weights, train_items)
+                            if m.get("source", "slr92") == src)
+                print(f"[train] Dialect '{src}': {count} samples, "
+                      f"effective weight: {src_w / total_w:.1%}")
+        else:
+            print(f"[train] Single source — temperature sampling disabled")
+
     # --- Training args ---
+    warmup = 50 if resume_from else WARMUP_STEPS
     os.makedirs(CHECKPOINT_DIR, exist_ok=True)
     training_args = Seq2SeqTrainingArguments(
         output_dir=CHECKPOINT_DIR,
@@ -854,7 +1261,7 @@ def train(
         per_device_eval_batch_size=batch_size * 2,
         gradient_accumulation_steps=GRAD_ACCUM_STEPS,
         learning_rate=learning_rate,
-        warmup_steps=WARMUP_STEPS,
+        warmup_steps=warmup,
         max_steps=max_steps,
         fp16=True,
         gradient_checkpointing=True,
@@ -865,7 +1272,6 @@ def train(
         logging_steps=LOGGING_STEPS,
         remove_unused_columns=False,
         label_names=["labels"],
-        # predict_with_generate deferred to Phase 4 eval (too slow for training loop)
         load_best_model_at_end=True,
         metric_for_best_model="eval_loss",
         greater_is_better=False,
@@ -876,18 +1282,21 @@ def train(
 
     # --- Train ---
     eff_batch = batch_size * GRAD_ACCUM_STEPS
-    print(f"[train] Starting training: max_steps={max_steps}, batch_size={batch_size}, lr={learning_rate}")
+    mode = f"resume={resume_from}" if resume_from else "fresh"
+    print(f"[train] Starting training ({mode}): max_steps={max_steps}, "
+          f"batch_size={batch_size}, lr={learning_rate}, warmup={warmup}")
     print(f"[train] Effective batch: {eff_batch}, steps/epoch: ~{len(train_ds) // eff_batch}")
-    trainer = Seq2SeqTrainer(
+    trainer = _DialectBalancedTrainer(
         args=training_args,
         model=model,
         train_dataset=train_ds,
         eval_dataset=dev_ds,
         data_collator=data_collator,
         processing_class=processor.feature_extractor,
+        sample_weights=sample_weights,
     )
 
-    # Clean old checkpoints to avoid torch version conflicts
+    # Clean old training checkpoints (preserve adapter dirs)
     if os.path.exists(CHECKPOINT_DIR):
         import shutil
         for ckpt_dir in sorted(Path(CHECKPOINT_DIR).glob("checkpoint-*")):
@@ -898,19 +1307,20 @@ def train(
     print(f"[train] Training complete: {result.metrics}")
 
     # --- Save ---
-    # LoRA adapter (small, ~60 MB)
-    adapter_dir = f"{CHECKPOINT_DIR}/lora-adapter"
+    suffix = "-multidialect" if resume_from else ""
+    adapter_dir = f"{CHECKPOINT_DIR}/lora-adapter{suffix}"
     model.save_pretrained(adapter_dir)
     processor.save_pretrained(adapter_dir)
     print(f"[train] Saved LoRA adapter to {adapter_dir}")
 
     # Merged model for inference
-    os.makedirs(MODEL_DIR, exist_ok=True)
+    model_dir = f"{DATA_DIR}/model{suffix}" if suffix else MODEL_DIR
+    os.makedirs(model_dir, exist_ok=True)
     print("[train] Merging LoRA weights into base model...")
     merged = model.merge_and_unload()
-    merged.save_pretrained(MODEL_DIR)
-    processor.save_pretrained(MODEL_DIR)
-    print(f"[train] Saved merged model to {MODEL_DIR}")
+    merged.save_pretrained(model_dir)
+    processor.save_pretrained(model_dir)
+    print(f"[train] Saved merged model to {model_dir}")
 
     vol.commit()
     print("[train] COMPLETE")
@@ -1399,7 +1809,7 @@ def main():
 
     print("\n" + "=" * 60)
     print("PIPELINE COMPLETE")
-    print(f"Results: modal volume get tenepal-data data/results/eval_results.json")
+    print(f"Results: modal volume get slangophone-data data/results/eval_results.json")
     print("=" * 60)
 
 
@@ -1408,9 +1818,16 @@ def run_train(
     max_steps: int = DEFAULT_MAX_STEPS,
     batch_size: int = DEFAULT_BATCH_SIZE,
     learning_rate: float = DEFAULT_LR,
+    metadata_file: str = "metadata.json",
+    resume_from: str = "",
+    dialect_temperature: float = 1.0,
 ):
     """Train only (assumes download + preprocess already done)."""
-    metrics = train.remote(max_steps=max_steps, batch_size=batch_size, learning_rate=learning_rate)
+    metrics = train.remote(
+        max_steps=max_steps, batch_size=batch_size, learning_rate=learning_rate,
+        metadata_file=metadata_file, resume_from=resume_from,
+        dialect_temperature=dialect_temperature,
+    )
     print(f"Training complete: {json.dumps(metrics, indent=2)}")
 
 
@@ -1427,7 +1844,7 @@ def run_cross_lang():
 
     Tests baseline vs finetuned on NAH test segments.
     For SPA/ENG edge cases, first upload:
-        modal volume put tenepal-data validation_video/edge_cases/ data/cross_lang_test/
+        modal volume put slangophone-data validation_video/edge_cases/ data/cross_lang_test/
     """
     results = cross_language_eval.remote()
     print(f"\nResults: {json.dumps(results, indent=2)}")
@@ -1579,7 +1996,7 @@ def run_eval_checkpoint(
     # Upload only WAV files (skip results/ subdir)
     for wav in wav_files:
         subprocess.run(
-            ["modal", "volume", "put", "tenepal-data", "--force",
+            ["modal", "volume", "put", "slangophone-data", "--force",
              str(wav), f"eval_clips/{wav.name}"],
             check=True, capture_output=True,
         )
@@ -1597,3 +2014,142 @@ def run_debug():
     """Debug alignment between audio files and ELAN transcriptions."""
     result = debug_alignment.remote()
     print(json.dumps(result, indent=2))
+
+
+# ---------------------------------------------------------------------------
+# F004: Multi-Dialect Entrypoints
+# ---------------------------------------------------------------------------
+
+@app.local_entrypoint()
+def validate_multidialect():
+    """Check which Mozilla tarballs are available locally and show stats."""
+    from pathlib import Path
+
+    print("F004: Multi-Dialect Corpus Validation")
+    print("=" * 60)
+
+    local_dir = Path(LOCAL_MOZILLA_DIR)
+    total_found = 0
+
+    for name, info in MOZILLA_CORPORA.items():
+        tarball = local_dir / info["tarball"]
+        if tarball.exists():
+            size_mb = tarball.stat().st_size / (1024 * 1024)
+            print(f"  [OK] {name}: {info['tarball']} ({size_mb:.0f} MB)")
+            total_found += 1
+        else:
+            print(f"  [--] {name}: {info['tarball']} (not found)")
+
+    print(f"\nFound: {total_found}/{len(MOZILLA_CORPORA)} tarballs")
+    if local_dir.exists():
+        print(f"Local dir: {local_dir}")
+    else:
+        print(f"Local dir: {local_dir} (does not exist)")
+        print(f"\nCreate it and download tarballs from Mozilla Data Collective:")
+        print(f"  mkdir -p {local_dir}")
+
+    print(f"\nDownload links (accept license on each page first):")
+    for name, info in MOZILLA_CORPORA.items():
+        print(f"  {info['region']}:")
+        print(f"    → place {info['tarball']} in {local_dir}/")
+
+    # Temperature sampling simulation
+    slr92_est = 107000
+    mozilla_est = 15000  # rough estimate: 14h + ?h + 12h ≈ 30h ≈ 15K segs
+    print(f"\nTemperature sampling (SLR 92 ~{slr92_est}, Mozilla ~{mozilla_est}):")
+    for T in [1.0, 2.0, 3.0]:
+        w92 = slr92_est ** (1.0 / T)
+        wmoz = mozilla_est ** (1.0 / T)
+        pmoz = wmoz / (w92 + wmoz)
+        print(f"  T={T:.0f}: Mozilla effective proportion = {pmoz:.1%}")
+
+
+@app.local_entrypoint()
+def run_multidialect(
+    max_steps: int = 3000,
+    batch_size: int = DEFAULT_BATCH_SIZE,
+    learning_rate: float = MULTIDIALECT_LR,
+    dialect_temperature: float = DIALECT_TEMPERATURE,
+    mozilla_dir: str = LOCAL_MOZILLA_DIR,
+    skip_prepare: bool = False,
+):
+    """F004: Multi-dialect training on SLR 92 + Mozilla corpora.
+
+    Steps: upload tarballs → extract + convert → merge → continual train.
+
+    Prerequisites:
+        1. Download tarballs from Mozilla Data Collective (accept licenses)
+        2. Place them in corpus_audio/mozilla_nah/
+        3. Run: modal run tenepal_whisper_train.py::run_multidialect
+
+    Usage:
+        modal run tenepal_whisper_train.py::run_multidialect
+        modal run tenepal_whisper_train.py::run_multidialect --skip-prepare
+        modal run tenepal_whisper_train.py::run_multidialect --mozilla-dir /path/to/tarballs
+    """
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    print("=" * 60)
+    print("F004: Multi-Dialect Training (SLR 92 + Mozilla Corpora)")
+    print(f"  Steps: {max_steps}, LR: {learning_rate}, T: {dialect_temperature}")
+    print("=" * 60)
+
+    if not skip_prepare:
+        # Upload tarballs to volume
+        moz_path = Path(mozilla_dir)
+        uploaded = 0
+        for name, info in MOZILLA_CORPORA.items():
+            tarball = moz_path / info["tarball"]
+            if tarball.exists():
+                size_mb = tarball.stat().st_size / (1024 * 1024)
+                print(f"\n[upload] {name}: {info['tarball']} ({size_mb:.0f} MB)...")
+                subprocess.run(
+                    ["modal", "volume", "put", "slangophone-data", "--force",
+                     str(tarball), f"data/raw/mozilla/{info['tarball']}"],
+                    check=True,
+                )
+                uploaded += 1
+                print(f"  -> uploaded")
+            else:
+                print(f"\n[upload] {name}: not found at {tarball}, skipping")
+
+        if uploaded == 0:
+            print(f"\nERROR: No tarballs found in {mozilla_dir}", file=sys.stderr)
+            print(f"Download from Mozilla Data Collective first.", file=sys.stderr)
+            return
+
+        # Extract + convert on Modal
+        print(f"\n[2/4] Preparing {uploaded} corpora (extract + convert)...")
+        prep_stats = prepare_mozilla_corpora.remote()
+        for name, st in prep_stats.items():
+            print(f"  {name}: {st.get('segments', '?')} segs, "
+                  f"{st.get('hours', '?')}h")
+    else:
+        print("\n[1-2/4] Skipping prepare (--skip-prepare)")
+
+    # Merge with SLR 92
+    print("\n[3/4] Preprocessing multi-dialect data...")
+    pp_stats = preprocess_multidialect.remote()
+    sources = pp_stats.get("sources", {})
+    for src, st in sources.items():
+        print(f"  {src}: {st.get('segments', '?')} segs, {st.get('hours', '?')}h")
+
+    # Continual training
+    print(f"\n[4/4] Training: {max_steps} steps, LR={learning_rate}, T={dialect_temperature}")
+    metrics = train.remote(
+        max_steps=max_steps,
+        batch_size=batch_size,
+        learning_rate=learning_rate,
+        metadata_file="metadata_multidialect.json",
+        resume_from="lora-adapter",
+        dialect_temperature=dialect_temperature,
+    )
+    print(f"  -> {json.dumps(metrics, indent=2)}")
+
+    print("\n" + "=" * 60)
+    print("F004 COMPLETE")
+    print(f"Merged model: modal volume get slangophone-data data/model-multidialect/")
+    print(f"LoRA adapter: modal volume get slangophone-data data/checkpoints/lora-adapter-multidialect/")
+    print("=" * 60)

@@ -43,6 +43,12 @@ td.spk-col { text-align: left; max-width: 80px; overflow: hidden; text-overflow:
   transform: translateX(-50%); background: #000; color: #fff; padding: 4px 8px; border-radius: 3px;
   font-size: 10px; white-space: pre; z-index: 200; pointer-events: none; }
 .summary-row td { background: var(--bg2); font-weight: bold; border-top: 2px solid var(--bg3); }
+.f005-badge { display: inline-block; padding: 1px 4px; border-radius: 3px; font-size: 9px;
+  font-weight: 700; text-transform: uppercase; min-width: 24px; text-align: center; }
+.f005-agree { background: var(--ok); color: #000; }
+.f005-disagree { background: var(--err); color: #fff; }
+.f005-null { background: #444; color: #888; }
+tr.f005-split { background: rgba(52, 152, 219, 0.15); }
 </style>
 </head><body>
 
@@ -84,6 +90,8 @@ td.spk-col { text-align: left; max-width: 80px; overflow: hidden; text-overflow:
   <span><b style="color:var(--ok)">✓</b> correct</span>
   <span><b style="color:var(--err)">✗</b> wrong (hover for pred)</span>
   <span><b style="color:var(--ft)">▬</b> FT used</span>
+  <span><span class="f005-badge f005-agree" style="font-size:9px">F005</span> agrees with GT</span>
+  <span><span class="f005-badge f005-disagree" style="font-size:9px">F005</span> disagrees</span>
   <span>Click ▶ to play segment</span>
 </div>
 
@@ -95,6 +103,7 @@ td.spk-col { text-align: left; max-width: 80px; overflow: hidden; text-overflow:
   <th style="width:30px">#</th>
   <th style="width:55px">Time</th>
   <th style="width:30px">GT</th>
+  <th style="width:30px" title="F005 wav2vec2 embedding">F005</th>
   <th style="width:30px">▶</th>
   <th class="spk-col" style="width:80px">Speaker</th>
   <th class="cfg tooltip" data-tip="13_v7_morphology_expansion&#10;85.7%">morphology_expansion</th><th class="cfg tooltip" data-tip="11_v7_three_levers&#10;82.4%">three_levers</th><th class="cfg tooltip" data-tip="10_v7_ft_first&#10;80.6%">ft_first</th><th class="cfg tooltip" data-tip="08_v7_two_pass&#10;74.6%">two_pass</th><th class="cfg tooltip" data-tip="09_v7_two_pass_unk&#10;73.0%">two_pass_unk</th><th class="cfg tooltip" data-tip="01_v7_best&#10;72.6%">best</th><th class="cfg tooltip" data-tip="03_v7_prosody_gentle&#10;71.9%">prosody_gentle</th><th class="cfg tooltip" data-tip="02_v7_prosody&#10;71.5%">prosody</th><th class="cfg tooltip" data-tip="07_v7_unk_gate&#10;70.1%">unk_gate</th><th class="cfg tooltip" data-tip="14_ipa_dict_only&#10;65.7%">ipa_dict_only</th><th class="cfg tooltip" data-tip="05_v7_spa_reclaim_loose&#10;65.5%">spa_reclaim_loose</th><th class="cfg tooltip" data-tip="04_v7_speaker_tight&#10;64.1%">speaker_tight</th><th class="cfg tooltip" data-tip="06_v7_prosody_spa_reclaim&#10;63.0%">prosody_spa_reclaim</th>
@@ -136,21 +145,32 @@ function play(i) {
   if (btn) btn.classList.add('playing');
 }
 
+// F005 wav2vec2 embedding predictions (loaded from DB)
+let F005_DATA = {};
+
+function f005Badge(idx, gt) {
+  const f = F005_DATA[String(idx)];
+  if (!f || !f.pred_lang) return '<td><span class="f005-badge f005-null">-</span></td>';
+  const agrees = gt && f.pred_lang.toUpperCase() === gt.toUpperCase();
+  const cls = agrees ? 'f005-agree' : 'f005-disagree';
+  return `<td><span class="f005-badge ${cls}" title="F005: ${f.pred_lang}">${f.pred_lang}</span></td>`;
+}
+
 function render() {
   const show = document.getElementById('fShow').value;
   const fgt = document.getElementById('fGt').value;
   const fspk = document.getElementById('fSpk').value;
-  
+
   let html = '';
   let shown = 0;
-  
+
   for (let i = 0; i < SEGMENTS.length; i++) {
     const seg = SEGMENTS[i];
     const nOk = seg.configs.filter(c => c.ok).length;
     const allOk = nOk === N_CFG;
     const allWrong = nOk === 0;
     const split = !allOk && !allWrong;
-    
+
     // Filters
     if (fgt !== 'all' && seg.gt !== fgt) continue;
     if (fspk !== 'all' && seg.spk !== fspk) continue;
@@ -158,21 +178,28 @@ function render() {
     if (show === 'split' && !split) continue;
     if (show === 'all_wrong' && !allWrong) continue;
     if (show === 'fixable' && (allOk || allWrong)) continue;
-    
+
     shown++;
-    const cls = allOk ? 'all-ok' : '';
-    
+
+    // Check if F005 and best pipeline config disagree
+    const f005 = F005_DATA[String(seg.idx)];
+    const bestPred = seg.configs[0] ? seg.configs[0].pred : null;
+    const f005Disagrees = f005 && f005.pred_lang && bestPred &&
+      f005.pred_lang.toUpperCase() !== bestPred.toUpperCase();
+    const cls = (allOk ? 'all-ok' : '') + (f005Disagrees ? ' f005-split' : '');
+
     let cells = seg.configs.map((c, ci) => {
       const ftCls = c.ft ? ' c-ft' : '';
       if (c.ok) return `<td class="c-ok${ftCls}">✓</td>`;
       if (c.pred === '?') return `<td class="c-miss">·</td>`;
       return `<td class="c-err${ftCls} tooltip" data-tip="${CONFIGS[ci].name}→${c.pred}&#10;${c.wh}">✗</td>`;
     }).join('');
-    
+
     html += `<tr class="${cls}">
       <td>${seg.idx}</td>
       <td>${fmt(seg.start_s)}</td>
       <td class="lang-${seg.gt.toLowerCase()}">${seg.gt}</td>
+      ${f005Badge(seg.idx, seg.gt)}
       <td><button class="play-btn" id="pb_${i}" onclick="play(${i})">▶</button></td>
       <td class="spk-col" title="${seg.spk}">${seg.spk}</td>
       ${cells}
@@ -180,7 +207,7 @@ function render() {
       <td class="text-col" title="${seg.text}">${seg.text}</td>
     </tr>`;
   }
-  
+
   document.getElementById('tbody').innerHTML = html;
   document.getElementById('filterCount').textContent = shown + '/' + SEGMENTS.length;
 }
@@ -188,6 +215,11 @@ function render() {
 document.getElementById('fShow').onchange = render;
 document.getElementById('fGt').onchange = render;
 document.getElementById('fSpk').onchange = render;
-render();
+
+// Load F005 predictions then render
+fetch('/api/f005_predictions')
+  .then(r => r.json())
+  .then(data => { F005_DATA = data; render(); })
+  .catch(() => { render(); });
 </script>
 </body></html>
