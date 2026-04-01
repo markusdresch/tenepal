@@ -16,6 +16,10 @@ Tenepal identifies *what language* is being spoken in audio, with the current pu
 | **Cross-film LOC accuracy** | **84.4% raw / 81.7% balanced** | 244 annotated NAH+SPA segments from *La Otra Conquista* (minutes 14-44) |
 | **Nahuatl ASR CER** | **108% → 70%** | Whisper-large-v3 baseline vs. LoRA finetune on OpenSLR-92 test sample |
 
+![Tenepal Annotator on La Otra Conquista](docs/images/annotator/tenepal-annotator.png)
+
+Segment-level review of Nahuatl/Spanish predictions on *La Otra Conquista*. The annotator tool is in `tools/annotator/`.
+
 See [PAPER.md](PAPER.md) for the full technical write-up, [docs/AMITH_CORPORA.md](docs/AMITH_CORPORA.md) for corpus access instructions, and [EVOLUTION.md](EVOLUTION.md) for the research journal.
 
 Metric provenance:
@@ -140,12 +144,6 @@ Public-facing support docs:
 - [docs/AMITH_CORPORA.md](docs/AMITH_CORPORA.md) — where to get the Amith corpora and how local download works
 - [docs/ANNOTATOR_SCREENSHOTS.md](docs/ANNOTATOR_SCREENSHOTS.md) — guidance for safe public annotator screenshots
 - [docs/OPEN_PROBLEMS.md](docs/OPEN_PROBLEMS.md) — current highest-priority unresolved technical problems
-
-## Annotator
-
-![Tenepal Annotator on La Otra Conquista](docs/images/annotator/tenepal-annotator.png)
-
-`Tenepal Annotator` for segment-level review of Nahuatl/Spanish predictions on *La Otra Conquista*.
 
 ## Research
 
