@@ -1,0 +1,4202 @@
+[
+  {
+    "cue_index": -1,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 36.126,
+    "end_s": 36.582
+  },
+  {
+    "cue_index": 1,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl_as_teen",
+    "start_s": 38.624,
+    "end_s": 39.889
+  },
+  {
+    "cue_index": 2,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 40.581,
+    "end_s": 41.88
+  },
+  {
+    "cue_index": 3,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 42.775,
+    "end_s": 43.872
+  },
+  {
+    "cue_index": 4,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 44.614,
+    "end_s": 45.036
+  },
+  {
+    "cue_index": 5,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 46.538,
+    "end_s": 47.804
+  },
+  {
+    "cue_index": 6,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 48.749,
+    "end_s": 50.284
+  },
+  {
+    "cue_index": 7,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 50.622,
+    "end_s": 52.748
+  },
+  {
+    "cue_index": 8,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl_as_teen",
+    "start_s": 52.866,
+    "end_s": 58.3
+  },
+  {
+    "cue_index": 9,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 58.806,
+    "end_s": 59.565
+  },
+  {
+    "cue_index": 10,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 60.915,
+    "end_s": 62.62
+  },
+  {
+    "cue_index": 11,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 63.531,
+    "end_s": 67.092
+  },
+  {
+    "cue_index": 12,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 64.78,
+    "end_s": 65.235
+  },
+  {
+    "cue_index": 13,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 80.76,
+    "end_s": 81.604
+  },
+  {
+    "cue_index": 14,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 82.127,
+    "end_s": 83.545
+  },
+  {
+    "cue_index": 15,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 83.916,
+    "end_s": 85.35
+  },
+  {
+    "cue_index": 16,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 85.739,
+    "end_s": 87.443
+  },
+  {
+    "cue_index": 17,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 88.253,
+    "end_s": 89.721
+  },
+  {
+    "cue_index": 18,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 90.43,
+    "end_s": 91.78
+  },
+  {
+    "cue_index": 19,
+    "correct_lang": "NAH",
+    "correct_speaker": "marina",
+    "start_s": 92.92699999999999,
+    "end_s": 95.12100000000001
+  },
+  {
+    "cue_index": 20,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 95.712,
+    "end_s": 96.96000000000001
+  },
+  {
+    "cue_index": 21,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 97.517,
+    "end_s": 99.694
+  },
+  {
+    "cue_index": 22,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 99.93,
+    "end_s": 101.601
+  },
+  {
+    "cue_index": 23,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 101.837,
+    "end_s": 102.344
+  },
+  {
+    "cue_index": 24,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 105.97200000000001,
+    "end_s": 108.11500000000001
+  },
+  {
+    "cue_index": 25,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 109.077,
+    "end_s": 111.169
+  },
+  {
+    "cue_index": 26,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 111.86099999999999,
+    "end_s": 114.072
+  },
+  {
+    "cue_index": 27,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 114.291,
+    "end_s": 115.13499999999999
+  },
+  {
+    "cue_index": 28,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 115.422,
+    "end_s": 116.4
+  },
+  {
+    "cue_index": 29,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 117.312,
+    "end_s": 119.759
+  },
+  {
+    "cue_index": 30,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 120.4,
+    "end_s": 121.75
+  },
+  {
+    "cue_index": 31,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 122.324,
+    "end_s": 124.045
+  },
+  {
+    "cue_index": 32,
+    "correct_lang": "OTH",
+    "correct_speaker": null,
+    "start_s": 124.281,
+    "end_s": 125.715
+  },
+  {
+    "cue_index": 33,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 125.969,
+    "end_s": 126.728
+  },
+  {
+    "cue_index": 34,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 127.032,
+    "end_s": 127.487
+  },
+  {
+    "cue_index": 35,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 127.639,
+    "end_s": 129.715
+  },
+  {
+    "cue_index": 36,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 255.889,
+    "end_s": 256.142
+  },
+  {
+    "cue_index": 37,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 279.092,
+    "end_s": 281.826
+  },
+  {
+    "cue_index": 38,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 282.18,
+    "end_s": 283.21
+  },
+  {
+    "cue_index": 39,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 284.307,
+    "end_s": 285.522
+  },
+  {
+    "cue_index": 40,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 299.022,
+    "end_s": 299.562
+  },
+  {
+    "cue_index": 41,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 300.034,
+    "end_s": 300.405
+  },
+  {
+    "cue_index": 42,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 301.013,
+    "end_s": 301.502
+  },
+  {
+    "cue_index": 43,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 302.852,
+    "end_s": 304.692
+  },
+  {
+    "cue_index": 44,
+    "correct_lang": "OTH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 309.636,
+    "end_s": 310.277
+  },
+  {
+    "cue_index": 45,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 312.083,
+    "end_s": 312.96
+  },
+  {
+    "cue_index": 46,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 313.5,
+    "end_s": 314.547
+  },
+  {
+    "cue_index": 47,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 315.205,
+    "end_s": 316.825
+  },
+  {
+    "cue_index": 48,
+    "correct_lang": "OTH",
+    "correct_speaker": null,
+    "start_s": 317.685,
+    "end_s": 318.04
+  },
+  {
+    "cue_index": 49,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 318.04,
+    "end_s": 319.221
+  },
+  {
+    "cue_index": 50,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 320.031,
+    "end_s": 320.757
+  },
+  {
+    "cue_index": 51,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 322.09,
+    "end_s": 322.866
+  },
+  {
+    "cue_index": 52,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 323.423,
+    "end_s": 323.76
+  },
+  {
+    "cue_index": 53,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 324.908,
+    "end_s": 325.296
+  },
+  {
+    "cue_index": 54,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 353.73,
+    "end_s": 355.975
+  },
+  {
+    "cue_index": 55,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 356.751,
+    "end_s": 357.899
+  },
+  {
+    "cue_index": 56,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 358.759,
+    "end_s": 359.856
+  },
+  {
+    "cue_index": 57,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 360.514,
+    "end_s": 361.83
+  },
+  {
+    "cue_index": 58,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 367.365,
+    "end_s": 371.787
+  },
+  {
+    "cue_index": 59,
+    "correct_lang": "UNK",
+    "correct_speaker": "background",
+    "start_s": 374.571,
+    "end_s": 374.892
+  },
+  {
+    "cue_index": 60,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 452.55,
+    "end_s": 453.158
+  },
+  {
+    "cue_index": 61,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 459.469,
+    "end_s": 460.347
+  },
+  {
+    "cue_index": 62,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 460.954,
+    "end_s": 462.456
+  },
+  {
+    "cue_index": 63,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 463.08,
+    "end_s": 463.705
+  },
+  {
+    "cue_index": 64,
+    "correct_lang": "OTH",
+    "correct_speaker": null,
+    "start_s": 465.578,
+    "end_s": 466.81
+  },
+  {
+    "cue_index": 65,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 467.097,
+    "end_s": 467.637
+  },
+  {
+    "cue_index": 66,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 468.295,
+    "end_s": 469.054
+  },
+  {
+    "cue_index": 67,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 470.1,
+    "end_s": 472.058
+  },
+  {
+    "cue_index": 68,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 472.362,
+    "end_s": 472.969
+  },
+  {
+    "cue_index": 69,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 473.914,
+    "end_s": 475.619
+  },
+  {
+    "cue_index": 70,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 476.04,
+    "end_s": 476.445
+  },
+  {
+    "cue_index": 71,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 476.699,
+    "end_s": 477.947
+  },
+  {
+    "cue_index": 72,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 478.251,
+    "end_s": 478.47
+  },
+  {
+    "cue_index": 73,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 478.757,
+    "end_s": 479.095
+  },
+  {
+    "cue_index": 74,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 479.669,
+    "end_s": 481.272
+  },
+  {
+    "cue_index": 75,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 481.997,
+    "end_s": 483.887
+  },
+  {
+    "cue_index": 76,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 484.545,
+    "end_s": 485.423
+  },
+  {
+    "cue_index": 77,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 487.11,
+    "end_s": 489.507
+  },
+  {
+    "cue_index": 78,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 490.249,
+    "end_s": 491.599
+  },
+  {
+    "cue_index": 79,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 502.399,
+    "end_s": 504.525
+  },
+  {
+    "cue_index": 80,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 505.302,
+    "end_s": 507.09
+  },
+  {
+    "cue_index": 81,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 507.546,
+    "end_s": 509.082
+  },
+  {
+    "cue_index": 82,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 509.706,
+    "end_s": 510.33
+  },
+  {
+    "cue_index": 83,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 510.887,
+    "end_s": 511.782
+  },
+  {
+    "cue_index": 84,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 512.254,
+    "end_s": 513.537
+  },
+  {
+    "cue_index": 85,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 513.925,
+    "end_s": 515.798
+  },
+  {
+    "cue_index": 86,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 516.979,
+    "end_s": 518.65
+  },
+  {
+    "cue_index": 87,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 519.224,
+    "end_s": 520.86
+  },
+  {
+    "cue_index": 88,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 521.249,
+    "end_s": 522.801
+  },
+  {
+    "cue_index": 89,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 522.953,
+    "end_s": 524.151
+  },
+  {
+    "cue_index": 90,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 524.607,
+    "end_s": 525.518
+  },
+  {
+    "cue_index": 91,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 526.969,
+    "end_s": 527.273
+  },
+  {
+    "cue_index": 92,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 527.982,
+    "end_s": 529.365
+  },
+  {
+    "cue_index": 93,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 529.703,
+    "end_s": 530.952
+  },
+  {
+    "cue_index": 94,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 530.969,
+    "end_s": 533.027
+  },
+  {
+    "cue_index": 95,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 533.027,
+    "end_s": 534.225
+  },
+  {
+    "cue_index": 96,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 535.103,
+    "end_s": 536.115
+  },
+  {
+    "cue_index": 97,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 536.858,
+    "end_s": 539.49
+  },
+  {
+    "cue_index": 98,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 541.65,
+    "end_s": 543.051
+  },
+  {
+    "cue_index": 99,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 544.03,
+    "end_s": 545.97
+  },
+  {
+    "cue_index": 100,
+    "correct_lang": "NAH",
+    "correct_speaker": "maxixcatl",
+    "start_s": 545.97,
+    "end_s": 549.345
+  },
+  {
+    "cue_index": 101,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 550.02,
+    "end_s": 553.75
+  },
+  {
+    "cue_index": 102,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 554.492,
+    "end_s": 556.433
+  },
+  {
+    "cue_index": 103,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 557.361,
+    "end_s": 558.272
+  },
+  {
+    "cue_index": 104,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 562.508,
+    "end_s": 563.942
+  },
+  {
+    "cue_index": 105,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 565.157,
+    "end_s": 567.52
+  },
+  {
+    "cue_index": 106,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 568.313,
+    "end_s": 570.051
+  },
+  {
+    "cue_index": 107,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 571.114,
+    "end_s": 571.975
+  },
+  {
+    "cue_index": 108,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 573.207,
+    "end_s": 574.506
+  },
+  {
+    "cue_index": 109,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 575.552,
+    "end_s": 576.75
+  },
+  {
+    "cue_index": 110,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 584.985,
+    "end_s": 588.462
+  },
+  {
+    "cue_index": 111,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 639.272,
+    "end_s": 640.234
+  },
+  {
+    "cue_index": 112,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 643.491,
+    "end_s": 644.402
+  },
+  {
+    "cue_index": 114,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 646.14,
+    "end_s": 646.579
+  },
+  {
+    "cue_index": 115,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 646.815,
+    "end_s": 647.963
+  },
+  {
+    "cue_index": 116,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 648.554,
+    "end_s": 649.026
+  },
+  {
+    "cue_index": 117,
+    "correct_lang": "NAH",
+    "correct_speaker": "old_xicontencatl",
+    "start_s": 649.026,
+    "end_s": 649.38
+  },
+  {
+    "cue_index": 118,
+    "correct_lang": "SPA",
+    "correct_speaker": "maxixcatl",
+    "start_s": 652.35,
+    "end_s": 652.924
+  },
+  {
+    "cue_index": 119,
+    "correct_lang": "NAH",
+    "correct_speaker": "maxixcatl",
+    "start_s": 654.021,
+    "end_s": 654.949
+  },
+  {
+    "cue_index": 120,
+    "correct_lang": "NAH",
+    "correct_speaker": "maxixcatl",
+    "start_s": 656.232,
+    "end_s": 657.194
+  },
+  {
+    "cue_index": 121,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 659.725,
+    "end_s": 660.434
+  },
+  {
+    "cue_index": 122,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 661.48,
+    "end_s": 661.817
+  },
+  {
+    "cue_index": 123,
+    "correct_lang": "NAH",
+    "correct_speaker": "old_xicontencatl",
+    "start_s": 663.589,
+    "end_s": 663.809
+  },
+  {
+    "cue_index": 124,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 670.474,
+    "end_s": 670.964
+  },
+  {
+    "cue_index": 125,
+    "correct_lang": "SPA",
+    "correct_speaker": "background",
+    "start_s": 671.166,
+    "end_s": 672.28
+  },
+  {
+    "cue_index": 126,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 673.596,
+    "end_s": 674.541
+  },
+  {
+    "cue_index": 127,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 675.267,
+    "end_s": 676.026
+  },
+  {
+    "cue_index": 128,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 676.279,
+    "end_s": 677.359
+  },
+  {
+    "cue_index": 129,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 677.764,
+    "end_s": 678.81
+  },
+  {
+    "cue_index": 130,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 679.84,
+    "end_s": 680.245
+  },
+  {
+    "cue_index": 131,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 686.438,
+    "end_s": 686.708
+  },
+  {
+    "cue_index": 132,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 687.265,
+    "end_s": 688.024
+  },
+  {
+    "cue_index": 133,
+    "correct_lang": "OTH",
+    "correct_speaker": "totonac",
+    "start_s": 688.244,
+    "end_s": 688.834
+  },
+  {
+    "cue_index": 134,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 690.96,
+    "end_s": 693.762
+  },
+  {
+    "cue_index": 135,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 694.251,
+    "end_s": 698.892
+  },
+  {
+    "cue_index": 136,
+    "correct_lang": "MAY",
+    "correct_speaker": "aguilar",
+    "start_s": 699.179,
+    "end_s": 700.326
+  },
+  {
+    "cue_index": 137,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 700.967,
+    "end_s": 702.908
+  },
+  {
+    "cue_index": 138,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 703.178,
+    "end_s": 704.95
+  },
+  {
+    "cue_index": 139,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 705.912,
+    "end_s": 706.941
+  },
+  {
+    "cue_index": 140,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 709.388,
+    "end_s": 710.755
+  },
+  {
+    "cue_index": 141,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 711.48,
+    "end_s": 712.004
+  },
+  {
+    "cue_index": 142,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 712.797,
+    "end_s": 714.197
+  },
+  {
+    "cue_index": 143,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 715.716,
+    "end_s": 718.062
+  },
+  {
+    "cue_index": 144,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 719.412,
+    "end_s": 722.061
+  },
+  {
+    "cue_index": 145,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 722.82,
+    "end_s": 724.424
+  },
+  {
+    "cue_index": 146,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 724.812,
+    "end_s": 726.044
+  },
+  {
+    "cue_index": 147,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 731.629,
+    "end_s": 732.675
+  },
+  {
+    "cue_index": 148,
+    "correct_lang": "SPA",
+    "correct_speaker": "alvarado",
+    "start_s": 736.844,
+    "end_s": 739.172
+  },
+  {
+    "cue_index": 149,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 738.278,
+    "end_s": 738.784
+  },
+  {
+    "cue_index": 150,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 739.594,
+    "end_s": 739.965
+  },
+  {
+    "cue_index": 151,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 740.185,
+    "end_s": 741.265
+  },
+  {
+    "cue_index": 152,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 744.69,
+    "end_s": 746.125
+  },
+  {
+    "cue_index": 153,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 747.019,
+    "end_s": 748.42
+  },
+  {
+    "cue_index": 154,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 749.466,
+    "end_s": 751.626
+  },
+  {
+    "cue_index": 155,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 751.997,
+    "end_s": 754.157
+  },
+  {
+    "cue_index": 156,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 755.507,
+    "end_s": 756.047
+  },
+  {
+    "cue_index": 157,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 758.376,
+    "end_s": 759.034
+  },
+  {
+    "cue_index": 158,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 760.182,
+    "end_s": 761.329
+  },
+  {
+    "cue_index": 159,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 763.658,
+    "end_s": 764.805
+  },
+  {
+    "cue_index": 160,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 766.274,
+    "end_s": 767.556
+  },
+  {
+    "cue_index": 161,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 768.282,
+    "end_s": 768.737
+  },
+  {
+    "cue_index": 162,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 770.155,
+    "end_s": 771.825
+  },
+  {
+    "cue_index": 163,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 792.194,
+    "end_s": 792.615
+  },
+  {
+    "cue_index": 164,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 796.345,
+    "end_s": 797.07
+  },
+  {
+    "cue_index": 165,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 799.838,
+    "end_s": 800.935
+  },
+  {
+    "cue_index": 166,
+    "correct_lang": "NAH",
+    "correct_speaker": "totonac",
+    "start_s": 802.015,
+    "end_s": 803.905
+  },
+  {
+    "cue_index": 167,
+    "correct_lang": "NAH",
+    "correct_speaker": "totonac",
+    "start_s": 804.698,
+    "end_s": 806.234
+  },
+  {
+    "cue_index": 168,
+    "correct_lang": "NAH",
+    "correct_speaker": "totonac",
+    "start_s": 806.807,
+    "end_s": 808.107
+  },
+  {
+    "cue_index": 169,
+    "correct_lang": "NAH",
+    "correct_speaker": "totonac",
+    "start_s": 808.36,
+    "end_s": 809.524
+  },
+  {
+    "cue_index": 170,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 823.699,
+    "end_s": 825.42
+  },
+  {
+    "cue_index": 171,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 826.062,
+    "end_s": 827.496
+  },
+  {
+    "cue_index": 172,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 828.407,
+    "end_s": 830.179
+  },
+  {
+    "cue_index": 173,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 830.82,
+    "end_s": 831.63
+  },
+  {
+    "cue_index": 174,
+    "correct_lang": "SPA",
+    "correct_speaker": "background",
+    "start_s": 832.44,
+    "end_s": 833.301
+  },
+  {
+    "cue_index": 175,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 843.764,
+    "end_s": 844.658
+  },
+  {
+    "cue_index": 176,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 844.911,
+    "end_s": 845.991
+  },
+  {
+    "cue_index": 177,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 846.734,
+    "end_s": 847.695
+  },
+  {
+    "cue_index": 178,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 848.084,
+    "end_s": 849.265
+  },
+  {
+    "cue_index": 179,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 850.48,
+    "end_s": 851.29
+  },
+  {
+    "cue_index": 180,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 851.847,
+    "end_s": 852.775
+  },
+  {
+    "cue_index": 181,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 853.197,
+    "end_s": 854.192
+  },
+  {
+    "cue_index": 182,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 855.559,
+    "end_s": 856.082
+  },
+  {
+    "cue_index": 183,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 856.639,
+    "end_s": 857.922
+  },
+  {
+    "cue_index": 184,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 859.187,
+    "end_s": 859.98
+  },
+  {
+    "cue_index": 185,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 860.723,
+    "end_s": 861.516
+  },
+  {
+    "cue_index": 186,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 862.124,
+    "end_s": 863.153
+  },
+  {
+    "cue_index": 187,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 891.098,
+    "end_s": 891.84
+  },
+  {
+    "cue_index": 188,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 892.482,
+    "end_s": 893.865
+  },
+  {
+    "cue_index": 189,
+    "correct_lang": "SPA",
+    "correct_speaker": "olid",
+    "start_s": 908.817,
+    "end_s": 910.032
+  },
+  {
+    "cue_index": 190,
+    "correct_lang": "SPA",
+    "correct_speaker": "olid",
+    "start_s": 910.099,
+    "end_s": 911.348
+  },
+  {
+    "cue_index": 191,
+    "correct_lang": "SPA",
+    "correct_speaker": "alvarado",
+    "start_s": 916.242,
+    "end_s": 917.507
+  },
+  {
+    "cue_index": 192,
+    "correct_lang": "UNK",
+    "correct_speaker": "background",
+    "start_s": 955.577,
+    "end_s": 956.033
+  },
+  {
+    "cue_index": 193,
+    "correct_lang": "UNK",
+    "correct_speaker": "background",
+    "start_s": 982.712,
+    "end_s": 983.134
+  },
+  {
+    "cue_index": 194,
+    "correct_lang": "UNK",
+    "correct_speaker": "background",
+    "start_s": 983.657,
+    "end_s": 983.961
+  },
+  {
+    "cue_index": 195,
+    "correct_lang": "UNK",
+    "correct_speaker": "background",
+    "start_s": 984.164,
+    "end_s": 984.417
+  },
+  {
+    "cue_index": 196,
+    "correct_lang": "UNK",
+    "correct_speaker": "background",
+    "start_s": 985.058,
+    "end_s": 985.379
+  },
+  {
+    "cue_index": 197,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 986.29,
+    "end_s": 987.285
+  },
+  {
+    "cue_index": 198,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 987.387,
+    "end_s": 988.197
+  },
+  {
+    "cue_index": 199,
+    "correct_lang": "OTH",
+    "correct_speaker": "background",
+    "start_s": 989.344,
+    "end_s": 991.234
+  },
+  {
+    "cue_index": 200,
+    "correct_lang": "UNK",
+    "correct_speaker": "hernan",
+    "start_s": 991.268,
+    "end_s": 991.47
+  },
+  {
+    "cue_index": 201,
+    "correct_lang": "UNK",
+    "correct_speaker": "background",
+    "start_s": 992.145,
+    "end_s": 992.399
+  },
+  {
+    "cue_index": 202,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 993.765,
+    "end_s": 994.39
+  },
+  {
+    "cue_index": 203,
+    "correct_lang": "SPA",
+    "correct_speaker": "background",
+    "start_s": 994.997,
+    "end_s": 995.47
+  },
+  {
+    "cue_index": 204,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 999.014,
+    "end_s": 1000.127
+  },
+  {
+    "cue_index": 205,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 1000.634,
+    "end_s": 1001.055
+  },
+  {
+    "cue_index": 206,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 1001.207,
+    "end_s": 1002.102
+  },
+  {
+    "cue_index": 207,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 1002.912,
+    "end_s": 1003.654
+  },
+  {
+    "cue_index": 208,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 1006.776,
+    "end_s": 1007.299
+  },
+  {
+    "cue_index": 209,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 1007.637,
+    "end_s": 1008.177
+  },
+  {
+    "cue_index": 210,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 1008.227,
+    "end_s": 1009.257
+  },
+  {
+    "cue_index": 211,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 1009.425,
+    "end_s": 1009.712
+  },
+  {
+    "cue_index": 212,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 1010.995,
+    "end_s": 1011.855
+  },
+  {
+    "cue_index": 213,
+    "correct_lang": "NAH",
+    "correct_speaker": "hernan",
+    "start_s": 1012.125,
+    "end_s": 1013.205
+  },
+  {
+    "cue_index": 214,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1013.965,
+    "end_s": 1015.2139999999999
+  },
+  {
+    "cue_index": 215,
+    "correct_lang": "NAH",
+    "correct_speaker": "hernan",
+    "start_s": 1015.635,
+    "end_s": 1016.395
+  },
+  {
+    "cue_index": 216,
+    "correct_lang": "UNK",
+    "correct_speaker": "hernan",
+    "start_s": 1016.682,
+    "end_s": 1017.154
+  },
+  {
+    "cue_index": 217,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1058.751,
+    "end_s": 1059.51
+  },
+  {
+    "cue_index": 218,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 1100.584,
+    "end_s": 1102.373
+  },
+  {
+    "cue_index": 219,
+    "correct_lang": "LAT",
+    "correct_speaker": "hernan",
+    "start_s": 1102.862,
+    "end_s": 1106.457
+  },
+  {
+    "cue_index": 220,
+    "correct_lang": "SPA",
+    "correct_speaker": "background",
+    "start_s": 1124.378,
+    "end_s": 1124.867
+  },
+  {
+    "cue_index": 221,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 1132.613,
+    "end_s": 1136.207
+  },
+  {
+    "cue_index": 222,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1139.211,
+    "end_s": 1139.667
+  },
+  {
+    "cue_index": 223,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1163.798,
+    "end_s": 1164.81
+  },
+  {
+    "cue_index": 224,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1166.987,
+    "end_s": 1167.645
+  },
+  {
+    "cue_index": 225,
+    "correct_lang": "MAY",
+    "correct_speaker": "aguilar",
+    "start_s": 1168.034,
+    "end_s": 1170.042
+  },
+  {
+    "cue_index": 226,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1170.126,
+    "end_s": 1171.982
+  },
+  {
+    "cue_index": 227,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1172.337,
+    "end_s": 1173.501
+  },
+  {
+    "cue_index": 228,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1175.526,
+    "end_s": 1176.623
+  },
+  {
+    "cue_index": 229,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1177.095,
+    "end_s": 1178.412
+  },
+  {
+    "cue_index": 230,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1178.85,
+    "end_s": 1179.357
+  },
+  {
+    "cue_index": 231,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1179.762,
+    "end_s": 1181.449
+  },
+  {
+    "cue_index": 232,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1181.567,
+    "end_s": 1184.031
+  },
+  {
+    "cue_index": 233,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1184.959,
+    "end_s": 1186.461
+  },
+  {
+    "cue_index": 234,
+    "correct_lang": "SPA",
+    "correct_speaker": "aguilar",
+    "start_s": 1186.647,
+    "end_s": 1187.237
+  },
+  {
+    "cue_index": 235,
+    "correct_lang": "SPA",
+    "correct_speaker": "aguilar",
+    "start_s": 1187.693,
+    "end_s": 1188.992
+  },
+  {
+    "cue_index": 236,
+    "correct_lang": "SPA",
+    "correct_speaker": "aguilar",
+    "start_s": 1189.735,
+    "end_s": 1190.747
+  },
+  {
+    "cue_index": 237,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1191.034,
+    "end_s": 1191.237
+  },
+  {
+    "cue_index": 238,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1191.287,
+    "end_s": 1192.536
+  },
+  {
+    "cue_index": 239,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1197.818,
+    "end_s": 1198.847
+  },
+  {
+    "cue_index": 240,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1199.657,
+    "end_s": 1200.737
+  },
+  {
+    "cue_index": 241,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1200.957,
+    "end_s": 1202.054
+  },
+  {
+    "cue_index": 242,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1202.864,
+    "end_s": 1203.285
+  },
+  {
+    "cue_index": 243,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1210.424,
+    "end_s": 1211.267
+  },
+  {
+    "cue_index": 244,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1212.162,
+    "end_s": 1212.938
+  },
+  {
+    "cue_index": 245,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1213.208,
+    "end_s": 1214.44
+  },
+  {
+    "cue_index": 246,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1218.203,
+    "end_s": 1219.165
+  },
+  {
+    "cue_index": 247,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1220.852,
+    "end_s": 1222.557
+  },
+  {
+    "cue_index": 248,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1222.034,
+    "end_s": 1222.455
+  },
+  {
+    "cue_index": 249,
+    "correct_lang": "MAY",
+    "correct_speaker": "aguilar",
+    "start_s": 1223.249,
+    "end_s": 1224.278
+  },
+  {
+    "cue_index": 250,
+    "correct_lang": "MAY",
+    "correct_speaker": "aguilar",
+    "start_s": 1224.615,
+    "end_s": 1225.341
+  },
+  {
+    "cue_index": 251,
+    "correct_lang": "MAY",
+    "correct_speaker": "aguilar",
+    "start_s": 1225.611,
+    "end_s": 1225.83
+  },
+  {
+    "cue_index": 252,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1226.033,
+    "end_s": 1226.894
+  },
+  {
+    "cue_index": 253,
+    "correct_lang": "NAH",
+    "correct_speaker": "aguilar",
+    "start_s": 1226.894,
+    "end_s": 1227.501
+  },
+  {
+    "cue_index": 254,
+    "correct_lang": "NAH",
+    "correct_speaker": "aguilar",
+    "start_s": 1227.67,
+    "end_s": 1229.256
+  },
+  {
+    "cue_index": 255,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1228.227,
+    "end_s": 1229.155
+  },
+  {
+    "cue_index": 256,
+    "correct_lang": "MAY",
+    "correct_speaker": "aguilar",
+    "start_s": 1229.374,
+    "end_s": 1230.167
+  },
+  {
+    "cue_index": 257,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1230.167,
+    "end_s": 1232.547
+  },
+  {
+    "cue_index": 258,
+    "correct_lang": "NAH",
+    "correct_speaker": "aguilar",
+    "start_s": 1231.247,
+    "end_s": 1232.159
+  },
+  {
+    "cue_index": 259,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1233.104,
+    "end_s": 1233.981
+  },
+  {
+    "cue_index": 260,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1233.492,
+    "end_s": 1234.403
+  },
+  {
+    "cue_index": 261,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1235.027,
+    "end_s": 1235.837
+  },
+  {
+    "cue_index": 262,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1235.399,
+    "end_s": 1235.82
+  },
+  {
+    "cue_index": 263,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1235.837,
+    "end_s": 1236.158
+  },
+  {
+    "cue_index": 264,
+    "correct_lang": "MAY",
+    "correct_speaker": "aguilar",
+    "start_s": 1236.242,
+    "end_s": 1237.086
+  },
+  {
+    "cue_index": 265,
+    "correct_lang": "MAY",
+    "correct_speaker": "aguilar",
+    "start_s": 1237.609,
+    "end_s": 1238.909
+  },
+  {
+    "cue_index": 266,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1239.195,
+    "end_s": 1240.427
+  },
+  {
+    "cue_index": 267,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1240.815,
+    "end_s": 1241.76
+  },
+  {
+    "cue_index": 268,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1245.017,
+    "end_s": 1246.334
+  },
+  {
+    "cue_index": 269,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1248.173,
+    "end_s": 1249.236
+  },
+  {
+    "cue_index": 270,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1249.405,
+    "end_s": 1250.417
+  },
+  {
+    "cue_index": 271,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1252.307,
+    "end_s": 1253.624
+  },
+  {
+    "cue_index": 272,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1254.923,
+    "end_s": 1255.767
+  },
+  {
+    "cue_index": 273,
+    "correct_lang": "NAH",
+    "correct_speaker": "mutilated_tlaxcaltec",
+    "start_s": 1256.543,
+    "end_s": 1257.235
+  },
+  {
+    "cue_index": 274,
+    "correct_lang": "NAH",
+    "correct_speaker": "mutilated_tlaxcaltec",
+    "start_s": 1265.639,
+    "end_s": 1266.837
+  },
+  {
+    "cue_index": 275,
+    "correct_lang": "NAH",
+    "correct_speaker": "mutilated_tlaxcaltec",
+    "start_s": 1267.343,
+    "end_s": 1267.934
+  },
+  {
+    "cue_index": 276,
+    "correct_lang": "NAH",
+    "correct_speaker": "mutilated_tlaxcaltec",
+    "start_s": 1268.744,
+    "end_s": 1269.3
+  },
+  {
+    "cue_index": 277,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1272.034,
+    "end_s": 1273.637
+  },
+  {
+    "cue_index": 278,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1274.211,
+    "end_s": 1275.595
+  },
+  {
+    "cue_index": 279,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1276.32,
+    "end_s": 1277.282
+  },
+  {
+    "cue_index": 280,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1278.464,
+    "end_s": 1281.349
+  },
+  {
+    "cue_index": 281,
+    "correct_lang": "NAH",
+    "correct_speaker": "marina",
+    "start_s": 1282.328,
+    "end_s": 1284.083
+  },
+  {
+    "cue_index": 282,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1284.37,
+    "end_s": 1284.792
+  },
+  {
+    "cue_index": 283,
+    "correct_lang": "NAH",
+    "correct_speaker": "marina",
+    "start_s": 1284.91,
+    "end_s": 1286.108
+  },
+  {
+    "cue_index": 284,
+    "correct_lang": "NAH",
+    "correct_speaker": "mutilated_tlaxcaltec",
+    "start_s": 1288.622,
+    "end_s": 1289.618
+  },
+  {
+    "cue_index": 285,
+    "correct_lang": "NAH",
+    "correct_speaker": "marina",
+    "start_s": 1292.115,
+    "end_s": 1293.128
+  },
+  {
+    "cue_index": 286,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1297.769,
+    "end_s": 1298.595
+  },
+  {
+    "cue_index": 287,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1299.54,
+    "end_s": 1300.03
+  },
+  {
+    "cue_index": 288,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1314.795,
+    "end_s": 1315.15
+  },
+  {
+    "cue_index": 289,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 1315.673,
+    "end_s": 1316.432
+  },
+  {
+    "cue_index": 290,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 1319.655,
+    "end_s": 1320.719
+  },
+  {
+    "cue_index": 291,
+    "correct_lang": "UNK",
+    "correct_speaker": "mutilated_tlaxcaltec",
+    "start_s": 1339.585,
+    "end_s": 1340.108
+  },
+  {
+    "cue_index": 292,
+    "correct_lang": "NAH",
+    "correct_speaker": "mutilated_tlaxcaltec",
+    "start_s": 1341.475,
+    "end_s": 1343.23
+  },
+  {
+    "cue_index": 293,
+    "correct_lang": "NAH",
+    "correct_speaker": "mutilated_tlaxcaltec",
+    "start_s": 1344.495,
+    "end_s": 1345.609
+  },
+  {
+    "cue_index": 294,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1347.212,
+    "end_s": 1348.242
+  },
+  {
+    "cue_index": 295,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1349.507,
+    "end_s": 1351.178
+  },
+  {
+    "cue_index": 296,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1351.971,
+    "end_s": 1354.182
+  },
+  {
+    "cue_index": 297,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1354.941,
+    "end_s": 1357.388
+  },
+  {
+    "cue_index": 298,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1358.13,
+    "end_s": 1359.835
+  },
+  {
+    "cue_index": 299,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1360.814,
+    "end_s": 1362.636
+  },
+  {
+    "cue_index": 300,
+    "correct_lang": "NAH",
+    "correct_speaker": "maxixcatl",
+    "start_s": 1363.294,
+    "end_s": 1364.729
+  },
+  {
+    "cue_index": 301,
+    "correct_lang": "NAH",
+    "correct_speaker": "maxixcatl",
+    "start_s": 1365.977,
+    "end_s": 1367.85
+  },
+  {
+    "cue_index": 302,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1369.217,
+    "end_s": 1371.225
+  },
+  {
+    "cue_index": 303,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1372.44,
+    "end_s": 1374.06
+  },
+  {
+    "cue_index": 304,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1384.439,
+    "end_s": 1385.114
+  },
+  {
+    "cue_index": 305,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1388.117,
+    "end_s": 1388.877
+  },
+  {
+    "cue_index": 306,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1390.463,
+    "end_s": 1391.374
+  },
+  {
+    "cue_index": 307,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1392.37,
+    "end_s": 1393.619
+  },
+  {
+    "cue_index": 308,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1396.437,
+    "end_s": 1397.162
+  },
+  {
+    "cue_index": 309,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1402.292,
+    "end_s": 1403.71
+  },
+  {
+    "cue_index": 310,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1404.267,
+    "end_s": 1405.549
+  },
+  {
+    "cue_index": 311,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1408.047,
+    "end_s": 1408.519
+  },
+  {
+    "cue_index": 312,
+    "correct_lang": "OTH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1439.012,
+    "end_s": 1439.468
+  },
+  {
+    "cue_index": 313,
+    "correct_lang": "SPA",
+    "correct_speaker": "background",
+    "start_s": 1441.105,
+    "end_s": 1442.387
+  },
+  {
+    "cue_index": 314,
+    "correct_lang": "SPA",
+    "correct_speaker": "background",
+    "start_s": 1442.708,
+    "end_s": 1443.535
+  },
+  {
+    "cue_index": 315,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1445.324,
+    "end_s": 1446.269
+  },
+  {
+    "cue_index": 316,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1446.758,
+    "end_s": 1448.749
+  },
+  {
+    "cue_index": 317,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1449.374,
+    "end_s": 1451.905
+  },
+  {
+    "cue_index": 318,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1452.09,
+    "end_s": 1453.356
+  },
+  {
+    "cue_index": 319,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1454.369,
+    "end_s": 1456.275
+  },
+  {
+    "cue_index": 320,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1457.035,
+    "end_s": 1459.077
+  },
+  {
+    "cue_index": 321,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1459.684,
+    "end_s": 1462.519
+  },
+  {
+    "cue_index": 322,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1463.363,
+    "end_s": 1464.477
+  },
+  {
+    "cue_index": 323,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1464.797,
+    "end_s": 1469.387
+  },
+  {
+    "cue_index": 324,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1471.328,
+    "end_s": 1472.34
+  },
+  {
+    "cue_index": 325,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1477.589,
+    "end_s": 1478.044
+  },
+  {
+    "cue_index": 326,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1479.411,
+    "end_s": 1480.12
+  },
+  {
+    "cue_index": 327,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1481.2,
+    "end_s": 1482.567
+  },
+  {
+    "cue_index": 328,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1483.191,
+    "end_s": 1483.782
+  },
+  {
+    "cue_index": 329,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1483.782,
+    "end_s": 1484.895
+  },
+  {
+    "cue_index": 330,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1485.267,
+    "end_s": 1486.296
+  },
+  {
+    "cue_index": 331,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 1488.996,
+    "end_s": 1489.317
+  },
+  {
+    "cue_index": 332,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1490.11,
+    "end_s": 1490.7
+  },
+  {
+    "cue_index": 333,
+    "correct_lang": "SPA",
+    "correct_speaker": "alvarado",
+    "start_s": 1502.715,
+    "end_s": 1504.065
+  },
+  {
+    "cue_index": 334,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 1514.494,
+    "end_s": 1515.945
+  },
+  {
+    "cue_index": 335,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 1516.384,
+    "end_s": 1517.042
+  },
+  {
+    "cue_index": 336,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 1517.042,
+    "end_s": 1522.409
+  },
+  {
+    "cue_index": 337,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 1522.544,
+    "end_s": 1523.286
+  },
+  {
+    "cue_index": 338,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 1523.59,
+    "end_s": 1524.147
+  },
+  {
+    "cue_index": 339,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 1525.26,
+    "end_s": 1525.986
+  },
+  {
+    "cue_index": 340,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 1526.239,
+    "end_s": 1526.88
+  },
+  {
+    "cue_index": 341,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 1530.188,
+    "end_s": 1531.032
+  },
+  {
+    "cue_index": 342,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1534.879,
+    "end_s": 1535.993
+  },
+  {
+    "cue_index": 343,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1538.406,
+    "end_s": 1539.554
+  },
+  {
+    "cue_index": 344,
+    "correct_lang": "NAH",
+    "correct_speaker": "background",
+    "start_s": 1542.22,
+    "end_s": 1544.262
+  },
+  {
+    "cue_index": 345,
+    "correct_lang": "UNK",
+    "correct_speaker": "background",
+    "start_s": 1545.038,
+    "end_s": 1545.797
+  },
+  {
+    "cue_index": 346,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1546.135,
+    "end_s": 1548.227
+  },
+  {
+    "cue_index": 347,
+    "correct_lang": "UNK",
+    "correct_speaker": "background",
+    "start_s": 1549.56,
+    "end_s": 1551.45
+  },
+  {
+    "cue_index": 348,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1562.892,
+    "end_s": 1563.719
+  },
+  {
+    "cue_index": 349,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1564.765,
+    "end_s": 1565.642
+  },
+  {
+    "cue_index": 350,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1572.612,
+    "end_s": 1573.624
+  },
+  {
+    "cue_index": 351,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1574.603,
+    "end_s": 1576.594
+  },
+  {
+    "cue_index": 352,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1577.337,
+    "end_s": 1578.619
+  },
+  {
+    "cue_index": 353,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1579.395,
+    "end_s": 1580.661
+  },
+  {
+    "cue_index": 354,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1583.479,
+    "end_s": 1584.542
+  },
+  {
+    "cue_index": 355,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1586.432,
+    "end_s": 1587.445
+  },
+  {
+    "cue_index": 356,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1630.442,
+    "end_s": 1631.691
+  },
+  {
+    "cue_index": 357,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1632.265,
+    "end_s": 1633.429
+  },
+  {
+    "cue_index": 358,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1634.02,
+    "end_s": 1635.437
+  },
+  {
+    "cue_index": 359,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1636.23,
+    "end_s": 1636.956
+  },
+  {
+    "cue_index": 360,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1643.74,
+    "end_s": 1644.398
+  },
+  {
+    "cue_index": 361,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1645.039,
+    "end_s": 1646.727
+  },
+  {
+    "cue_index": 362,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1647.857,
+    "end_s": 1649.477
+  },
+  {
+    "cue_index": 363,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1650.405,
+    "end_s": 1652.312
+  },
+  {
+    "cue_index": 364,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1656.075,
+    "end_s": 1656.666
+  },
+  {
+    "cue_index": 365,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1657.527,
+    "end_s": 1658.657
+  },
+  {
+    "cue_index": 366,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1659.704,
+    "end_s": 1660.986
+  },
+  {
+    "cue_index": 367,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1661.391,
+    "end_s": 1663.146
+  },
+  {
+    "cue_index": 368,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1663.568,
+    "end_s": 1664.834
+  },
+  {
+    "cue_index": 369,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1665.205,
+    "end_s": 1666.774
+  },
+  {
+    "cue_index": 370,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1670.115,
+    "end_s": 1671.617
+  },
+  {
+    "cue_index": 371,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1672.326,
+    "end_s": 1674.284
+  },
+  {
+    "cue_index": 372,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1674.587,
+    "end_s": 1676.174
+  },
+  {
+    "cue_index": 373,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1676.95,
+    "end_s": 1678.502
+  },
+  {
+    "cue_index": 374,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1679.346,
+    "end_s": 1680.139
+  },
+  {
+    "cue_index": 375,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1680.426,
+    "end_s": 1681.472
+  },
+  {
+    "cue_index": 376,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1684.881,
+    "end_s": 1685.505
+  },
+  {
+    "cue_index": 377,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1686.4,
+    "end_s": 1687.632
+  },
+  {
+    "cue_index": 378,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1688.475,
+    "end_s": 1690.349
+  },
+  {
+    "cue_index": 379,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1691.074,
+    "end_s": 1693.403
+  },
+  {
+    "cue_index": 380,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1694.297,
+    "end_s": 1695.782
+  },
+  {
+    "cue_index": 381,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1704.642,
+    "end_s": 1704.912
+  },
+  {
+    "cue_index": 382,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1705.114,
+    "end_s": 1706.684
+  },
+  {
+    "cue_index": 383,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1709.232,
+    "end_s": 1710.312
+  },
+  {
+    "cue_index": 384,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1710.514,
+    "end_s": 1711.189
+  },
+  {
+    "cue_index": 385,
+    "correct_lang": "UNK",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1717.214,
+    "end_s": 1717.821
+  },
+  {
+    "cue_index": 386,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1723.187,
+    "end_s": 1724.115
+  },
+  {
+    "cue_index": 387,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1724.757,
+    "end_s": 1725.297
+  },
+  {
+    "cue_index": 388,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1726.259,
+    "end_s": 1727.49
+  },
+  {
+    "cue_index": 389,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1729.077,
+    "end_s": 1730.477
+  },
+  {
+    "cue_index": 390,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 1731.642,
+    "end_s": 1731.996
+  },
+  {
+    "cue_index": 391,
+    "correct_lang": "NAH",
+    "correct_speaker": "old_xicontencatl",
+    "start_s": 1760.177,
+    "end_s": 1761.038
+  },
+  {
+    "cue_index": 392,
+    "correct_lang": "NAH",
+    "correct_speaker": "old_xicontencatl",
+    "start_s": 1762.354,
+    "end_s": 1763.687
+  },
+  {
+    "cue_index": 393,
+    "correct_lang": "NAH",
+    "correct_speaker": "old_xicontencatl",
+    "start_s": 1764.16,
+    "end_s": 1764.582
+  },
+  {
+    "cue_index": 394,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1766.573,
+    "end_s": 1767.248
+  },
+  {
+    "cue_index": 395,
+    "correct_lang": "NAH",
+    "correct_speaker": "maxixcatl",
+    "start_s": 1768.699,
+    "end_s": 1769.796
+  },
+  {
+    "cue_index": 396,
+    "correct_lang": "NAH",
+    "correct_speaker": "maxixcatl",
+    "start_s": 1770.471,
+    "end_s": 1772.344
+  },
+  {
+    "cue_index": 397,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1774.251,
+    "end_s": 1776.074
+  },
+  {
+    "cue_index": 398,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1777.272,
+    "end_s": 1778.301
+  },
+  {
+    "cue_index": 399,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1786.654,
+    "end_s": 1788.105
+  },
+  {
+    "cue_index": 400,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1789.219,
+    "end_s": 1790.215
+  },
+  {
+    "cue_index": 401,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1791.4470000000001,
+    "end_s": 1792.172
+  },
+  {
+    "cue_index": 402,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1792.594,
+    "end_s": 1793.522
+  },
+  {
+    "cue_index": 403,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1795.075,
+    "end_s": 1797.404
+  },
+  {
+    "cue_index": 404,
+    "correct_lang": "NAH",
+    "correct_speaker": "maxixcatl",
+    "start_s": 1801.977,
+    "end_s": 1803.006
+  },
+  {
+    "cue_index": 405,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1836.689,
+    "end_s": 1838.46
+  },
+  {
+    "cue_index": 406,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1839.574,
+    "end_s": 1841.582
+  },
+  {
+    "cue_index": 407,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1842.848,
+    "end_s": 1844.502
+  },
+  {
+    "cue_index": 408,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1846.037,
+    "end_s": 1848.45
+  },
+  {
+    "cue_index": 409,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1850.222,
+    "end_s": 1852.281
+  },
+  {
+    "cue_index": 410,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1853.226,
+    "end_s": 1854.559
+  },
+  {
+    "cue_index": 411,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1856.584,
+    "end_s": 1857.512
+  },
+  {
+    "cue_index": 412,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1858.879,
+    "end_s": 1860.28
+  },
+  {
+    "cue_index": 413,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1860.752,
+    "end_s": 1861.647
+  },
+  {
+    "cue_index": 414,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1862.676,
+    "end_s": 1864.701
+  },
+  {
+    "cue_index": 415,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1865.562,
+    "end_s": 1866.743
+  },
+  {
+    "cue_index": 416,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1870.236,
+    "end_s": 1871.316
+  },
+  {
+    "cue_index": 417,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1873.29,
+    "end_s": 1874.354
+  },
+  {
+    "cue_index": 418,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1876.244,
+    "end_s": 1878.319
+  },
+  {
+    "cue_index": 419,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1883.669,
+    "end_s": 1884.934
+  },
+  {
+    "cue_index": 420,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1887.044,
+    "end_s": 1888.613
+  },
+  {
+    "cue_index": 421,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1922.009,
+    "end_s": 1922.751
+  },
+  {
+    "cue_index": 422,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1923.055,
+    "end_s": 1923.915
+  },
+  {
+    "cue_index": 423,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1924.607,
+    "end_s": 1925.502
+  },
+  {
+    "cue_index": 424,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1926.177,
+    "end_s": 1927.206
+  },
+  {
+    "cue_index": 425,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1930.632,
+    "end_s": 1931.745
+  },
+  {
+    "cue_index": 426,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1932.488,
+    "end_s": 1933.315
+  },
+  {
+    "cue_index": 427,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1934.024,
+    "end_s": 1936.454
+  },
+  {
+    "cue_index": 428,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1937.112,
+    "end_s": 1939.626
+  },
+  {
+    "cue_index": 429,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1940.082,
+    "end_s": 1941.094
+  },
+  {
+    "cue_index": 430,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1941.584,
+    "end_s": 1943.355
+  },
+  {
+    "cue_index": 431,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1943.929,
+    "end_s": 1944.975
+  },
+  {
+    "cue_index": 432,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1945.499,
+    "end_s": 1946.039
+  },
+  {
+    "cue_index": 433,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1946.039,
+    "end_s": 1947.608
+  },
+  {
+    "cue_index": 434,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1948.047,
+    "end_s": 1949.616
+  },
+  {
+    "cue_index": 435,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 1950.342,
+    "end_s": 1952.755
+  },
+  {
+    "cue_index": 436,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1953.582,
+    "end_s": 1955.084
+  },
+  {
+    "cue_index": 437,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1955.961,
+    "end_s": 1957.784
+  },
+  {
+    "cue_index": 438,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1958.155,
+    "end_s": 1960.028
+  },
+  {
+    "cue_index": 439,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1960.787,
+    "end_s": 1961.648
+  },
+  {
+    "cue_index": 440,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1982.151,
+    "end_s": 1982.742
+  },
+  {
+    "cue_index": 441,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1983.737,
+    "end_s": 1984.463
+  },
+  {
+    "cue_index": 442,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 1984.75,
+    "end_s": 1985.729
+  },
+  {
+    "cue_index": 443,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1989.188,
+    "end_s": 1989.61
+  },
+  {
+    "cue_index": 444,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlaxcaltec",
+    "start_s": 1990.757,
+    "end_s": 1991.247
+  },
+  {
+    "cue_index": 445,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlaxcaltec",
+    "start_s": 1993.255,
+    "end_s": 1993.845
+  },
+  {
+    "cue_index": 446,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 1998.807,
+    "end_s": 1999.583
+  },
+  {
+    "cue_index": 447,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 2003.97,
+    "end_s": 2004.679
+  },
+  {
+    "cue_index": 448,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2011.699,
+    "end_s": 2012.459
+  },
+  {
+    "cue_index": 449,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlaxcaltec",
+    "start_s": 2012.931,
+    "end_s": 2013.876
+  },
+  {
+    "cue_index": 450,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2015.564,
+    "end_s": 2017.285
+  },
+  {
+    "cue_index": 451,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 2023.68,
+    "end_s": 2025.537
+  },
+  {
+    "cue_index": 452,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlaxcaltec",
+    "start_s": 2025.537,
+    "end_s": 2027.325
+  },
+  {
+    "cue_index": 453,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 2027.781,
+    "end_s": 2028.76
+  },
+  {
+    "cue_index": 454,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2030.346,
+    "end_s": 2031.0720000000001
+  },
+  {
+    "cue_index": 455,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 2031.612,
+    "end_s": 2032.0
+  },
+  {
+    "cue_index": 456,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2038.598,
+    "end_s": 2040.758
+  },
+  {
+    "cue_index": 457,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2041.281,
+    "end_s": 2042.749
+  },
+  {
+    "cue_index": 458,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2043.407,
+    "end_s": 2047.508
+  },
+  {
+    "cue_index": 459,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2048.419,
+    "end_s": 2053.127
+  },
+  {
+    "cue_index": 460,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2053.785,
+    "end_s": 2055.54
+  },
+  {
+    "cue_index": 461,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2056.08,
+    "end_s": 2060.637
+  },
+  {
+    "cue_index": 462,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2062.797,
+    "end_s": 2064.805
+  },
+  {
+    "cue_index": 463,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2065.969,
+    "end_s": 2067.1
+  },
+  {
+    "cue_index": 464,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2068.18,
+    "end_s": 2071.049
+  },
+  {
+    "cue_index": 465,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2071.47,
+    "end_s": 2072.28
+  },
+  {
+    "cue_index": 466,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2074.677,
+    "end_s": 2076.415
+  },
+  {
+    "cue_index": 467,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2077.427,
+    "end_s": 2078.457
+  },
+  {
+    "cue_index": 468,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2079.908,
+    "end_s": 2081.241
+  },
+  {
+    "cue_index": 469,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2081.714,
+    "end_s": 2082.659
+  },
+  {
+    "cue_index": 470,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2083.266,
+    "end_s": 2084.464
+  },
+  {
+    "cue_index": 471,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2085.848,
+    "end_s": 2086.945
+  },
+  {
+    "cue_index": 472,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 2089.712,
+    "end_s": 2090.185
+  },
+  {
+    "cue_index": 473,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2090.505,
+    "end_s": 2092.615
+  },
+  {
+    "cue_index": 474,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2093.121,
+    "end_s": 2093.948
+  },
+  {
+    "cue_index": 475,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2098.673,
+    "end_s": 2100.04
+  },
+  {
+    "cue_index": 476,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2100.495,
+    "end_s": 2101.356
+  },
+  {
+    "cue_index": 477,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2101.913,
+    "end_s": 2103.347
+  },
+  {
+    "cue_index": 478,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2103.989,
+    "end_s": 2106.317
+  },
+  {
+    "cue_index": 479,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2106.317,
+    "end_s": 2108.089
+  },
+  {
+    "cue_index": 480,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2109.0,
+    "end_s": 2110.367
+  },
+  {
+    "cue_index": 481,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2111.684,
+    "end_s": 2114.755
+  },
+  {
+    "cue_index": 482,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2114.4,
+    "end_s": 2114.67
+  },
+  {
+    "cue_index": 483,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2115.329,
+    "end_s": 2116.071
+  },
+  {
+    "cue_index": 484,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2116.476,
+    "end_s": 2118.18
+  },
+  {
+    "cue_index": 485,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2118.754,
+    "end_s": 2119.53
+  },
+  {
+    "cue_index": 486,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2120.239,
+    "end_s": 2120.695
+  },
+  {
+    "cue_index": 487,
+    "correct_lang": "UNK",
+    "correct_speaker": null,
+    "start_s": 2221.59,
+    "end_s": 2221.911
+  },
+  {
+    "cue_index": 488,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2265.094,
+    "end_s": 2266.022
+  },
+  {
+    "cue_index": 489,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2266.056,
+    "end_s": 2266.579
+  },
+  {
+    "cue_index": 490,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2275.253,
+    "end_s": 2276.451
+  },
+  {
+    "cue_index": 491,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2277.531,
+    "end_s": 2280.737
+  },
+  {
+    "cue_index": 492,
+    "correct_lang": "UNK",
+    "correct_speaker": "background",
+    "start_s": 2282.577,
+    "end_s": 2283.032
+  },
+  {
+    "cue_index": 493,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2283.505,
+    "end_s": 2284.146
+  },
+  {
+    "cue_index": 494,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 2285.192,
+    "end_s": 2287.082
+  },
+  {
+    "cue_index": 495,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 2287.521,
+    "end_s": 2288.753
+  },
+  {
+    "cue_index": 496,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2289.31,
+    "end_s": 2291.976
+  },
+  {
+    "cue_index": 497,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2290.964,
+    "end_s": 2291.925
+  },
+  {
+    "cue_index": 498,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2291.976,
+    "end_s": 2293.022
+  },
+  {
+    "cue_index": 499,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 2293.36,
+    "end_s": 2293.832
+  },
+  {
+    "cue_index": 500,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2294.153,
+    "end_s": 2294.946
+  },
+  {
+    "cue_index": 501,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2295.317,
+    "end_s": 2297.275
+  },
+  {
+    "cue_index": 502,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2297.663,
+    "end_s": 2298.861
+  },
+  {
+    "cue_index": 503,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2299.57,
+    "end_s": 2301.477
+  },
+  {
+    "cue_index": 504,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2302.169,
+    "end_s": 2303.13
+  },
+  {
+    "cue_index": 505,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2303.94,
+    "end_s": 2304.717
+  },
+  {
+    "cue_index": 506,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 2307.18,
+    "end_s": 2307.67
+  },
+  {
+    "cue_index": 507,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 2308.986,
+    "end_s": 2309.425
+  },
+  {
+    "cue_index": 508,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2310.724,
+    "end_s": 2311.298
+  },
+  {
+    "cue_index": 509,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 2314.335,
+    "end_s": 2314.926
+  },
+  {
+    "cue_index": 510,
+    "correct_lang": "SPA",
+    "correct_speaker": "hernan",
+    "start_s": 2316.597,
+    "end_s": 2317.339
+  },
+  {
+    "cue_index": 511,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2329.692,
+    "end_s": 2330.89
+  },
+  {
+    "cue_index": 512,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2331.784,
+    "end_s": 2333.084
+  },
+  {
+    "cue_index": 513,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2334.062,
+    "end_s": 2336.222
+  },
+  {
+    "cue_index": 514,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2337.488,
+    "end_s": 2339.175
+  },
+  {
+    "cue_index": 515,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2339.834,
+    "end_s": 2341.437
+  },
+  {
+    "cue_index": 516,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2341.926,
+    "end_s": 2344.12
+  },
+  {
+    "cue_index": 517,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2344.238,
+    "end_s": 2345.52
+  },
+  {
+    "cue_index": 518,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2346.634,
+    "end_s": 2347.934
+  },
+  {
+    "cue_index": 519,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2348.541,
+    "end_s": 2349.756
+  },
+  {
+    "cue_index": 520,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2351.427,
+    "end_s": 2351.849
+  },
+  {
+    "cue_index": 521,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2352.557,
+    "end_s": 2353.182
+  },
+  {
+    "cue_index": 522,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2353.874,
+    "end_s": 2355.494
+  },
+  {
+    "cue_index": 523,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2356.067,
+    "end_s": 2358.295
+  },
+  {
+    "cue_index": 524,
+    "correct_lang": "NAH",
+    "correct_speaker": "marina",
+    "start_s": 2358.852,
+    "end_s": 2361.569
+  },
+  {
+    "cue_index": 525,
+    "correct_lang": "NAH",
+    "correct_speaker": "marina",
+    "start_s": 2361.67,
+    "end_s": 2362.784
+  },
+  {
+    "cue_index": 526,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2363.205,
+    "end_s": 2366.58
+  },
+  {
+    "cue_index": 527,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2367.593,
+    "end_s": 2369.787
+  },
+  {
+    "cue_index": 528,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2370.242,
+    "end_s": 2372.436
+  },
+  {
+    "cue_index": 529,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2372.672,
+    "end_s": 2375.136
+  },
+  {
+    "cue_index": 530,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2375.372,
+    "end_s": 2376.824
+  },
+  {
+    "cue_index": 531,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2380.435,
+    "end_s": 2381.751
+  },
+  {
+    "cue_index": 532,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2382.494,
+    "end_s": 2383.928
+  },
+  {
+    "cue_index": 533,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2384.384,
+    "end_s": 2386.307
+  },
+  {
+    "cue_index": 534,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2387.202,
+    "end_s": 2389.058
+  },
+  {
+    "cue_index": 535,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2389.733,
+    "end_s": 2390.729
+  },
+  {
+    "cue_index": 536,
+    "correct_lang": "SPA",
+    "correct_speaker": null,
+    "start_s": 2391.707,
+    "end_s": 2392.197
+  },
+  {
+    "cue_index": 537,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2394.104,
+    "end_s": 2394.914
+  },
+  {
+    "cue_index": 538,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2395.386,
+    "end_s": 2397.9
+  },
+  {
+    "cue_index": 539,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2398.795,
+    "end_s": 2402.035
+  },
+  {
+    "cue_index": 540,
+    "correct_lang": "NAH",
+    "correct_speaker": "marina",
+    "start_s": 2402.035,
+    "end_s": 2402.828
+  },
+  {
+    "cue_index": 541,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2404.853,
+    "end_s": 2406.338
+  },
+  {
+    "cue_index": 542,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2407.688,
+    "end_s": 2408.616
+  },
+  {
+    "cue_index": 543,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2409.578,
+    "end_s": 2410.304
+  },
+  {
+    "cue_index": 544,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2410.641,
+    "end_s": 2412.734
+  },
+  {
+    "cue_index": 545,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2413.341,
+    "end_s": 2415.029
+  },
+  {
+    "cue_index": 546,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2415.231,
+    "end_s": 2415.923
+  },
+  {
+    "cue_index": 547,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2416.429,
+    "end_s": 2418.724
+  },
+  {
+    "cue_index": 548,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2419.146,
+    "end_s": 2420.091
+  },
+  {
+    "cue_index": 549,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2420.8,
+    "end_s": 2423.804
+  },
+  {
+    "cue_index": 550,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2424.782,
+    "end_s": 2429.052
+  },
+  {
+    "cue_index": 551,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2430.3,
+    "end_s": 2431.296
+  },
+  {
+    "cue_index": 552,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2431.38,
+    "end_s": 2432.224
+  },
+  {
+    "cue_index": 553,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2432.967,
+    "end_s": 2433.929
+  },
+  {
+    "cue_index": 554,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2434.739,
+    "end_s": 2436.78
+  },
+  {
+    "cue_index": 555,
+    "correct_lang": "SPA",
+    "correct_speaker": "marina",
+    "start_s": 2439.362,
+    "end_s": 2439.852
+  },
+  {
+    "cue_index": 556,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2449.319,
+    "end_s": 2450.162
+  },
+  {
+    "cue_index": 557,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2451.192,
+    "end_s": 2452.052
+  },
+  {
+    "cue_index": 558,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2452.71,
+    "end_s": 2454.01
+  },
+  {
+    "cue_index": 559,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2454.449,
+    "end_s": 2455.36
+  },
+  {
+    "cue_index": 560,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2455.967,
+    "end_s": 2459.292
+  },
+  {
+    "cue_index": 561,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2459.882,
+    "end_s": 2461.941
+  },
+  {
+    "cue_index": 562,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2475.357,
+    "end_s": 2476.032
+  },
+  {
+    "cue_index": 563,
+    "correct_lang": "NAH",
+    "correct_speaker": "tlecuiluatzin",
+    "start_s": 2481.381,
+    "end_s": 2482.478
+  },
+  {
+    "cue_index": 564,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2490.224,
+    "end_s": 2491.253
+  },
+  {
+    "cue_index": 565,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2492.755,
+    "end_s": 2493.869
+  },
+  {
+    "cue_index": 566,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2495.539,
+    "end_s": 2499.049
+  },
+  {
+    "cue_index": 567,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2500.467,
+    "end_s": 2501.884
+  },
+  {
+    "cue_index": 568,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2502.745,
+    "end_s": 2504.112
+  },
+  {
+    "cue_index": 569,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2504.584,
+    "end_s": 2505.327
+  },
+  {
+    "cue_index": 570,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2507.706,
+    "end_s": 2526.539
+  },
+  {
+    "cue_index": 571,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2526.69,
+    "end_s": 2530.184
+  },
+  {
+    "cue_index": 572,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2530.504,
+    "end_s": 2536.461
+  },
+  {
+    "cue_index": 573,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2537.254,
+    "end_s": 2539.988
+  },
+  {
+    "cue_index": 574,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2540.309,
+    "end_s": 2544.342
+  },
+  {
+    "cue_index": 575,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2545.017,
+    "end_s": 2546.249
+  },
+  {
+    "cue_index": 576,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2556.762,
+    "end_s": 2558.77
+  },
+  {
+    "cue_index": 577,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2559.968,
+    "end_s": 2561.706
+  },
+  {
+    "cue_index": 578,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2562.82,
+    "end_s": 2564.102
+  },
+  {
+    "cue_index": 579,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2565.132,
+    "end_s": 2566.212
+  },
+  {
+    "cue_index": 580,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2567.815,
+    "end_s": 2569.502
+  },
+  {
+    "cue_index": 581,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2569.992,
+    "end_s": 2571.038
+  },
+  {
+    "cue_index": 582,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2571.932,
+    "end_s": 2573.029
+  },
+  {
+    "cue_index": 583,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2573.772,
+    "end_s": 2580.049
+  },
+  {
+    "cue_index": 584,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2580.792,
+    "end_s": 2582.26
+  },
+  {
+    "cue_index": 585,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2582.496,
+    "end_s": 2588.47
+  },
+  {
+    "cue_index": 586,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2588.622,
+    "end_s": 2591.963
+  },
+  {
+    "cue_index": 587,
+    "correct_lang": "NAH",
+    "correct_speaker": null,
+    "start_s": 2593.465,
+    "end_s": 2594.039
+  },
+  {
+    "cue_index": 588,
+    "correct_lang": "NAH",
+    "correct_speaker": "background",
+    "start_s": 2594.039,
+    "end_s": 2594.95
+  },
+  {
+    "cue_index": 589,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2598.308,
+    "end_s": 2598.983
+  },
+  {
+    "cue_index": 590,
+    "correct_lang": "NAH",
+    "correct_speaker": "motecuzoma",
+    "start_s": 2599.945,
+    "end_s": 2601.008
+  },
+  {
+    "cue_index": 591,
+    "correct_lang": "SPA",
+    "correct_speaker": "olid",
+    "start_s": 2603.404,
+    "end_s": 2604.299
+  },
+  {
+    "cue_index": 592,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2612.972,
+    "end_s": 2614.154
+  },
+  {
+    "cue_index": 593,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2615.52,
+    "end_s": 2617.157
+  },
+  {
+    "cue_index": 594,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2617.512,
+    "end_s": 2620.296
+  },
+  {
+    "cue_index": 595,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2622.102,
+    "end_s": 2626.084
+  },
+  {
+    "cue_index": 596,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2627.198,
+    "end_s": 2628.531
+  },
+  {
+    "cue_index": 597,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2629.527,
+    "end_s": 2631.13
+  },
+  {
+    "cue_index": 598,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2631.636,
+    "end_s": 2633.813
+  },
+  {
+    "cue_index": 599,
+    "correct_lang": "NAH",
+    "correct_speaker": "young_xicontencatl",
+    "start_s": 2635.517,
+    "end_s": 2637.779
+  },
+  {
+    "cue_index": 600,
+    "correct_lang": "OTH",
+    "correct_speaker": "ignore",
+    "start_s": 2645.085,
+    "end_s": 2658.349
+  }
+]

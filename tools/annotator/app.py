@@ -137,6 +137,10 @@ class Annotation(db.Model):
     split_into = db.Column(db.String(200))
     split_from = db.Column(db.String(100))
     
+    # F005 wav2vec2 embedding classifier
+    f005_pred_lang = db.Column(db.String(10))
+    f005_confidence = db.Column(db.Float)
+
     # Meta
     annotated_at = db.Column(db.DateTime)
     annotator = db.Column(db.String(50), default="markus")
@@ -161,6 +165,10 @@ class Annotation(db.Model):
                 "text": self.pipeline_text,
                 "ipa": self.pipeline_ipa,
                 "confidence": self.pipeline_confidence
+            },
+            "f005": {
+                "pred_lang": self.f005_pred_lang,
+                "confidence": self.f005_confidence
             },
             "annotation": {
                 "correct_lang": self.correct_lang,
@@ -935,7 +943,7 @@ def dashboard():
         srt_options.insert(0, {"name": f"(current) {cur.stem}", "path": cur_rel})
 
     # GT file
-    gt_file = PROJECT_DIR / "eq_comparison_gt.json"
+    gt_file = PROJECT_DIR / "benchmarks" / "snapshots" / "eq_comparison_gt_v1.json"
     gt_path = gt_file.relative_to(PROJECT_DIR).as_posix() if gt_file.exists() else ""
 
     # Media filename for audio playback
@@ -993,6 +1001,17 @@ def api_dashboard_segments():
         for ann in anns:
             if ann.cue_index >= 0 and ann.correct_lang:
                 gt_map[ann.cue_index] = ann.correct_lang.lower()
+
+    # Load F005 predictions from DB
+    f005_map = {}
+    _f005_media = Path(CURRENT_MEDIA["path"]).name if CURRENT_MEDIA.get("path") else ""
+    if _f005_media:
+        f005_anns = Annotation.query.filter(
+            Annotation.media_file == _f005_media,
+            Annotation.f005_pred_lang.isnot(None),
+        ).all()
+        for ann in f005_anns:
+            f005_map[ann.cue_index] = ann.f005_pred_lang.lower()
 
     # --- Decision trace: simulate voter logic locally ---
     from collections import defaultdict
@@ -1138,10 +1157,12 @@ def api_dashboard_segments():
         if spa_func_hits > 0:
             traces.append(f"SPA text hints: {text_words & SPA_FUNC_WORDS}")
 
+        f005_lang = f005_map.get(cue, "")
         rows.append({**seg, "gt_lang": gt_lang, "match": match,
                       "error_type": error_type, "cost": cost,
                       "decision": traces,
-                      "prior": ip})
+                      "prior": ip,
+                      "f005_lang": f005_lang})
 
     return jsonify(rows)
 
@@ -2228,6 +2249,31 @@ def api_allo_full_track():
 def comparison_page():
     """Standalone comparison matrix page."""
     return render_template("comparison.html")
+
+
+@app.route("/api/f005_predictions")
+def api_f005_predictions():
+    """Return F005 wav2vec2 embedding predictions keyed by cue_index."""
+    media_name = request.args.get("media", "")
+    if not media_name and CURRENT_MEDIA.get("path"):
+        media_name = Path(CURRENT_MEDIA["path"]).name
+    if not media_name:
+        media_name = "Hern\u00e1n-1-3.mp4"
+
+    anns = Annotation.query.filter(
+        Annotation.media_file == media_name,
+        Annotation.f005_pred_lang.isnot(None),
+    ).all()
+
+    result = {}
+    for a in anns:
+        result[str(a.cue_index)] = {
+            "pred_lang": a.f005_pred_lang,
+            "confidence": a.f005_confidence,
+            "correct_lang": a.correct_lang,
+            "pipeline_lang": a.pipeline_lang,
+        }
+    return jsonify(result)
 
 
 @app.route("/api/dashboard/comparison")

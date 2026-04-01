@@ -4,11 +4,12 @@ Usage:
     python evaluate.py <ground_truth.json> <pipeline_output.srt>
 
 Ground truth formats:
-    - DB export: [{cue_index, correct_lang, ...}]  (from annotator)
+    - DB export: [{cue_index, correct_lang, start_s, end_s, ...}]
     - Legacy:    {segments: [{lang, start, end, done}, ...]}
 
 Metrics:
-    - Language accuracy: % segments with correct lang tag
+    - Segment accuracy: % segments with correct lang tag
+    - Duration-weighted accuracy: % of correctly classified film time
     - Weighted error cost: asymmetric costs (NAH→SPA ≠ SPA→NAH)
     - Precision/Recall per language (NAH, SPA, ENG, OTH)
     - Confusion matrix: what gets tagged as what
@@ -57,8 +58,15 @@ def get_error_cost(actual, predicted):
     return ERROR_COSTS.get((actual, predicted), ERROR_COSTS["_default"])
 
 
+def _parse_srt_time(ts: str) -> float:
+    """Parse SRT timestamp '00:01:23,456' → seconds."""
+    ts = ts.replace(",", ".")
+    h, m, s = ts.split(":")
+    return int(h) * 3600 + int(m) * 60 + float(s)
+
+
 def load_srt(path):
-    """Parse SRT file into segments with lang tags, keyed by cue index."""
+    """Parse SRT file into segments with lang tags + timestamps, keyed by cue index."""
     text = Path(path).read_text(encoding="utf-8")
     segments = {}
     for block in text.strip().split("\n\n"):
@@ -75,6 +83,8 @@ def load_srt(path):
         )
         if not time_match:
             continue
+        start_s = _parse_srt_time(time_match.group(1))
+        end_s = _parse_srt_time(time_match.group(2))
         content = " ".join(lines[2:])
         lang = "oth"
         tag_match = re.match(r"\[(\w+)(?:\|[^\]]+)?\]", content)
@@ -86,24 +96,34 @@ def load_srt(path):
             "other": "oth", "silence": "sil",
         }
         lang = lang_map.get(lang, lang)
-        segments[cue_idx] = {"lang": lang, "text": content[:60]}
+        segments[cue_idx] = {
+            "lang": lang, "text": content[:60],
+            "start_s": start_s, "end_s": end_s,
+        }
     return segments
 
 
 def load_ground_truth(path):
-    """Load ground truth. Returns dict: cue_index → lang."""
+    """Load ground truth. Returns dict: cue_index → {lang, start_s, end_s}."""
     data = json.loads(Path(path).read_text())
     if isinstance(data, dict):
         # Legacy format: {segments: [{lang, start, end, done}, ...]}
         segs = data.get("segments", [])
-        return {i + 1: s["lang"].lower() for i, s in enumerate(segs) if s.get("done", False)}
-    # DB export: [{cue_index, correct_lang}, ...]
+        return {
+            i + 1: {"lang": s["lang"].lower(), "start_s": s.get("start", 0), "end_s": s.get("end", 0)}
+            for i, s in enumerate(segs) if s.get("done", False)
+        }
+    # DB export: [{cue_index, correct_lang, start_s, end_s, ...}]
     gt = {}
     for item in data:
         cue = item.get("cue_index")
         lang = (item.get("correct_lang") or "").lower()
         if cue is not None and lang:
-            gt[cue] = lang
+            gt[cue] = {
+                "lang": lang,
+                "start_s": item.get("start_s", 0) or 0,
+                "end_s": item.get("end_s", 0) or 0,
+            }
     return gt
 
 
@@ -138,31 +158,64 @@ def evaluate(gt_path, srt_path):
     total_cost = 0.0
     max_possible_cost = 0.0
 
+    # Duration-weighted tracking
+    dur_correct_all = 0.0
+    dur_total_all = 0.0
+    dur_correct_excl_unk = 0.0
+    dur_total_excl_unk = 0.0
+    dur_correct_nah_spa = 0.0
+    dur_total_nah_spa = 0.0
+    nah_spa_correct = 0
+    nah_spa_total = 0
+
     for cue in sorted(matched):
-        gt_lang = gt_map[cue]
+        gt_lang = gt_map[cue]["lang"]
         pred_lang = pred_map[cue]["lang"]
+        # Duration: prefer GT timestamps, fall back to SRT
+        gt_info = gt_map[cue]
+        srt_info = pred_map[cue]
+        dur = gt_info.get("end_s", 0) - gt_info.get("start_s", 0)
+        if dur <= 0:
+            dur = srt_info.get("end_s", 0) - srt_info.get("start_s", 0)
+        dur = max(dur, 0)
+
         total += 1
+        is_correct = pred_lang == gt_lang
         confusion[gt_lang][pred_lang] += 1
 
         cost = get_error_cost(gt_lang, pred_lang)
         total_cost += cost
         max_possible_cost += 2.0 if gt_lang != "unk" else 0.0
 
-        if pred_lang == gt_lang:
+        if is_correct:
             correct += 1
             per_lang[gt_lang]["tp"] += 1
         else:
             per_lang[gt_lang]["fn"] += 1
             per_lang[pred_lang]["fp"] += 1
 
+        # Duration tracking
+        dur_total_all += dur
+        if is_correct:
+            dur_correct_all += dur
+
         if gt_lang != "unk":
             total_excl_unk += 1
-            if pred_lang == gt_lang:
+            dur_total_excl_unk += dur
+            if is_correct:
                 correct_excl_unk += 1
+                dur_correct_excl_unk += dur
+
+        if gt_lang in ("nah", "spa"):
+            nah_spa_total += 1
+            dur_total_nah_spa += dur
+            if is_correct:
+                nah_spa_correct += 1
+                dur_correct_nah_spa += dur
 
     # Cost for unmatched GT (treat as OTH prediction)
     for cue in unmatched_gt:
-        gt_lang = gt_map[cue]
+        gt_lang = gt_map[cue]["lang"]
         cost = get_error_cost(gt_lang, "oth")
         total_cost += cost
         max_possible_cost += 2.0 if gt_lang != "unk" else 0.0
@@ -173,12 +226,23 @@ def evaluate(gt_path, srt_path):
     accuracy = correct / max(total, 1)
     accuracy_excl_unk = correct_excl_unk / max(total_excl_unk, 1)
     weighted_score = 1.0 - (total_cost / max(max_possible_cost, 1))
+    dur_acc_all = dur_correct_all / max(dur_total_all, 0.001)
+    dur_acc_excl_unk = dur_correct_excl_unk / max(dur_total_excl_unk, 0.001)
+    dur_acc_nah_spa = dur_correct_nah_spa / max(dur_total_nah_spa, 0.001)
+    nah_spa_acc = nah_spa_correct / max(nah_spa_total, 1)
 
     print(f"{'='*60}")
-    print(f"LANGUAGE ACCURACY: {correct}/{total} = {accuracy:.1%}")
-    unk_gt_count = sum(1 for g in gt_map.values() if g == "unk")
+    print(f"SEGMENT ACCURACY:  {correct}/{total} = {accuracy:.1%}")
+    unk_gt_count = sum(1 for g in gt_map.values() if g["lang"] == "unk")
     if unk_gt_count > 0:
-        print(f"  excl. UNK GT:    {correct_excl_unk}/{total_excl_unk} = {accuracy_excl_unk:.1%} ({unk_gt_count} UNK skipped)")
+        print(f"  excl. UNK:       {correct_excl_unk}/{total_excl_unk} = {accuracy_excl_unk:.1%} ({unk_gt_count} UNK skipped)")
+    if nah_spa_total:
+        print(f"  NAH+SPA only:    {nah_spa_correct}/{nah_spa_total} = {nah_spa_acc:.1%}")
+    print(f"DURATION-WEIGHTED: {dur_correct_all:.0f}s/{dur_total_all:.0f}s = {dur_acc_all:.1%}")
+    if dur_total_excl_unk > 0:
+        print(f"  excl. UNK:       {dur_correct_excl_unk:.0f}s/{dur_total_excl_unk:.0f}s = {dur_acc_excl_unk:.1%}")
+    if dur_total_nah_spa > 0:
+        print(f"  NAH+SPA only:    {dur_correct_nah_spa:.0f}s/{dur_total_nah_spa:.0f}s = {dur_acc_nah_spa:.1%}")
     print(f"WEIGHTED SCORE:    {weighted_score:.1%} (cost={total_cost:.1f}/{max_possible_cost:.1f})")
     print(f"{'='*60}")
 
@@ -204,7 +268,7 @@ def evaluate(gt_path, srt_path):
     # Per-language precision/recall
     print(f"\n{'Language':<10} {'Prec':>8} {'Recall':>8} {'F1':>8} {'TP':>5} {'FP':>5} {'FN':>5}")
     print("-" * 55)
-    all_langs = sorted(set(list(per_lang.keys()) + list(gt_map.values())))
+    all_langs = sorted(set(list(per_lang.keys()) + [g["lang"] for g in gt_map.values()]))
     for lang in all_langs:
         s = per_lang[lang]
         prec = s["tp"] / max(s["tp"] + s["fp"], 1)
@@ -229,12 +293,18 @@ def evaluate(gt_path, srt_path):
         print(row)
 
     return {
-        "accuracy": accuracy,
-        "accuracy_excl_unk": accuracy_excl_unk,
+        "segment_accuracy": accuracy,
+        "segment_accuracy_excl_unk": accuracy_excl_unk,
+        "segment_accuracy_nah_spa": nah_spa_acc,
+        "duration_accuracy": dur_acc_all,
+        "duration_accuracy_excl_unk": dur_acc_excl_unk,
+        "duration_accuracy_nah_spa": dur_acc_nah_spa,
         "weighted_score": weighted_score,
         "total_cost": total_cost,
         "total": total,
         "correct": correct,
+        "nah_spa_total": nah_spa_total,
+        "nah_spa_correct": nah_spa_correct,
         "per_lang": dict(per_lang),
         "confusion": {k: dict(v) for k, v in confusion.items()},
     }

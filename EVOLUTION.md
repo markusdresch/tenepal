@@ -628,24 +628,129 @@ Eval: only Whisper inference per checkpoint (~2 min/checkpoint), no full pipelin
 
 ---
 
-### F004: Planned — Multi-Dialect Training (OpenSLR 92 + 147 + 148)
+### F004: Multi-Dialect Training — SLR 92 + Mozilla Corpora (2026-04-01)
 
 **Hypothesis:** Overfitting on speaker names arises from too little speaker diversity.
-With ~350h+ across three regions (Puebla Highland, Veracruz Orizaba, Zacatlan)
-the model can no longer overfit to individual speakers.
+With 220h+ across four regions the model can no longer overfit to individual speakers.
 
-**Setup:** Train on best single-dialect checkpoint (continual learning),
-mix SLR 147 + 148 into the dataloader.
+**Discovery:** SLR 147 (Orizaba) and SLR 148 (Tepetzintla) have **no transcriptions** —
+only audio. Instead found three transcribed corpora on Mozilla Data Collective:
 
-**Expected paper result:**
-Single-dialect baseline → Multi-dialect: robustness across varieties measurable,
-overfitting resistance through speaker diversity demonstrable.
+| Corpus | Region | Segments | Hours | Speakers | Source |
+|--------|--------|----------|-------|----------|--------|
+| SLR 92 | Highland Puebla | 135,544 | 189.7h | ~800+ | OpenSLR (existing) |
+| Zacatlán ASR | Zacatlán-Tepetzintla | 9,272 | 14.2h | 37 | Mozilla DC (Kaltepetlahtol) |
+| Tetelancingo | Sierra Oeste Puebla | 2,671 | 3.4h | 5 | Mozilla DC (Kaltepetlahtol) |
+| CV Orizaba | Orizaba/Veracruz | 7,722 | 13.4h | 16 | Mozilla DC (Common Voice) |
+| **Total** | **4 regions** | **155,209** | **220.7h** | **58+ new** | |
 
-**Cost:** ~$20/epoch on A100, $30/month Modal free credits available.
+**Setup:** Continual learning from single-dialect LoRA adapter (checkpoint-3000).
+Temperature-sampled dataloader (T=2.0) upsamples minority dialects from ~14% to ~40%:
+- SLR 92: 59.9% effective weight (down from 86%)
+- CV Orizaba: 15.5%, Zacatlán: 15.6%, Tetelancingo: 8.9%
+
+LR=5e-6 (half of single-dialect), warmup=50, 3000 steps on A100.
+
+**Training results:**
+- Train loss: 2.075
+- Eval loss: 0.861
+- Runtime: 2h 53min, ~$15
+- Epoch: 0.38 (38% of combined data seen)
+- Saved: `lora-adapter-multidialect`, `model-multidialect`
+
+**Status:** Training complete. Eval pending — need WER/CER comparison vs single-dialect
+baseline on SLR 92 test set (regression check) and Mozilla test sets (transfer check).
+Corpus memorization check (speaker name hallucination) also pending.
 
 ---
 
-### E0XX: tɬ Override Spanish False Positive Fix (5 Mar 2026)
+### F005: wav2vec2 Embedding-based LangID Baseline (2026-04-01)
+
+**Hypothesis:** wav2vec2 embeddings encode language identity even when ASR fails.
+Segments where Whisper hallucinates AND Allosaurus is noisy still have acoustic
+information. Inspired by Pugh et al. "wav2pos" — wav2vec2 contains syntactic info
+without transcription; hypothesis: also contains LangID signal for NAH vs SPA.
+
+**Setup:** Extract wav2vec2-base mean-pooled embeddings (768-dim) for all 1,006
+annotated segments (Hernán-1-3 + La Otra Conquista). Train LogisticRegression
+(balanced, 5-fold stratified CV). Cost: ~$0.20 on Modal CPU.
+
+**Results:**
+
+| Metric | Value |
+|--------|-------|
+| Binary NAH vs OTHER accuracy | 85.1% |
+| Binary balanced accuracy | 85.0% |
+| Multi-class accuracy | 78.3% |
+| NAH precision / recall | 83% / 84% |
+| SPA precision / recall | 85% / 80% |
+
+**Cross-comparison with pipeline (Hernán-1-3, 588 segments):**
+
+| Combination | Accuracy |
+|-------------|----------|
+| Pipeline alone (old DB run) | 53.7% |
+| F005 alone | 77.7% |
+| **Oracle (best of both)** | **86.9%** |
+
+Key finding: **195 pipeline errors could be rescued** by F005, only 54 would be
+introduced. The errors are complementary — pipeline uses linguistic signals
+(IPA, Whisper, morphology), F005 uses raw acoustic embeddings. They fail on
+different segments.
+
+Top rescue categories:
+- 52× NAH→SPA pipeline errors rescued (F005 detects NAH acoustically)
+- 45× SPA→NAH pipeline errors rescued (F005 rejects false NAH)
+- 42× NAH→OTH pipeline errors rescued
+
+**Next:** Add `f005_pred_lang` + `f005_confidence` to annotations DB.
+Implement confidence-gated fallback: when pipeline confidence low AND F005
+confidence high → use F005 prediction. Test on LOC 24m-34m (best rescue:break
+ratio at 4:1).
+
+---
+
+### Benchmark Methodology Update (2026-04-01)
+
+The Hernán accuracy numbers reported in experiments E053-E055 and the "Accuracy Progression"
+section (85.7% on 551 segments) used **midpoint matching** between SRT timestamps and GT
+timestamps, and a GT snapshot that no longer exists as a standalone artifact. Those numbers
+are not reproducible from current artifacts.
+
+**What changed:**
+
+1. **Matching method:** Midpoint matching → **cue-index matching**. Midpoint matching was
+   fragile (a 50ms timestamp drift could swap a match to the wrong GT segment). Cue-index
+   matching aligns by segment position in the SRT, which is deterministic and robust.
+
+2. **Ground truth source:** The old GT was an exported JSON snapshot (`eq_comparison_gt.json`)
+   that diverged from the annotator DB over time as corrections were made. The annotator DB
+   is now the **canonical GT source** (v2 snapshot), and `evaluate.py` reads from it directly.
+
+3. **Primary metric:** Segment accuracy → **duration-weighted accuracy**. Equal segment
+   counting gives a 0.3s "uh" the same weight as a 15s Nahuatl monologue. Duration weighting
+   measures what actually matters: how much film time is correctly classified.
+
+**Canonical numbers going forward (config 13_v7_morphology_expansion, NAH+SPA only):**
+
+| Metric | Value |
+|--------|-------|
+| Segment accuracy | 71.6% (394/550 segments) |
+| Duration-weighted accuracy | **73.7%** (568s/770s of film time) |
+| NAH precision | 75.5% |
+| NAH recall | 76.1% |
+
+**Why the drop from 85.7% to 71.6%:** The difference is methodological, not a regression.
+Midpoint matching was more lenient (could match segments across small timestamp gaps),
+and the old GT snapshot had fewer corrections than the current DB. The pipeline itself
+has not changed.
+
+**Historical numbers in EVOLUTION.md remain as-is.** They document what was measured at the
+time with the methodology available. They are not claims about current reproducible accuracy.
+
+---
+
+### E051: tɬ Override Spanish False Positive Fix (2026-03-05)
 
 **Hypothesis:** tɬ acoustic hard override is too aggressive — forces NAH on every segment where Allosaurus detects tɬ, even when Whisper has clearly transcribed Spanish.
 
@@ -669,7 +774,7 @@ Suppressed overrides logged as `[tl-suppressed]`.
 
 ---
 
-### E0XX: Checkpoint 3000 vs 6738 Comparison — La Otra Conquista (5 Mar 2026)
+### E052: Checkpoint 3000 vs 6738 Comparison — La Otra Conquista (2026-03-05)
 
 **Hypothesis:** Full-epoch checkpoint (6738 steps) should deliver better NAH transcription than half-epoch (3000 steps).
 
@@ -707,7 +812,7 @@ Suppressed overrides logged as `[tl-suppressed]`.
 
 ---
 
-### E0XX: SPA Detection — Diagnosis and Fix (6 Mar 2026)
+### E053: SPA Detection — Diagnosis and Fix (2026-03-06)
 
 **Problem:** Spanish is often classified as OTH. Across all 4 baseline episodes: 104 of 511 OTH segments (20.4%) have IPA that is clearly Spanish.
 
@@ -836,7 +941,7 @@ Suppressed overrides logged as `[tl-suppressed]`.
 
 ---
 
-### E0XX: Voter Improvements — Ejectives, Speaker Prior, FT Gate (6 Mar 2026)
+### E054: Voter Improvements — Ejectives, Speaker Prior, FT Gate (2026-03-06)
 
 **4 changes implemented simultaneously:**
 
@@ -880,7 +985,7 @@ Accuracy the same, but qualitative improvement:
 
 ---
 
-## Phase 9: Whisper Language Misdetection Fix (6 Mar 2026)
+## Phase 9: Whisper Language Misdetection Fix (2026-03-06)
 
 ### E030: Whisper Detects Spanish as English (La Otra Conquista)
 
@@ -948,7 +1053,7 @@ SPA dominant in all clips. NAH detection active in all scenes.
 
 ---
 
-### E034: Hernan-1-3 Annotations Ground Truth (11 MAR)
+### E034: Hernan-1-3 Annotations Ground Truth (2026-03-11)
 
 **Data basis:** 598 segments from Hernan Episode 1-3 manually annotated (tools/annotator).
 
@@ -979,7 +1084,7 @@ SPA dominant in all clips. NAH detection active in all scenes.
 - SPEAKER_15: 60 errors (23%) — mixed SPA↔NAH
 - Remaining 12 speakers: <20 errors each
 
-### E035: v7 Accuracy Fixes — Experiment (11 MAR)
+### E035: v7 Accuracy Fixes — Experiment (2026-03-11)
 
 **5 fixes implemented** (toggleable via CLI flags in `tenepal_modal.py`):
 
@@ -1020,7 +1125,7 @@ SPA dominant in all clips. NAH detection active in all scenes.
 
 **Next approach:** IPA-NAH-override — if IPA contains NAH-exclusive phonemes (tɬ, kʷ, ɬ) but Whisper says SPA → NAH wins. Conversely: if IPA has no NAH phonemes and Whisper says NAH → SPA suspect.
 
-### E036: IPA-NAH-Override — Failed (11 MAR)
+### E036: IPA-NAH-Override — Failed (2026-03-11)
 
 **Implementation:** `--ipa-nah-override` flag. When pipeline says NAH but IPA contains no tɬ/kʷ/ɬ AND no tɬ acoustically detected AND no Nahuatl text pattern → demote NAH→SPA.
 
@@ -1032,7 +1137,7 @@ SPA dominant in all clips. NAH detection active in all scenes.
 
 **Conclusion:** Both ft_spa_guard and ipa-nah-override are harmful. Post-processing approaches for SPA↔NAH differentiation fail because the two languages share too many phonemes. Only POSITIVE NAH markers (tɬ) are reliable, NEGATIVE evidence (absence) is not.
 
-### E037: v7 Full Film Result — Speaker Prior as Main Driver (11 MAR)
+### E037: v7 Full Film Result — Speaker Prior as Main Driver (2026-03-11)
 
 **Best run:** `--speaker-prior-strong --ejective-strict --noise-gate` (without ft_spa_guard, without ipa-nah-override)
 
@@ -1063,7 +1168,7 @@ SPA dominant in all clips. NAH detection active in all scenes.
 
 **Recommended flags for production:** `--nah-finetuned --speaker-prior-strong --ejective-strict --noise-gate`
 
-### E038: Prosody Analysis NAH vs SPA (11 MAR)
+### E038: Prosody Analysis NAH vs SPA (2026-03-11)
 
 **Method:** Parselmouth features extracted from 540 annotated segments (370 NAH, 170 SPA).
 
@@ -1089,7 +1194,7 @@ F0 (pitch) barely separable — both languages overlap almost completely.
 
 SPA recall only 43% — prosody alone cannot detect SPA well.
 
-### E039: EQ Config System + Smoke Tests (11 MAR)
+### E039: EQ Config System + Smoke Tests (2026-03-11)
 
 **EQ system:** 19 tunable parameters as JSON file, loadable via `--eq config.json`.
 Categories: prosody voter, speaker prior, ejective, tɬ, SPA reclaim, noise gate, confidence.
@@ -1115,7 +1220,7 @@ Prosody voter was correctly activated (34 segments scored, 0 overrides — confi
 
 **Recommended production:** `--nah-finetuned --eq eq_v7_best.json` (= `--speaker-prior-strong --ejective-strict --noise-gate`)
 
-### E040: Full Film EQ Comparison — 6 Configs (11 MAR)
+### E040: Full Film EQ Comparison — 6 Configs (2026-03-11)
 
 **Setup:** 6 EQ configs in parallel on Modal (Hernan-1-3 complete, 598 annotated segments).
 All runs with `--nah-finetuned --eq <config>`. Evaluator bug fixed: `[LANG|SPEAKER]` format.
@@ -1143,7 +1248,7 @@ All runs with `--nah-finetuned --eq <config>`. Evaluator bug fixed: `[LANG|SPEAK
 **Recommendation:** `--nah-finetuned --eq eq_configs/01_v7_best.json` remains production default.
 Next improvement must work at segment level (e.g., Whisper token confidence, bilingual speaker prior).
 
-### E041: Tier-1 Paper Hardening — 4 Items (11 MAR)
+### E041: Tier-1 Paper Hardening — 4 Items (2026-03-11)
 
 **#5 Reject Option (UNK Gate):** New EQ parameter `unk_gate_enabled` + `unk_gate_threshold` (default 0.5).
 Segments with `lang_conf < threshold` → `lang = "unknown"` → SRT tag `[UNK]`.
@@ -1176,7 +1281,7 @@ Every NAH/MAY tag = error. Check: `python adversarial_spa/check.py *.srt`.
 **Next step:** Modal run with `07_v7_unk_gate.json` for quantitative UNK gate impact.
 Extract adversarial audio clips from Hernan (Tlaxcala/Tenochtitlan scenes).
 
-### E042: UNK Gate Result + GT Re-Annotation + Whisper "Thanks for watching" (11 MAR)
+### E042: UNK Gate Result + GT Re-Annotation + Whisper "Thanks for watching" (2026-03-11)
 
 **GT re-annotation:** 32 segments annotated as UNK (previously 29). Short interjections ("ah", "hmm")
 and ambiguous fragments that cannot be assigned to any language, honestly labeled as UNK.
@@ -1219,7 +1324,7 @@ when `len(_words) < 2`. But "Thanks for watching" has 3 words → gate doesn't t
 The noise gate logic should check IPA length AND Whisper text plausibility, not
 just word count of the (possibly hallucinated) text.
 
-### E043: Bilingual Lexicon Overlap NAH↔SPA — "amo", "si", "no" (11 MAR)
+### E043: Bilingual Lexicon Overlap NAH↔SPA — "amo", "si", "no" (2026-03-11)
 
 **Problem segment:** Cue 13, 00:01:20.760–00:01:21.604 (844ms)
 - Pipeline: `[SPA|SPEAKER_15] Amo a ti, quizás que.`
@@ -1249,7 +1354,7 @@ just word count of the (possibly hallucinated) text.
 **Impact:** 116 NAH→SPA errors are the largest error block. Many of them are exactly
 this pattern: short NAH phrases with Spanish-sounding words from bilingual speakers.
 
-### E044: SPEAKER_15 = Xicotencatl — NAH-only Speaker, 40% of all NAH→SPA Errors (11 MAR)
+### E044: SPEAKER_15 = Xicotencatl — NAH-only Speaker, 40% of all NAH→SPA Errors (2026-03-11)
 
 **Critical insight:** SPEAKER_15 is Xicotencatl, a NAH-only speaker (GT: 94% NAH, 4% SPA).
 Pipeline tags him 55% SPA / 38% NAH — **47 of 116 NAH→SPA errors (40%) come from him alone.**
@@ -1286,7 +1391,7 @@ Pipeline tags him 55% SPA / 38% NAH — **47 of 116 NAH→SPA errors (40%) come 
 **Estimated impact:** Fix for SPEAKER_15 alone → ~47 fewer errors → accuracy from 66.7% to ~74.6%.
 Fix for all NAH-heavy speakers (06, 11, 14, 16) → ~80 errors → ~80%+ accuracy.
 
-### E045: Two-Pass Speaker Prior — IPA Phoneme Evidence (11 MAR)
+### E045: Two-Pass Speaker Prior — IPA Phoneme Evidence (2026-03-11)
 
 **Implementation:** New EQ parameter `two_pass_prior` (STEP 6.39, before STEP 6.4 speaker prior).
 Checks `ipa_fused` of each segment for non-Spanish phonemes (`ts`, `tɬ`, `kʷ`, `tʃʼ`, `kʼ`, `tɕ`).
@@ -1330,7 +1435,7 @@ a confidence recalculation after the override.
 - Test more aggressive threshold (conf < 0.8 instead of 0.7)
 - FT output as second signal: if FT produces recognizable NAH → boost NAH confidence
 
-### E046: FT-First — NAH Finetuned Whisper before Speaker Prior (11 MAR)
+### E046: FT-First — NAH Finetuned Whisper before Speaker Prior (2026-03-11)
 
 **Implementation:** New EQ parameter `ft_first` (STEP 6.38, BEFORE STEP 6.39 two-pass prior).
 Loads NAH finetuned Whisper and processes ALL segments, not just those already classified as NAH.
@@ -1347,7 +1452,7 @@ FT output with NAH morphology regex (`-tl`, `hua`, `nahu`, etc.) overrides SPA�
 SPA→NAH from 11 to 33 (+22). FT-first is more aggressive: finds more NAH, but also
 more false positives. Net still better because NAH→SPA is double-weighted.
 
-### E047: Three Accuracy Levers (12 MAR)
+### E047: Three Accuracy Levers (2026-03-12)
 
 **Three new EQ parameters built on 10_v7_ft_first:**
 
@@ -1369,7 +1474,7 @@ more false positives. Net still better because NAH→SPA is double-weighted.
 only 1 new SPA→NAH error. `prior_reset` was the main driver (16 overrides), `dj_tc_marker`
 contributed 3.
 
-### E048: Allosaurus Full-Track Experiment (12 MAR)
+### E048: Allosaurus Full-Track Experiment (2026-03-12)
 
 **Hypothesis:** Per-segment Allo (600x, 0.2-5s each) loses ~100ms to CTC warmup.
 Full-track (1x, entire vocals) should yield more phonemes with better context.
@@ -1391,7 +1496,7 @@ produces only 18 phones on 45 min — CTC blank dominates. `emit=2.0` → 22,725
 emit=2.0 takes the path of least resistance (vowels + glottal stop). Feature parked —
 `allo_full_track` EQ parameter remains for future experiments.
 
-### E049: Reverse G2P Coverage Gap (12 MAR)
+### E049: Reverse G2P Coverage Gap (2026-03-12)
 
 **Problem:** LLM (Qwen2-1.5B) copies IPA symbols 1:1 into text. Downstream
 lexicon checks (`_NAH_TEXT_RX`, `NAH_TEXT_MARKERS`, `guess_language_from_text_markers`)
@@ -1418,7 +1523,7 @@ segments have IPA without recognizable NAH morphemes — upstream problem (Allo/
 
 ---
 
-### E050: Fuzzy NAH Text Matching (12 MAR)
+### E050: Fuzzy NAH Text Matching (2026-03-12)
 
 **Problem:** `_NAH_TEXT_RX` recognizes only 58% of NAH segments (191/332). The 42%
 have plausible Nahuatl orthography (from expanded G2P), but no exact
@@ -1567,6 +1672,8 @@ Then: finetuning.
 | + 3 Levers | 11_three_levers | 82.4% | +1.8pp | 83 | 14 |
 | + Morphology Exp. | **13_morphology_expansion** | **85.7%** | +3.3pp | 56 | 23 |
 
+> **Note (2026-04-01):** These numbers used midpoint matching and a GT snapshot that no longer exists. The canonical reproducible benchmark uses cue-index matching against the annotator DB (v2 snapshot): 73.7% duration-weighted / 71.6% segment accuracy on 550 segments. See "Benchmark Methodology Update" below F005 for details. Historical numbers here remain as measured.
+
 **Oracle ceiling:** 500/551 = 90.7% — 51 segments correctly classified by NO config.
 
 **Toggle impact (cumulative):**
@@ -1632,6 +1739,8 @@ Further LOC clips are being annotated for more robust statistics.
 ---
 
 ## Accuracy Progression — Definitive Numbers (2026-03-13)
+
+> **Note (2026-04-01):** Numbers in this section used midpoint matching and a GT snapshot that no longer exists. See "Benchmark Methodology Update" below F005 for canonical reproducible numbers. Historical numbers here remain as measured at the time.
 
 ### Hernan-1-3 (551 NAH+SPA segments)
 
@@ -1876,5 +1985,5 @@ The 13 SPA→NAH errors arise from:
 
 ---
 
-*Last updated: 2026-03-13*
+*Last updated: 2026-04-01*
 *Next step: Implement overlap damping and evaluate on LOC 34m-44m*

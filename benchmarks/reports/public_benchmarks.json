@@ -1,0 +1,107 @@
+{
+  "_meta": {
+    "generated": "2026-04-01",
+    "version": "v2",
+    "db_source": "/home/markusd/Projects/ai/tenepal/tools/annotator/annotations.db",
+    "note": "Canonical benchmark numbers. All claims in README/PAPER must match these values."
+  },
+  "langid_pipeline": {
+    "hernan": {
+      "gt_snapshot": "benchmarks/snapshots/hernan_gt_v2.json",
+      "prediction_artifact": "eq_comparison_results/13_v7_morphology_expansion.srt",
+      "eval_command": "python evaluate.py benchmarks/snapshots/hernan_gt_v2.json eq_comparison_results/13_v7_morphology_expansion.srt",
+      "subset": "hernan",
+      "total_segments": 599,
+      "gt_distribution": {
+        "nah": 372,
+        "unk": 32,
+        "spa": 178,
+        "oth": 8,
+        "may": 8,
+        "lat": 1
+      },
+      "unk_segments": 32,
+      "metrics": {
+        "multiclass_all": {
+          "accuracy": 0.6578,
+          "correct": 394,
+          "total": 599
+        },
+        "multiclass_excl_unk": {
+          "accuracy": 0.6949,
+          "correct": 394,
+          "total": 567,
+          "note": "UNK ground truth excluded (unscorable interjections)"
+        },
+        "nah_spa_subset": {
+          "accuracy": 0.7164,
+          "correct": 394,
+          "total": 550,
+          "note": "Only NAH+SPA segments (primary task)"
+        },
+        "binary_nah_detection": {
+          "accuracy": 0.7108,
+          "correct": 403,
+          "total": 567,
+          "nah_precision": 0.7889,
+          "nah_recall": 0.7634,
+          "note": "Is it NAH or not? (excl UNK)"
+        }
+      },
+      "confusion": {
+        "nah": {
+          "nah": 284,
+          "spa": 88
+        },
+        "spa": {
+          "spa": 110,
+          "nah": 68
+        },
+        "oth": {
+          "spa": 3,
+          "nah": 5
+        },
+        "may": {
+          "spa": 5,
+          "nah": 3
+        },
+        "lat": {
+          "spa": 1
+        }
+      }
+    },
+    "loc": {
+      "gt_snapshot": "benchmarks/snapshots/loc_gt_v2.json",
+      "total_segments": 388,
+      "gt_distribution": {
+        "SPA": 286,
+        "NAH": 76,
+        "UNK": 18,
+        "LAT": 3,
+        "OTH": 5
+      },
+      "note": "LOC uses per-clip SRTs; combined eval requires clip-level matching"
+    }
+  },
+  "asr_quality": {
+    "whisper_finetuning": {
+      "dataset": "OpenSLR 92 (Puebla-Nahuatl)",
+      "model": "whisper-large-v3 + LoRA (checkpoint-3000)",
+      "test_segments": 500,
+      "baseline_cer": 1.0761,
+      "finetuned_cer": 0.696,
+      "cer_reduction": "35%",
+      "source": "slangophone-data volume: results/eval_results.json"
+    }
+  },
+  "experimental": {
+    "_note": "NOT for public claims until pipeline integration",
+    "f005_embedding_langid": {
+      "model": "facebook/wav2vec2-base",
+      "segments": 1006,
+      "binary_balanced_accuracy": 0.851,
+      "multiclass_accuracy": 0.783,
+      "oracle_with_pipeline": 0.869
+    }
+  }
+}
