@@ -72,21 +72,13 @@ def check_claims_in_file(filepath, report, show_fix=False):
     hernan = report.get("langid_pipeline", {}).get("hernan", {})
     metrics = hernan.get("metrics", {})
 
-    # Check for the old 85.7% claim
-    if "85.7%" in text or "85.7" in text:
-        errors.append(
-            f"{filename}: Contains '85.7%' — this number is not reproducible from current artifacts. "
-            f"Reproducible numbers: "
-            f"NAH+SPA={metrics.get('nah_spa_subset', {}).get('accuracy', '?')}, "
-            f"excl_UNK={metrics.get('multiclass_excl_unk', {}).get('accuracy', '?')}"
-        )
-
-    # Check for old segment count 551
-    if "551" in text:
-        nah_spa_n = metrics.get("nah_spa_subset", {}).get("total")
-        if nah_spa_n and nah_spa_n != 551:
-            warnings.append(
-                f"{filename}: Contains '551' segments — current NAH+SPA count is {nah_spa_n}"
+    # Check for old unreproducible claims
+    for old_num in ["85.7%", "73.7%", "71.6%", "75.5%"]:
+        if old_num in text:
+            errors.append(
+                f"{filename}: Contains '{old_num}' — stale number from old config/methodology. "
+                f"Current: dur-wtd={metrics.get('nah_spa_duration_weighted', {}).get('accuracy', '?')}, "
+                f"seg={metrics.get('nah_spa_segment', {}).get('accuracy', '?')}"
             )
 
     # Check ASR claims
@@ -166,9 +158,16 @@ def main():
 
     print(f"\n--- Canonical Numbers (use these) ---")
     for name, data in metrics.items():
-        if data and data.get("accuracy") is not None:
+        if isinstance(data, dict) and data.get("accuracy") is not None:
             pct = f"{data['accuracy'] * 100:.1f}%"
-            print(f"  {name:30s}: {pct:>6} ({data['correct']}/{data['total']})")
+            detail = ""
+            if "correct" in data and "total" in data:
+                detail = f" ({data['correct']}/{data['total']})"
+            elif "correct_s" in data and "total_s" in data:
+                detail = f" ({data['correct_s']}s/{data['total_s']}s)"
+            print(f"  {name:30s}: {pct:>6}{detail}")
+        elif isinstance(data, (int, float)):
+            print(f"  {name:30s}: {data*100:.1f}%")
 
     asr = report.get("asr_quality", {}).get("whisper_finetuning", {})
     if asr:

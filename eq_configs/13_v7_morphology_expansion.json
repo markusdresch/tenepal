@@ -1,0 +1,13 @@
+{
+    "_name": "v7_morphology_expansion",
+    "_description": "Production default: all layers active including 28+ NAH morphology regex patterns.",
+    "speaker_prior_strong": true,
+    "ejective_strict": true,
+    "noise_gate_enabled": true,
+    "two_pass_prior": true,
+    "ft_first": true,
+    "whisper_uncertain_ipa": true,
+    "prior_reset": true,
+    "dj_tc_marker": true,
+    "morphology_expansion": true
+}

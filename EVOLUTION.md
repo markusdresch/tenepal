@@ -658,9 +658,31 @@ LR=5e-6 (half of single-dialect), warmup=50, 3000 steps on A100.
 - Epoch: 0.38 (38% of combined data seen)
 - Saved: `lora-adapter-multidialect`, `model-multidialect`
 
-**Status:** Training complete. Eval pending — need WER/CER comparison vs single-dialect
-baseline on SLR 92 test set (regression check) and Mozilla test sets (transfer check).
-Corpus memorization check (speaker name hallucination) also pending.
+**Eval results (SLR 92 test set, 500 segments):**
+
+| Model | CER | WER | Notes |
+|-------|-----|-----|-------|
+| Baseline (stock Whisper) | 107.6% | 166.3% | Halluziniert Sinhalesisch/Dänisch |
+| Single-Dialect (3K, SLR 92 only) | **69.6%** | 136.9% | Sweet spot |
+| Multi-Dialect 3K (SLR 92 + Mozilla) | 75.6% | 141.1% | +6pp, dialect interference |
+| Multi-Dialect 6K (continued) | pending | pending | Train loss 2.08→1.84 (still learning) |
+
+**Multi-Dialect 6K training (2026-04-01):** Continued from 3K checkpoint for another
+3000 steps on H100. Train loss dropped from 2.075 to 1.839 — model is still learning
+at 0.77 epochs (only seen 77% of combined data). H100 was 2.6× faster than A100
+(1h05 vs 2h53) at the same total cost (~$4/run vs ~$12/run). **Use H100 for future
+training runs.**
+
+**CER regression (Multi-Dialect 3K vs Single-Dialect 3K):** The +6pp CER increase
+is NOT overfitting (only 0.38 epochs seen). It's dialect interference — the model
+now handles 4 orthographic conventions simultaneously:
+- SLR 92 (Puebla): `nikan`, `tlakatl`
+- Zacatlán: `nika:n`, `tla:katl` (vowel length with colons)
+- Tetelancingo: `quenin tipanotoc` (Spanish-influenced orthography)
+- CV Orizaba: `Axan, okinkitski` (different conventions)
+
+**Open:** CER eval on Multi-Dialect 6K checkpoint. Corpus memorization check
+(do speaker name hallucinations decrease with more speaker diversity?).
 
 ---
 
@@ -703,10 +725,94 @@ Top rescue categories:
 - 45× SPA→NAH pipeline errors rescued (F005 rejects false NAH)
 - 42× NAH→OTH pipeline errors rescued
 
-**Next:** Add `f005_pred_lang` + `f005_confidence` to annotations DB.
-Implement confidence-gated fallback: when pipeline confidence low AND F005
-confidence high → use F005 prediction. Test on LOC 24m-34m (best rescue:break
-ratio at 4:1).
+**F005 Confidence + Gate Logic (2026-04-01):**
+
+Confidence scores (predict_proba) added to all 1,006 segments. Range 0.50–1.00,
+mean 0.83. Tested gate strategies on LOC 24m-34m (78 segments):
+
+| Strategy | Accuracy | Overrides |
+|----------|----------|-----------|
+| Pipeline alone | 64.1% | 0 |
+| F005 alone | 83.3% | 32 |
+| F005 when disagree | 83.3% | 32 |
+| Gate: F005 when conf>0.7 + disagree | 79.5% | 19 |
+| Gate: F005 when conf>0.8 + disagree | 73.1% | 13 |
+| Gate: F005 when conf>0.9 + disagree | 69.2% | 7 |
+
+**Surprising finding:** Confidence gating HURTS. Simple "always trust F005 on
+disagreement" is best. Reason: high-confidence F005 predictions include both
+rescues AND breaks, while low-confidence ones are often correct rescues that
+get filtered out.
+
+**Implication:** F005 is not a confidence-gated fallback — it's a **primary
+signal** that outperforms the pipeline on this data. The pipeline's value is
+in segments where F005 is uncertain, not vice versa. This inverts the assumed
+architecture: instead of "pipeline + F005 fallback", consider "F005 primary +
+pipeline features as additional input".
+
+**Caveat:** Pipeline predictions in DB are from an old run (53.7% on Hernán).
+Current best config (13_v7) scores 71.6% segment / 73.7% duration-weighted.
+The gate comparison needs re-running against current pipeline output.
+
+**Next:** Learned fuser combining all signals (wav2vec2 embeddings + IPA +
+Whisper hallucination + morphology + speaker prior) instead of hand-tuned
+EQ rules.
+
+---
+
+### F006: Learned Fuser — Failed Experiment (2026-04-02)
+
+**Hypothesis:** A GradientBoostedTree combining wav2vec2 embeddings (768-dim) +
+pipeline features (prediction one-hot, SRT-derived IPA counts, FT presence,
+duration, F005 confidence) should beat either system alone.
+
+**Setup:** 1,006 annotated segments, 783 features total, 5-fold stratified CV.
+Three models: LogReg (embedding only), GBT (all features), RF (all features).
+
+**Results (binary NAH vs OTHER):**
+
+| Model | Accuracy | Balanced |
+|-------|----------|----------|
+| **LogReg (embedding only)** | **85.1%** | **85.0%** |
+| GBT (all features) | 83.6% | 83.0% |
+| RF (all features) | 82.4% | 81.6% |
+
+**The fuser is WORSE than embedding alone.** Adding pipeline features as inputs
+reduces accuracy by 1.5-2.7pp instead of improving it.
+
+**Why this happened — flawed experimental design:**
+
+1. **Unfair baseline.** The pipeline features fed into the fuser came from
+   `pipeline_lang` in the DB — an OLD pipeline run scoring 53.7%. The current
+   pipeline (13_v7) scores 73.7% duration-weighted. The fuser received a
+   handicapped version of the pipeline as input. Garbage in, garbage out.
+
+2. **SRT features only exist for Hernán-1-3.** LOC segments (418 of 1006) had
+   zero values for has_ft, allo_phones, w2v2_phones, nah_exclusive. The tree
+   models learned to split on "are SRT features present?" rather than on
+   meaningful signal.
+
+3. **Cross-validation ≠ generalization.** The LogReg baseline trains on 80% and
+   tests on 20% of the SAME annotated data. The pipeline runs on completely new,
+   unseen audio without any training. These are fundamentally different tasks.
+   Comparing their accuracies directly is misleading.
+
+**What the result actually shows:** The fuser needs CURRENT pipeline features,
+not stale DB predictions. The correct experiment would be:
+- Run the current pipeline (13_v7) on all annotated segments
+- Store per-segment features (IPA, morphology score, FT confidence, etc.)
+- Feed those into the fuser alongside wav2vec2 embeddings
+- THEN compare
+
+**What the result does NOT show:** That the pipeline is redundant. The pipeline
+provides transcription, IPA analysis, morphology extraction, speaker tracking —
+things wav2vec2 embeddings cannot do. Even for pure LangID, the comparison is
+not valid until the fuser receives current pipeline features.
+
+**Lesson:** Don't evaluate a fusion model using stale inputs from one component.
+And don't extrapolate architectural conclusions from a broken experiment.
+
+Cost: ~$0.30 on Modal CPU.
 
 ---
 
@@ -1831,6 +1937,116 @@ the vocals waveform (Parselmouth), not the IPA features — so it can be moved u
 
 ---
 
+### E055: Overlap Damping — Full Stack (2026-04-02)
+
+**Hypothesis:** Moving overlap reaction upstream — damping IPA scores and capping
+confidence BEFORE classification — fixes the SPA→NAH false positives that the
+post-classification overlap gate couldn't catch (see E018b).
+
+**Design:** Three `if overlap_detected:` conditions, each EQ-toggleable:
+1. **Confidence cap** (`overlap_conf_cap=0.5`) — no high-confidence decisions on mixed signal
+2. **IPA weight reduction** (`overlap_ipa_weight=0.3`) — mixed signal = 30% trust in phonemes;
+   if dampened score < 0.3, classify as OTH (uncertain)
+3. **tɬ override disabled** (existing `overlap_gate`, unchanged)
+
+**Eval: LOC 34m-44m** (135 matched segments, 122 NAH+SPA):
+
+| Metric | Config 13 (baseline) | Config 19 (damping) | Delta |
+|--------|---------------------|---------------------|-------|
+| NAH+SPA segment accuracy | 74.6% | **78.7%** | **+4.1pp** |
+| NAH+SPA duration-weighted | 69.6% | **73.3%** | **+3.7pp** |
+| SPA→NAH errors | 19 | **14** | **-5** |
+| NAH→SPA errors | 12 | 12 | 0 |
+| Weighted score | 77.4% | **80.3%** | **+2.9pp** |
+
+**5 SPA→NAH false positives eliminated, 0 new errors introduced.**
+
+Damping fired on 13+ overlap turns (bimodal F0 detected). Confidence was capped
+from 0.70-0.90 down to 0.50 on those turns. IPA scores dampened from 1.00 to 0.30
+on 2 turns where phoneme-based classification was the sole signal.
+
+**Gegenprobe (2026-04-02):**
+
+| Clip | NAH+SPA seg | NAH+SPA dur | SPA→NAH | NAH→SPA |
+|------|-------------|-------------|---------|---------|
+| LOC 44-55m (damping) | 84.6% | 87.0% | — | — |
+| Hernán baseline (13) | 71.6% | 73.7% | 68 | 88 |
+| Hernán damping (19) | 72.5% | 71.7% | **15** | **129** |
+
+**LOC 44-55m:** Strong result (84.6% segment), confirms the pattern.
+
+**Hernán: mixed.** SPA→NAH drops massively (68→15, -53), but NAH→SPA explodes
+(88→129, +41). Duration-weighted accuracy drops -2.0pp.
+
+**Root cause:** Overlap detection is too aggressive on Hernán — 149/722 turns
+flagged (21%). Hernán has fast dialogue exchanges that Parselmouth misreads as
+bimodal F0 (rapid speaker alternation ≠ actual overlap). The confidence cap then
+suppresses correct NAH classifications on non-overlap turns.
+
+**Detailed error analysis (Hernán):**
+
+102 regressions (baseline OK → damping WRONG), 107 improvements (baseline WRONG → damping OK).
+Net: +5 segments correct, but longer NAH segments regress → duration-weighted drops.
+
+Dominant pattern: 90 of 102 regressions are **NAH→SPA** (correct NAH turned into SPA by damping).
+
+Regression by speaker:
+- young_xicontencatl: 21/54 NAH segments regressed (39%)
+- tlecuiluatzin: 6/23 (26%)
+- motecuzoma: 5/25 (20%)
+- tlaxcaltec: 3/4 (75%)
+- maxixcatl: 3/8 (38%)
+
+ALL heavy regressors are bilingual dialogue characters who alternate NAH/SPA rapidly.
+Parselmouth reads their fast dialogue exchanges as bimodal F0 (two pitch ranges in one
+segment window) — but it's rapid alternation, not simultaneous overlap.
+
+149/722 turns flagged as overlap on Hernán (21%) — most of these are false positives
+from diarization segments spanning speaker transitions.
+
+**Conclusion:** Overlap damping is the right lever (+4.1pp on genuine overlap in LOC),
+but the overlap DETECTOR is the bottleneck. Parselmouth bimodal F0 can't distinguish
+"two voices at once" from "two voices in sequence within the same turn."
+
+### E056: Overlap Detector Diagnosis — Bimodal F0 Is Broken (2026-04-02)
+
+**Experiment:** Measured Parselmouth F0 overlap signals on ALL 1,026 annotated
+segments (with ±2s context window). Wrote overlap_f0_low_ratio, f0_high_ratio,
+hnr, score to the annotations DB for analysis.
+
+**Finding: the overlap detector has ZERO separation power.**
+
+| Metric | Real overlap (N=26) | Single-speaker (N=1000) |
+|--------|--------------------|-----------------------|
+| Mean score | 0.81 | 0.63 |
+| Score ≥ 0.5 | 81% | 78% |
+
+At every threshold, precision is 3-5%. The "bimodal F0" signal triggers on
+77% of ALL segments because:
+- Demucs vocals still have harmonic content in both F0 bands (80-180Hz and 180-350Hz)
+- Male NAH speakers have F0 ~120-160Hz but overtones bleed into 180-350Hz
+- HNR on Demucs output is universally low (demucs artifacts)
+
+**This is why E055 damping regressed on Hernán:** it dampened 77% of segments,
+not the 21% that the pipeline flagged (pipeline uses turns, not segments, and
+has slightly different windowing — but the fundamental problem is the same).
+
+**Conclusion:** Parselmouth bimodal F0 is not a viable overlap detector on
+Demucs-separated vocals. The feature works on raw mixed audio (where two
+voices genuinely produce bimodal F0) but Demucs already removes that signal.
+
+**Alternative overlap detection approaches:**
+1. **Pyannote speaker count:** pyannote diarization already knows how many
+   speakers are in each time region. If it assigned >1 speaker, that's overlap.
+   No Parselmouth needed.
+2. **Energy-based:** Real overlap has higher energy than single voice. Simple
+   RMS threshold on the raw mix (before Demucs) could work.
+3. **Demucs source count:** If Demucs produces >1 active source for a segment,
+   that's overlap.
+4. **Drop the feature entirely** and focus the remaining 23 SPA→NAH errors
+   on other pipeline improvements (e.g., better Speaker Prior for bilingual
+   characters).
+
 ---
 
 ## E018: MossFormer2 Voice Separation on Overlap Turns (LOC 34m-44m)
@@ -1987,3 +2203,42 @@ The 13 SPA→NAH errors arise from:
 
 *Last updated: 2026-04-01*
 *Next step: Implement overlap damping and evaluate on LOC 34m-44m*
+
+---
+
+### E057: Full Ablation — Layer Decomposition (2026-04-02)
+
+**Experiment:** Evaluated all existing Hernán-1-3 SRTs against the v2 GT snapshot
+with duration-weighted accuracy (new canonical methodology).
+
+| Config | Layer Added | Dur-Wtd | Δ | SPA→NAH | NAH→SPA |
+|--------|-------------|---------|---|---------|---------|
+| 14 | IPA only | 56.8% | — | 47 | 164 |
+| 01 | + Speaker Prior | 74.6% | +17.8pp | 9 | 117 |
+| 08 | + Two-Pass | 77.7% | +3.1pp | 9 | 102 |
+| 10 | + FT-First | **83.2%** | +5.5pp | 14 | 86 |
+| 11 | + Three Levers | **84.3%** | +1.1pp | 14 | 83 |
+| 13 | + Morphology Exp. | 73.7% | **−10.6pp** | **68** | 88 |
+
+**CRITICAL FINDING: morphology_expansion is a blind passenger.**
+
+Config 13 (current "production default") is 10.6pp WORSE than Config 11 (without
+morphology). The 28+ NAH morphology regex patterns cause +54 SPA→NAH false
+positives (from 14 to 68) — they match aggressively on Spanish text.
+
+This was masked by the old midpoint-matching methodology which reported 85.7%
+for Config 13 (now known to be unreproducible). With duration-weighted cue-index
+evaluation, the regression is visible.
+
+**Actual production default should be Config 11 (three_levers) at 84.3%.**
+
+**Layer contributions (cumulative):**
+1. IPA alone: 56.8% — phonemes carry the majority
+2. Speaker Prior: +17.8pp — largest single lever
+3. Two-Pass: +3.1pp — IPA evidence informs speaker profiles
+4. FT-First: +5.5pp — real NAH morphology from finetuned Whisper
+5. Three Levers: +1.1pp — minor refinements
+6. Morphology Expansion: **−10.6pp** — HARMFUL, disable immediately
+
+**Action:** Switch production default to Config 11. Investigate which morphology
+patterns cause the SPA→NAH false positives.

@@ -10,9 +10,9 @@ Tenepal identifies *what language* is being spoken in audio, with the current pu
 
 | Metric | Value | Description |
 |--------|-------|-------------|
-| **Hernán duration-weighted accuracy** | **73.7%** | Best configuration on 550 annotated NAH+SPA segments from `Hernán-1-3` (568s/770s of film time) |
-| **Hernán segment accuracy** | **71.6%** | Same benchmark, segment-level (394/550 segments) |
-| **NAH precision / recall** | **75.5% / 76.1%** | Nahuatl detection on Hernán benchmark |
+| **Hernán duration-weighted accuracy** | **84.3%** | Best configuration (11_v7_three_levers) on 550 annotated NAH+SPA segments from `Hernán-1-3` (650s/770s of film time) |
+| **Hernán segment accuracy** | **82.4%** | Same benchmark, segment-level (453/550 segments) |
+| **NAH precision / recall** | **86.3% / 77.5%** | Nahuatl detection on Hernán benchmark |
 | **Cross-film LOC accuracy** | **84.4% raw / 81.7% balanced** | 244 annotated NAH+SPA segments from *La Otra Conquista* (minutes 14-44) |
 | **Nahuatl ASR CER** | **108% → 70%** | Whisper-large-v3 baseline vs. LoRA finetune on OpenSLR-92 test sample |
 
@@ -24,7 +24,7 @@ See [PAPER.md](PAPER.md) for the full technical write-up, [docs/AMITH_CORPORA.md
 
 Metric provenance:
 
-- `73.7%` duration-weighted and `71.6%` segment accuracy are the canonical Hernán benchmark numbers, evaluated with `evaluate.py` using cue-index matching against the annotator DB as ground truth (v2 snapshot, 550 NAH+SPA segments). Duration weighting reflects how much film time is correctly classified, avoiding equal weight for 0.3s interjections and 15s monologues.
+- `84.3%` duration-weighted and `82.4%` segment accuracy are the canonical Hernán benchmark numbers, evaluated with `evaluate.py` on config `11_v7_three_levers` using cue-index matching against the annotator DB as ground truth (v2 snapshot, 550 NAH+SPA segments). Duration weighting reflects how much film time is correctly classified. Config 13 (morphology_expansion) was previously reported but found to be a −10.6pp regression (see E057 in EVOLUTION.md).
 - `84.4% raw / 81.7% balanced` comes from the annotated `La Otra Conquista` subset (5 clips, 244 NAH+SPA segments). GT snapshot: [`benchmarks/snapshots/loc_gt_v2.json`](benchmarks/snapshots/loc_gt_v2.json), methodology in [PAPER.md](PAPER.md).
 - `108% -> 70%` CER is the current public draft finetuning result from [PAPER.md](PAPER.md), based on OpenSLR-92 test sampling.
 
