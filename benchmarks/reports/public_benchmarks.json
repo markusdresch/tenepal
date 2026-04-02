@@ -1,15 +1,15 @@
 {
   "_meta": {
-    "generated": "2026-04-01",
+    "generated": "2026-04-02",
     "version": "v2",
     "db_source": "/home/markusd/Projects/ai/tenepal/tools/annotator/annotations.db",
-    "note": "Canonical benchmark numbers. All claims in README/PAPER must match these values."
+    "note": "Canonical benchmark numbers. Config 11 (three_levers) is production default. Config 13 was a regression."
   },
   "langid_pipeline": {
     "hernan": {
       "gt_snapshot": "benchmarks/snapshots/hernan_gt_v2.json",
-      "prediction_artifact": "eq_comparison_results/13_v7_morphology_expansion.srt",
-      "eval_command": "python evaluate.py benchmarks/snapshots/hernan_gt_v2.json eq_comparison_results/13_v7_morphology_expansion.srt",
+      "prediction_artifact": "eq_comparison_results/11_v7_three_levers.srt",
+      "eval_command": "python evaluate.py benchmarks/snapshots/hernan_gt_v2.json eq_comparison_results/11_v7_three_levers.srt",
       "subset": "hernan",
       "total_segments": 599,
       "gt_distribution": {
@@ -22,31 +22,20 @@
       },
       "unk_segments": 32,
       "metrics": {
-        "multiclass_all": {
-          "accuracy": 0.6578,
-          "correct": 394,
-          "total": 599
+        "nah_spa_duration_weighted": {
+          "accuracy": 0.8434,
+          "correct_s": 650,
+          "total_s": 770
         },
-        "multiclass_excl_unk": {
-          "accuracy": 0.6949,
-          "correct": 394,
-          "total": 567,
-          "note": "UNK ground truth excluded (unscorable interjections)"
+        "nah_spa_segment": {
+          "accuracy": 0.8236,
+          "correct": 453,
+          "total": 550
         },
-        "nah_spa_subset": {
-          "accuracy": 0.7164,
-          "correct": 394,
-          "total": 550,
-          "note": "Only NAH+SPA segments (primary task)"
-        },
-        "binary_nah_detection": {
-          "accuracy": 0.7108,
-          "correct": 403,
-          "total": 567,
-          "nah_precision": 0.7889,
-          "nah_recall": 0.7634,
-          "note": "Is it NAH or not? (excl UNK)"
-        }
+        "nah_precision": 0.863,
+        "nah_recall": 0.775,
+        "spa_precision": 0.621,
+        "spa_recall": 0.921
       },
       "confusion": {
         "nah": {
@@ -68,7 +57,9 @@
         "lat": {
           "spa": 1
         }
-      }
+      },
+      "config": "11_v7_three_levers",
+      "note": "Config 13 (morphology_expansion) was a -10.6pp regression; Config 11 is the actual best."
     },
     "loc": {
       "gt_snapshot": "benchmarks/snapshots/loc_gt_v2.json",

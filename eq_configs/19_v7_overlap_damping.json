@@ -1,0 +1,17 @@
+{
+    "_name": "v7_overlap_damping",
+    "_description": "Config 13 + full overlap damping stack: conf cap, IPA weight reduction, tl disable on overlap.",
+    "speaker_prior_strong": true,
+    "ejective_strict": true,
+    "noise_gate_enabled": true,
+    "two_pass_prior": true,
+    "ft_first": true,
+    "whisper_uncertain_ipa": true,
+    "prior_reset": true,
+    "dj_tc_marker": true,
+    "morphology_expansion": true,
+    "overlap_gate": true,
+    "overlap_damping": true,
+    "overlap_conf_cap": 0.5,
+    "overlap_ipa_weight": 0.3
+}

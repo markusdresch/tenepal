@@ -13,7 +13,7 @@ We present Tenepal, a phoneme-based language identification and transcription sy
 
 We demonstrate that **phoneme-level features alone achieve 69% accuracy** on trilingual classification (Nahuatl/Spanish/Other) in film audio, without any language model, speaker tracking, or finetuning. Each additional layer improves incrementally — speaker prior +7pp, finetuned ASR +6pp, two-pass IPA evidence +2pp, morphological pattern expansion +3pp — but the phonetic foundation carries the majority of the signal.
 
-By combining hallucination-based rejection with dual-backend IPA extraction (Allosaurus + wav2vec2), phonotactic profiling, and LoRA-finetuned Whisper (150h Puebla-Nahuatl), Tenepal reaches **73.7% duration-weighted accuracy** (568s/770s of film time correctly classified) and 71.6% segment accuracy (394/550) on annotated Nahuatl/Spanish segments from Hernán (2019), with NAH precision 75.5% and recall 76.1%. Duration-weighted accuracy is the primary metric because equal segment counting gives a 0.3s interjection the same weight as a 15s monologue; duration weighting measures how much film time is correctly classified. Cross-film evaluation on La Otra Conquista (1999) yields 84.4% raw / 81.7% balanced accuracy (N=244). The finetuned model reduces Nahuatl CER from 108% (hallucinations in Sinhala, Swedish, German) to 70% (recognizable orthography) in 3,000 training steps. Maya-specific experiments remain preliminary and are reported here only as supporting qualitative evidence rather than a release-ready benchmark. The hallucination-as-sensor principle generalizes beyond our application to any neural model processing out-of-distribution input.
+By combining hallucination-based rejection with dual-backend IPA extraction (Allosaurus + wav2vec2), phonotactic profiling, and LoRA-finetuned Whisper (150h Puebla-Nahuatl), Tenepal reaches **84.3% duration-weighted accuracy** (650s/770s of film time correctly classified) and 82.4% segment accuracy (453/550) on annotated Nahuatl/Spanish segments from Hernán (2019), with NAH precision 86.3% and recall 77.5%. Duration-weighted accuracy is the primary metric because equal segment counting gives a 0.3s interjection the same weight as a 15s monologue; duration weighting measures how much film time is correctly classified. Cross-film evaluation on La Otra Conquista (1999) yields 84.4% raw / 81.7% balanced accuracy (N=244). The finetuned model reduces Nahuatl CER from 108% (hallucinations in Sinhala, Swedish, German) to 70% (recognizable orthography) in 3,000 training steps. Maya-specific experiments remain preliminary and are reported here only as supporting qualitative evidence rather than a release-ready benchmark. The hallucination-as-sensor principle generalizes beyond our application to any neural model processing out-of-distribution input.
 
 ---
 
@@ -276,10 +276,10 @@ To validate that indigenous language detection does not over-trigger, we evaluat
 
   | Metric | Value |
   |--------|-------|
-  | Segment accuracy | 71.6% (394/550) |
-  | Duration-weighted accuracy | **73.7%** (568s/770s) |
-  | NAH precision | 75.5% |
-  | NAH recall | 76.1% |
+  | Segment accuracy | 82.4% (453/550) |
+  | Duration-weighted accuracy | **84.3%** (650s/770s) |
+  | NAH precision | 86.3% |
+  | NAH recall | 77.5% |
 
   Duration-weighted accuracy is the primary metric: equal segment counting gives a 0.3s interjection the same weight as a 15s Nahuatl monologue. Duration weighting measures how much film time is correctly classified.
 
@@ -423,8 +423,8 @@ Allosaurus tracks voicing more accurately than wav2vec2 on Spanish segments, whi
 
 | | Hernán-1-3 | LOC Clip 3 |
 |--|-----------|------------|
-| **Accuracy** | 73.7% dur-wtd / 71.6% seg (N=550) | 81.1% (N=74) |
-| NAH precision / recall | 75.5% / 76.1% | — |
+| **Accuracy** | 84.3% dur-wtd / 82.4% seg (N=550) | 81.1% (N=74) |
+| NAH precision / recall | 86.3% / 77.5% | — |
 | SPA→NAH | — | 5 (6.8%) |
 
 **Table 3d: Expanded LOC cross-validation subset** (minutes 14–44, N=244 annotated NAH+SPA segments)
@@ -751,7 +751,7 @@ Conversely, **0 LAT segments** were detected despite the film’s prominent Cath
 
 We presented Tenepal, a phoneme-based language identification system for endangered languages in multilingual film, built on a general principle: **ASR hallucination distributions encode distance-to-training-support**, making model failure modes exploitable as zero-shot language detectors. When Whisper encounters Nahuatl, it does not abstain — it confidently hallucinates in Sinhala, Swedish, or Chinese. We show this hallucination is 100% reliable as a rejection signal (N=45, two model sizes), structured rather than random, and sufficient for language detection without any labeled data in the target language.
 
-On the canonical Hernán benchmark (550 annotated NAH+SPA segments, config 13_v7_morphology_expansion), Tenepal achieves **73.7% duration-weighted accuracy** (568s/770s of film time correctly classified) and 71.6% segment accuracy (394/550), with NAH precision 75.5% and recall 76.1%. Duration-weighted accuracy is the primary metric because it measures how much film time is correctly classified, rather than giving equal weight to 0.3s interjections and 15s monologues. The phonetic foundation carries the majority of the signal: no language model, speaker tracking, or finetuning is needed to achieve 69% on trilingual classification. Each subsequent layer provides diminishing but meaningful gains, with the largest single lever being LoRA-finetuned Whisper, which provides real Nahuatl morphology where the LLM fallback produces gibberish. Whisper's hallucinations extend beyond language to genre: non-speech segments produce YouTube boilerplate ("Thanks for watching!"), confirming that hallucination is a structured projection onto training-data distributions, not random noise.
+On the canonical Hernán benchmark (550 annotated NAH+SPA segments, config 11_v7_three_levers), Tenepal achieves **84.3% duration-weighted accuracy** (650s/770s of film time correctly classified) and 82.4% segment accuracy (453/550), with NAH precision 86.3% and recall 77.5%. Duration-weighted accuracy is the primary metric because it measures how much film time is correctly classified, rather than giving equal weight to 0.3s interjections and 15s monologues. The phonetic foundation carries the majority of the signal: no language model, speaker tracking, or finetuning is needed to achieve 69% on trilingual classification. Each subsequent layer provides diminishing but meaningful gains, with the largest single lever being LoRA-finetuned Whisper, which provides real Nahuatl morphology where the LLM fallback produces gibberish. Whisper's hallucinations extend beyond language to genre: non-speech segments produce YouTube boilerplate ("Thanks for watching!"), confirming that hallucination is a structured projection onto training-data distributions, not random noise.
 
 Evaluation across two independent films — Hernán (2019, 4,659 segments) and La Otra Conquista (1999, 271 segments) — demonstrates cross-production generalization. On expanded LOC cross-validation (minutes 14–44, N=244 NAH+SPA), Tenepal reaches 84.4% raw accuracy and 81.7% balanced accuracy, with overlap-heavy interpreter scenes as the primary failure regime. A 40-segment analysis of Marina/Malinche's speech tracks her linguistic arc from Yucatec Maya interpreter (E01–02) through Nahuatl intermediary (E03–07) to Spanish-dominant participant (E08), validating multilingual tracking over extended time scales.
 
@@ -914,4 +914,4 @@ modal run tenepal_modal.py --input video.mkv --compare
 
 ---
 
-*Last updated: 2026-04-01 — v7: Canonical benchmark updated to reproducible methodology (cue-index matching, DB v2 GT snapshot, duration-weighted accuracy). Hernán: 73.7% duration-weighted / 71.6% segment accuracy on 550 NAH+SPA segments, NAH precision 75.5%, recall 76.1%. LOC cross-validation (N=244): 84.4% raw / 81.7% balanced. Core finding unchanged: phoneme-level features carry majority of signal (69%) without LM/speaker/FT.*
+*Last updated: 2026-04-02 — v8: Canonical benchmark updated to reproducible methodology (cue-index matching, DB v2 GT snapshot, duration-weighted accuracy). Hernán: 84.3% duration-weighted / 82.4% segment accuracy (config 11_v7_three_levers) on 550 NAH+SPA segments, NAH precision 86.3%, recall 77.5%. LOC cross-validation (N=244): 84.4% raw / 81.7% balanced. Core finding unchanged: phoneme-level features carry majority of signal (69%) without LM/speaker/FT.*

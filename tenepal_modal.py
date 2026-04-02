@@ -510,6 +510,10 @@ DEFAULT_EQ = {
     "overlap_hnr_threshold": 10.0,   # HNR below this suggests overlap (single speaker ~15-25)
     "overlap_morphology_weight": 0.3, # Downweight morphology match when overlap detected
     "overlap_separation": False,      # Run MossFormer2 voice separation on overlap turns
+    # --- Overlap damping (full stack) ---
+    "overlap_damping": False,         # Enable full overlap damping stack
+    "overlap_conf_cap": 0.5,         # Max confidence for overlap segments
+    "overlap_ipa_weight": 0.3,       # Downweight IPA scores on mixed signal (0=ignore, 1=trust)
 }
 
 # --- Prosody scorer (hardcoded LogReg from Hernán-1-3 training) ---
@@ -5545,6 +5549,14 @@ def process_film(
                 lang = lang_primary
                 score_used = score_primary
 
+                # Overlap damping: reduce IPA score weight on mixed signal
+                if _is_overlap_turn and eq.get("overlap_damping", False):
+                    _ipa_w = eq.get("overlap_ipa_weight", 0.3)
+                    score_used = score_used * _ipa_w
+                    if score_used < 0.3:
+                        lang = "oth"  # Too uncertain on mixed signal
+                    print(f"  [overlap-damp] IPA score dampened {score_primary:.2f}→{score_used:.2f} (w={_ipa_w})")
+
                 # Optional compare arbitration: choose backend that agrees better
                 # with text-derived IPA anchor when available.
                 if ipa_compare:
@@ -5805,6 +5817,14 @@ def process_film(
                 # Neither produced useful output
                 continue
             backend_tag += f":{profile_used}"
+
+            # --- Overlap damping: cap confidence on overlap segments ---
+            if _is_overlap_turn and eq.get("overlap_damping", False):
+                _conf_cap = eq.get("overlap_conf_cap", 0.5)
+                if lang_conf > _conf_cap:
+                    print(f"  [overlap-damp] conf capped {lang_conf:.2f}→{_conf_cap} on overlap turn")
+                    lang_conf = _conf_cap
+                    lang_conf_source = f"overlap-capped:{lang_conf_source}"
 
             # Extract trim info from primary backend detail
             trim_info = (ipa_detail or {}).get("trim", {})
